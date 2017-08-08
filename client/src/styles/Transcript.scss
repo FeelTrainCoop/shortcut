@@ -1,0 +1,57 @@
+@import './_variables';
+
+.transcript-component {
+  background-color: $bg-color;
+  color: $transcript-text-color;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 253px;
+  width: 100%;
+  cursor: text;
+  flex: 2;
+  flex-basis: 30px;
+  position: relative;
+  // hide scrollbar w/ parent overflow: hidden
+  padding-right: 20px;
+  margin: 0.5em 0em;
+
+  @media screen and (max-width:$break-s) {
+    // margin-top:5%;
+    margin: 0;
+    width: calc(100% - 25px); // account for right-scrubber
+    // overflow: hidden;
+    // height: 200px;
+    flex: 2;
+  }
+  
+  // hide scrollbar w/ parent overflow: hidden
+  padding-right: 20px;
+
+  // waypoints should be inline block
+  & >span {
+    display: inline-block;
+    width: 100%;
+  }
+
+  // 
+  // 
+  &.tapped {
+    
+    & {
+      background-color: darken($bg-color, 10%) !important;
+    }
+
+    & .word-component.selected {
+      background: none;
+    }
+  }
+  
+  &.no-scroll {
+    overflow-y: hidden !important;
+  }
+}
+
+.Tappable-active, .Tappable-inactive {
+  user-select: auto !important;
+  -moz-user-select: auto !important;
+}

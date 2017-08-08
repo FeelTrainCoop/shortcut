@@ -1,0 +1,237 @@
+@import './_variables';
+@import './_mixins';
+
+.clipping-container-component {
+  @include episode-header();
+  @include preview-button();
+  @include left-right-containers();
+
+  width: 100%;
+
+  &.content {
+    height: $previewcontainer-height;
+
+    &.step-clipping {
+      .mobile-transport {
+        display: none;
+
+        @media screen and (max-width:$break-s) {
+          display: block;
+          padding: 5px;
+          &, & * {
+            background: #a9a8a8;
+            color: white;
+          }
+          & .time-mobile {
+            margin-left: 15px;
+            border: none;
+          }
+        }
+      }
+    }
+
+    &.step-preview {
+
+      .mobile-transport {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width:$break-s) {
+      margin-top: 0px;
+      float: left;
+      flex-direction: column;
+      display: flex;
+      height: 100%;
+    }
+
+    // height media queries
+    @media screen and (max-height:$break-h-s) {
+      margin: 0px auto;
+      // transform: scale(0.8);
+      // -webkit-transform: scale(0.8);
+    }
+  }
+
+  .time {
+    color: black;
+    font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
+    font-size: 12px;
+    height: 12px;
+    line-height: 12px;
+    background-color: rgba(255,255,255,0.82);
+    border-bottom: solid $body-background 1px;
+    width: 100%;
+    margin: 0px auto;
+    // padding: 10px 0 2px 0;
+    text-align: right;
+    flex: 0.05;
+    z-index:10;
+    // padding-left:10px;
+
+    span {
+      // margin-left: 10px;
+      margin-right: 10px;
+      // color:#66bbac;
+      padding:5px;
+    }
+  }
+  .time-desktop {
+    position: absolute;
+    top: 30px;
+    margin-top: 5px;
+    @media screen and (max-width:$break-s) {
+      display: none;
+    }
+  }
+
+  .play-pause {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    border-radius: 50%;
+    background-color: $primary-color;
+
+    & svg {
+      width: 24px !important;
+      height: 24px !important;
+      margin: 0 !important;
+    }
+  }
+
+  // .transport {
+  //   display: none;
+  //   background-color: white;
+  //   text-align: center;
+  //   position: relative;
+  //   box-sizing: border-box;
+  //   flex-direction: row;
+
+  //   @media screen and (max-width:$break-s) {
+  //     display: flex;
+  //     height: 50px;
+  //     flex: none;
+  //   }
+
+  //   & > span {
+  //     border: 2px solid #c6c6c6;
+  //     height: 50px;
+  //     box-sizing: border-box;
+  //   }
+
+  //   & .time-mobile {
+  //     text-align: center;
+  //     flex: none;
+  //     color:#66bbac;
+  //     flex: 1;
+  //     padding: 18px;
+  //     font-size: 18px;
+
+  //   }
+
+  //   & .play-pause {
+  //     flex: 1;
+  //   }
+  // }
+
+  .scrubber {
+    width: 100%;
+    margin: 0 auto;
+    height: 30px;
+    &> div {
+      background-color: #bbb;
+      height: 30px !important;
+      margin-top: 0px !important;
+      margin-bottom: 0px !important;
+    }
+    div {
+      height: 30px;
+      margin-top: 7px;
+      div > div:nth-child(1) {
+        height: 4px !important;
+        margin-top: -2px !important;
+      }
+      div > div:nth-child(2) {
+        height: 4px !important;
+        margin-top: -2px !important;
+        background-color: $body-background !important;
+      }
+      div > div:nth-child(3) {
+        background-color: $secondary-color !important;
+        width: 14px !important;
+        height: 14px !important;
+      }
+    }
+  }
+  .scrubber-vertical {
+    width: 18px;
+    height: calc(100% - #{$subhead-height}); // assuming fixed waveform height
+    // height: 90%;
+    z-index: 2;
+    position:absolute;
+    right:0px;
+    top: 20px;
+    top: $subhead-height;
+    &> div {
+      background-color: #bbb;
+      margin-top: 0px !important;
+      margin-bottom: 0px !important;
+    }
+    div {
+      div > div:nth-child(2) {
+        background-color: $body-background !important;
+      }
+      div > div:nth-child(3) {
+        background-color: $secondary-color !important;
+        width: 14px !important;
+        height: 14px !important;
+      }
+    }
+
+  }
+  .show-waveform {
+    // background-color: $primary-color;
+    flex: 0.6;
+    position: relative;
+    flex-basis: 30px;
+
+    @media only screen and (max-width: $break-s) {
+      flex: 0.5;
+
+      &.clipping {
+        display: none !important;
+      }
+    }
+  }
+}
+
+.flex-top {
+  @media only screen and (max-width: $break-s) {
+    display: none !important;
+  }
+}
+
+.wave-background, .wave-region-component__region, .wave-region-component__region-background {
+  height: calc(100% - 20px);
+  margin: 10px 0px;
+}
+
+.wave-background {
+  width: 100%;
+  background-color: $primary-color;
+  position: absolute;
+}
+
+/* toggle Transcript / Preview on Mobile */
+@media screen and (max-width:$break-s) {
+  .left-container.preview {
+    display: none !important;
+  }
+  .right-container.preview {
+    display: flex !important;
+    width: 100% !important;
+  }
+  .right-container.clipping {
+    display: none !important;
+  }
+}

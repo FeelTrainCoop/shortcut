@@ -1,0 +1,52 @@
+@import '../_variables';
+
+.paragraph-component {
+  // padding: 20px 20px 2.5px;
+  line-height: 20px;
+	// display:inline !important;
+	width:90% !important;
+	display: block;
+	// padding-left: 20px;
+	padding-right: 20px;
+	padding-left: 20px;
+	// float:left;
+
+	-webkit-user-select: auto !important;
+	user-select: auto !important;
+	-moz-user-select: auto !important;
+	-ms-user-select: auto !important;
+
+
+	& span {
+		// override Tappable css
+		-webkit-user-select: auto !important;
+		user-select: auto !important;
+		-moz-user-select: auto !important;
+		-ms-user-select: auto !important;
+
+		// disable Safari text selection on small screens
+		@media (max-width: $break-s) {
+			-webkit-user-select: none !important;
+			user-select: none !important;
+			-moz-user-select: none !important;
+			-ms-user-select: none !important;
+		}
+	}
+
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
+
+	// .paragraph-container {
+	// 	padding: 0px 10px;
+	// 	display: inline;
+	// 	float: left;
+	// 	width: 100%;
+	// }
+
+  .doublespace{
+    height:0;
+    display:inline-block;
+    width:100%;
+  }
+}

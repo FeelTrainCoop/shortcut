@@ -1,0 +1,23 @@
+@import '_variables';
+// @import '_mixins';
+
+.clipping-wrapper {
+  margin: 15px auto 0px;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+
+  @media screen and (max-width:$break-s) {
+    margin: 0px;
+    float: left;
+    overflow: hidden;
+  }
+
+  // height media queries
+  @media screen and (min-width: $break-s) and (max-height:$break-h-s) {
+    margin: 0px auto;
+    zoom: 0.9;
+    // -moz-transform: scale(0.95);
+  }
+
+}

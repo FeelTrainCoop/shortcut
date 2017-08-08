@@ -1,0 +1,81 @@
+@import '../_variables';
+
+.word-component {
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
+  display:inline-block;
+  font-size: $transcript-font-size;
+  line-height: $transcript-line-height;
+  // &::after {
+  //   content: "\00a0";
+  // }
+  // padding-right:0.2em;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  cursor: text !important;
+
+  &.selected:not(.selected--hide) {
+    color:#222;
+    // background: $primary-color-light;
+    background: $highlight-color;
+
+    &.while-dragging {
+      background: lighten($highlight-color, 20%);
+    }
+  }
+
+  &:hover {
+    // background: darken($primary-color-light, 10%);
+    // cursor: pointer;
+    // outline:2px solid #fff0ff;
+  }
+  // &:active {
+  //   background: #ffffc4 !important;
+  //   outline:2px solid #fff0ff;
+  // }
+  &.tapped {
+    // background: $primary-color-light;
+    // background: #f5a998 !important;
+    background: #ffffc4 !important;
+    outline:2px solid #fff0ff;
+  }
+
+  &.first-word {
+    position: relative;
+
+    &::before {
+      line-height: 5px;
+      cursor: move;
+      vertical-align: top;
+      color: red;
+      content: '\>';
+      border-left: 2px solid red;
+      position: absolute;
+      left: -2px;
+      top: -5px;
+      height: calc(100% + 5px);
+      cursor: move;
+      font-size: 0.7em;
+    }
+  }
+
+  &.last-word {
+    position: relative;
+
+    &::after {
+      font-size: 0.7em;
+      line-height: 450%;
+      cursor: move;
+      color: red;
+      margin-bottom:0em;
+      padding-bottom:0em;
+      content: '<';
+      border-right: 2px solid red;
+      position: absolute;
+      right: 0px;
+      bottom: -5px;
+      height: calc(100% + 5px);
+      cursor: move;
+    }
+
+  }
+}

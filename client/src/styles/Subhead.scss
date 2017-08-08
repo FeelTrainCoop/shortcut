@@ -1,0 +1,73 @@
+@import './_variables';
+
+.subhead-component {
+  display:none;
+
+  a {
+    -webkit-appearance: none !important;
+    display: inline-block;
+    z-index: 10;
+  }
+
+  @media screen and (max-width:$break-s) {
+    display: flex;
+    flex-direction: row;
+    background-color: #fafafa;
+    height: $subhead-height;
+    flex: 0.15;
+    flex-basis: 50px;
+    max-height: 50px;
+    font-size: 12px;
+    position: relative;
+
+    > svg {
+      flex: 1;
+    }
+    h2 {
+      text-align: center;
+      margin: 10px 0px;
+      flex: 4;
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      top: 0px;
+      left: 0px;
+    }
+
+    h5.subhead-component-dots {
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      bottom: 0px;
+      line-height: 1em;
+      font-size: 1.6em;
+      margin: 0px;
+      left: 0px;
+
+      span {
+        color: #c6c6c6;
+      }
+
+      &.step-1 {
+        span:first-child {
+          color: $primary-color;
+        }
+      }
+      &.step-2 {
+        span:first-child {
+          color: $primary-color;
+        }
+        span:nth-child(2) {
+          color: $primary-color;
+        }
+      }
+      &.step-3 {
+        span {
+          color: $primary-color;
+        }
+      }
+
+    }
+  }
+
+}

@@ -1,0 +1,22 @@
+@import '../_variables';
+
+.subheading-component {
+  color: $primary-color;
+  font-size: $transcript-font-size;
+  line-height: $transcript-line-height;
+  font-family: 'Flama-semicondensed-book';
+  font-weight: 900;
+  padding: 10px 0px;
+  display: inline;
+  width: 100%;
+	// display: block;
+  // padding: 5px 0px;
+  &:after {
+  	content: ': ';
+  }
+}
+
+// h3 {
+//   margin: 5px 0px;
+//   padding: 0px;
+// }

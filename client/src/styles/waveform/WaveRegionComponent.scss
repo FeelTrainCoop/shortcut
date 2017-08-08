@@ -1,0 +1,40 @@
+@import '../_variables';
+
+.wave-region-component {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top:0;
+  left:0;
+  cursor: pointer;
+  z-index:10;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  .wave-region-component__region {
+    cursor: move;
+  }
+
+  .wave-region-component__region-background {
+    background-color: lighten(rgba($secondary-color, 0.8), 20%);
+  }
+
+  .wave-region-component__handle {
+    background-color: $secondary-color;
+    width: 10px;
+    float: left;
+    height: 100%;
+    box-sizing: border-box;
+    margin-top: -10px;
+    margin-left: -5px;
+    cursor: col-resize;
+    border-radius: 10px;
+
+    &.right {
+      // margin-left: 10px;
+      margin-right: -5px;
+      float: right;
+    }
+  }
+
+}

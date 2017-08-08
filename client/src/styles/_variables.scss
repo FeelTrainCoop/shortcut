@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:600');
+@import url('https://fonts.googleapis.com/css?family=Oswald:300');
+
+$helvetica: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
+$open-sans: 'Open Sans', sans-serif;
+
+$bg-color: white;
+$transcript-text-color: black;
+$disabled-color: #bdbdbd;
+$body-color: #444;
+$body-background: #ececec;
+$primary-color: #e53e19; // orange
+
+// $primary-color-light: hsla(11,80%,56%,0.3);
+$primary-color-light: #f9ccc2;
+$primary-color-post-compression: #3a1d54;
+$selection-color: #ffffc4;
+$primary-color-button: #f66048;
+$secondary-color: #42275a; // purple
+$secondary-color-lighter: #7e49ac; // purpleLight
+$tertiary-color: hsl(271, 30%, 40%);
+$success-green: #4ae31b;
+$break-xs: 767px;
+$break-s: 992px;
+$break-m: 1200px;
+$break-l: 1440px;
+
+$break-h-s: 720px;
+
+// flexboxgrid breakpoints: https://github.com/kristoferjoseph/flexboxgrid/blob/master/src/css/flexboxgrid.css#L19
+// @custom-media --sm-viewport only screen and (min-width: 48em);
+// @custom-media --md-viewport only screen and (min-width: 64em);
+// @custom-media --lg-viewport only screen and (min-width: 75em);
+// $break-s: 48em;
+// $break-m: 64em;
+// $break-l: 75em;
+
+$previewcontainer-height: 490px;
+$preview-video-width: 490px;
+$canvas-dimension: 370px;
+$rendered-video-dimension: 400px;
+$navbar-height: 70px;
+$navbar-height-sm: 55px;
+$button-height: 45px;
+
+$highlight-color: #ffe844;
+
+$subhead-height: 50px;
+
+$transcript-font-size: 16px;
+$transcript-line-height: 24px;

@@ -1,0 +1,226 @@
+@import '_variables';
+
+html {
+  height:100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#app {
+  height: 100%;
+}
+
+.index {
+  height:100%;
+}
+
+.index img {
+  display: block;
+}
+
+.index .notice {
+  margin: 20px auto;
+  padding: 15px 0;
+  text-align: center;
+  border: 1px solid #000;
+  border-width: 1px 0;
+  background: #666;
+}
+body {
+  color: black;
+  background-color: $body-background;
+  width:100%;
+  height:100%;
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+
+  a {
+    color: $body-color;
+    text-decoration: none;
+    border-bottom: 1px solid $body-color;
+    cursor: pointer;
+  }
+
+
+  h3 {
+    // text-transform: uppercase;
+    font-family: 'Flama-semicondensed';
+    font-size: 18px;
+    margin-bottom: 0px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    // color: black;
+    // float: left;
+  }
+
+  li {
+    display: block;
+  }
+
+  // landscape rotate, but dont hide on Android keyboard (via http://stackoverflow.com/a/26932152/2994108)
+  @media screen and (max-width:$break-xs) and (orientation: landscape) and (min-aspect-ratio: 13/9) {
+    .no-mobile.landscape {
+      padding-top: 0%;
+      display: block;
+    }
+  }
+
+
+//   // XS and S, show our sorry message
+//   @media screen and (max-width:$break-s) {
+//     .loadinganimation-component {
+//       display: none;
+//     }
+//     .sharecontainer-component {
+//       display: none;
+//     }
+//     .no-mobile {
+//       display: block;
+//     }
+//   }
+//   // tweak the sorry message on landscape
+//   @media screen and (max-width:$break-s) and (orientation: landscape) {
+//     .no-mobile {
+//       padding-top: 0%;
+//     }
+//   }
+//   // also capture ipads in landscape
+//   @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 2) {
+//     .loadinganimation-component {
+//       display: none;
+//     }
+//     .sharecontainer-component {
+//       display: none;
+//     }
+//     .no-mobile {
+//       display: block;
+//     }
+
+//   }
+//   // M, start to scale canvas
+//   @media screen and (min-width:$break-s) and (max-width:$break-m) {
+//     #canvas {
+//       width: $canvas-dimension;
+//       height: $canvas-dimension;
+//     }
+//   }
+}
+
+.no-underline {
+  text-decoration: none;
+}
+
+.white {
+  color: white;
+}
+
+.about-page {
+  max-width: 680px;
+  margin: auto;
+  padding: 15px;
+  h1, h2, h3 {
+    color: $secondary-color;
+  }
+  h3 {
+    margin-bottom: 0px;
+    padding-top: 5px;
+  }
+  ul {
+    margin-top: 0px;
+  }
+  a:not(.about__email) {
+    border: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  footer {
+    margin-top: 80px;
+    width: 100%;
+    text-align: center;
+
+  }
+}
+
+.no-mobile {
+  font-size: 2em;
+  color: $primary-color;
+  background-color: #ccc;
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  text-align: center;
+  display: none;
+  padding-top: 20%;
+  p {
+    font-size: 1.3em;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+
+.preview-button {
+  display: block !important;
+  margin: 0 auto;
+  margin-top: 20px !important;
+  margin-left: 10px !important;
+
+  &[disabled] {
+    background-color: $disabled-color !important;
+  }
+}
+
+::selection {
+  color:#222;
+  // background: $primary-color-light;
+  background: $selection-color;
+}
+
+.error-message > div > div {
+  font-size: 1.5em !important;
+  text-align: center;
+
+  @media screen and (max-width:$break-s) {
+    font-size: 1.1em !important;
+  }
+}
+
+.content {
+  margin: 0 auto;
+  margin-top: 50px;
+  max-width: 980px;
+  color: $body-color;
+
+  @media screen and (min-width: $break-s) and (max-height:$break-h-s) {
+    margin: 10px auto 0px;
+    zoom: 0.85;
+    // -moz-transform: scale(0.85);
+  }
+  @media screen and (max-width:$break-s) {
+    margin-top: 0px;
+  }
+}
+
+.Loader__message #wave {
+  stroke: $primary-color !important;
+}
+
+@media screen and (min-width:$break-s) {
+  .hide-m {
+    display: none;
+  }
+}
+
+.vis-hidden {
+  visibility: hidden !important;
+}
+
+// dont obcure toast messages
+#bugmuncher_button {
+  z-index: 0 !important;
+}
