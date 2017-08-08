@@ -1,0 +1,41 @@
+@import '_variables';
+
+.login-row-menu {
+  -webkit-appearance: none !important;
+  width: 280px !important;
+  padding: 0px !important;
+  color: white !important;
+}
+.loginrow-component {
+  cursor: pointer;
+  a {
+    text-decoration: none;
+    display: block;
+  }
+  svg {
+    fill: white !important;
+  }
+  .logout {
+    display: inline-block;
+    margin-left: 10px;
+    position: absolute;
+    top: 11px;
+    right: 20px;
+  }
+  .connect-button {
+    width: 100%;
+    -webkit-appearance: none !important;
+    // height: 45px !important;
+    // line-height: 45px !important;
+    a {
+      color: white !important;
+      font-size: 16px;
+      border-bottom: none !important;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #ccaaff !important;
+      }
+    }
+  }
+}

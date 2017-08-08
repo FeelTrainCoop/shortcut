@@ -1,0 +1,12 @@
+{
+  "source": {
+    "include": [ "src/components/"],
+    "exclude": [ "node_modules/"]
+  },
+  "opts": {
+    "destination": "./docs/",
+    "recurse": true,
+    "template": "./node_modules/ink-docstrap/template"
+  },
+  "plugins": ["plugins/markdown"]
+}

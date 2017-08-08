@@ -1,0 +1,38 @@
+@import '../_variables';
+
+.wave-component {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	display: block;
+	pointer-events: none;
+
+	canvas.wave-component__canvas {
+		position: absolute;
+		top:0;
+		left:0;
+		height: 100%;
+		width: 100%;
+		display: block;
+	}
+
+	& div.clearfix {
+		position:absolute;
+		top:0;
+		height:100%;
+	}
+}
+
+.wave-playhead-component {
+	background-color: darken($highlight-color, 10%);
+	height: calc(100% - 20px);
+	margin-top: 10px;
+	width: 4px;
+	margin-left: 5px;
+	z-index: 10000;
+	position: absolute;
+	pointer-events: none;
+	border-radius:2px;
+}

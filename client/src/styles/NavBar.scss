@@ -1,0 +1,144 @@
+@import '_variables';
+
+.navbar-component {
+  > div {
+    height: $navbar-height !important;
+
+    @media screen and (max-width:$break-s) {
+
+      &{
+        height: $navbar-height-sm !important;
+      }
+    }
+
+  }
+
+  // first button is the hamburger menu
+  button:first-child {
+    padding: 4px;
+  }
+  @media screen and (min-width:$break-s) {
+    button:first-child {
+      display: none !important;
+    }
+  }
+
+  // show title
+  h1 {
+    opacity:1 !important;
+    font-size: 1.1em !important;
+    text-align: center !important;
+
+    @media screen and (min-width:$break-xs) {
+      text-align: left !important;
+      font-size: 1.2em;
+    }
+
+    @media screen and (min-width:$break-s) {
+      opacity:0 !important;
+    }
+  }
+
+  .shortcut-logo {
+    margin-top: 15px;
+    height: 40px;
+    position: absolute;
+    left: 25px;
+
+    @media screen and (max-width:$break-s) {
+      display: none !important;
+    }
+  }
+  .tal-logo {
+    position: fixed;
+    right: 10px;
+    display: inline-block;
+    height: 100px;
+    background-color: white;
+    vertical-align: middle;
+    padding: 5px;
+    margin-top: -5px;
+    margin-left: 5px;
+    z-index: 10;
+
+    @media screen and (max-width:$break-s) {
+      height: 50px;
+      border: 2px #c5c5c5 solid;
+    }
+
+  }
+}
+
+.nav-title {
+  max-width: 50%;
+  h1 {
+    margin-bottom: 0;
+  }
+  h2 {
+    margin-top: 0;
+  }
+}
+
+.nav-button {
+  margin: 5px 5px 0 5px !important;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-appearance: none !important;
+  font-family: $helvetica;
+  width: 100px !important;
+
+  div > span {
+    font-size: 18px !important;
+    text-transform: none !important;
+    color: white;
+    font-weight: 200 !important;
+  }
+
+
+  &:hover, &.nav-button__about {
+    background-color: inherit !important;
+    span {
+      font-weight: bold !important;
+    }
+  }
+
+  @media screen and (max-width:$break-s) {
+    display: none !important;
+  }
+}
+
+.nav-buttons {
+  display: inline-block;
+  float: right;
+  margin-top: 10px;
+  margin-right: 60px;
+}
+
+.menu-popover {
+  background-color: $tertiary-color !important;
+  top: 70px !important;
+}
+
+// DRAWER
+.drawer {
+  background-color: $secondary-color !important;
+
+  .login-row-menu {
+    padding: 8px 0px !important; 
+  }
+
+  .bottom {
+    position: absolute !important;
+    bottom: 0px !important;
+
+    .login-row-menu {
+      border-top: 1px lighten($secondary-color, 20%) solid !important;
+    }
+  }
+  .top {
+    .login-row-menu {
+      border-bottom: 1px lighten($secondary-color, 20%) solid !important;
+    }
+  }
+
+}

@@ -1,0 +1,32 @@
+Roadmap
+
+have the conversation with stephanie and maybe seth about clientside open source, what is considered open sourceable
+what license do they want
+
+client
+- making the CSS skinnable
+- whitelabel CSS (ask Dalit about what a whitelabel version would look like)
+- use Material UI stock everything (colors, etc)
+- remove all specific UI tweaks
+- upstream changes to wavesurfer OR scrap wavesurfer and do our own thing
+- upstream fixes to wavesurfer-react
+- tests!
+- serverside rendering
+- mobile
+- refactoring
+
+
+serverless
+- change the transcript format to the gentle json output
+- use mp3s in addition to HLS
+- modularize the transcript reading part (transcript "renderers")
+- local testing solution
+- make the rendering isomorphic and eventually abstract out into an npm module
+
+server
+- doesn't change too much
+
+
+
+upstream to 
+

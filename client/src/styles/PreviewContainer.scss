@@ -1,0 +1,157 @@
+@import '_variables';
+@import '_mixins';
+
+.previewcontainer-component {
+  position: relative;
+  background-color: #fff;
+  box-sizing: border-box;
+  text-align: center;
+  height: $previewcontainer-height;
+  width: $previewcontainer-height;
+  margin: auto;
+  align-items:center;
+  font-family: $open-sans; //'Open Sans', sans-serif;
+
+  img#animation-footer {
+    display: none;
+  }
+
+  @media screen and (max-width:$break-s) {
+    margin: 15px auto;
+    width: 90%;
+    // height: 100%;
+    flex: 2;
+    background: none;
+  }
+
+  @media screen and (max-width:$previewcontainer-height) {
+    width: 90%;
+    // height: 100%;
+    flex: 2;
+    overflow: hidden;
+    background: none;
+  }
+  .anim-button {
+    position: relative;
+    vertical-align: middle;
+    z-index:1;
+    width: 45px !important;
+
+    svg {
+      fill: white !important;
+      background-color: $tertiary-color !important;
+
+      @media screen and (max-width:$break-s) {
+        fill: grey !important;
+        background: none !important;
+      }
+
+    }
+  }
+}
+
+.preview-canvas-container {
+  width: $canvas-dimension;
+  height: $canvas-dimension;
+  margin: auto;
+  position: relative;
+  margin-top: 15px;
+
+  @media screen and (max-width:$break-s) {
+    height: auto;
+    width: calc(100% - 30px);
+    max-height: calc(80vh - 150px);
+    max-width: calc(80vh - 150px);
+  }
+
+  @media screen and (max-width:$break-xs) {
+  }
+
+  @media screen and (max-width:$previewcontainer-height) {
+    overflow: hidden;
+    margin:auto;
+  }
+
+}
+
+#canvas {
+  background-color: $secondary-color;
+  display: inline-block !important;
+  width: $canvas-dimension;
+  height: $canvas-dimension;
+  margin: auto;
+  cursor: pointer;
+
+  @media screen and (max-width:$break-s) {
+    margin:auto;
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  @media screen and (max-width:$break-xs) {
+    // max-height: 300px;
+    // max-width: 300px;
+  }
+
+  @media screen and (max-width:$previewcontainer-height) {
+    // width: 50%;
+    // height: 50%;
+    // overflow: hidden;
+    // margin:auto;
+  }
+
+  // margin-top: ($previewcontainer-height - $canvas-dimension) / 2;
+  // margin-top: 15px;
+}
+
+
+.prev-anim {
+  left:0px !important;
+}
+
+.next-anim {
+  right: 0px !important;
+}
+
+.preview-option-container {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+
+  .preview-option {
+    width: 35px;
+    height: 35px;
+    margin: 15px;
+    display: inline-block;  
+    background-size: cover;
+    cursor: pointer;
+    filter: brightness(90%);
+    -webkit-filter: brightness(90%);
+
+    &:first-child {
+
+    }
+    &:nth-child(2) {
+
+    }
+    &:nth-child(3) {
+
+    }
+
+    &:hover {
+      filter: brightness(105%);
+      -webkit-filter: brightness(105%);
+    }
+  }
+}
+
+.left-container.preview {
+  visibility: hidden;
+}
+.show-waveform.preview {
+  height: 0px;
+  overflow: hidden;
+  flex: 0 !important;
+  visibility: hidden;
+}

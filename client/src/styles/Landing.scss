@@ -1,0 +1,219 @@
+@import '_variables';
+
+.recent-episodes {
+  text-transform: uppercase;
+  font-family: 'Flama-semicondensed';
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom:0px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid #ccc;
+  color: black;
+  max-width: 900px;
+}
+
+.episodes {
+  max-width: 900px !important;
+  background:white;
+  padding: 15px;
+  margin-bottom: 300px !important;
+}
+
+.content.episodes {
+  @media screen and (max-width:$break-s) {
+    margin-top:0px;
+
+  }
+
+  @media screen and (max-width:$break-xs) {
+    span.episode-name {
+      font-size: 16px;
+      max-width: 70%;
+      max-height: 20px;
+      // overflow: hidden;
+    }
+
+    p.episode-description {
+      font-size: 14px;
+    }
+
+    span.episode-date {
+      display: none;
+    }
+  }
+}
+
+.episode-link {
+  max-width: 900px;
+  height: 50px;
+  padding: 15px;
+  border-bottom: 0.5px solid #ccc;
+  transition: all .5s;
+  position: relative;
+  &:hover {
+    background-color:#f2f2f2;
+  }
+
+  &.bad-episode {
+    pointer-events: none;
+
+    .episode-circle, .episode-name, .episode-description {
+      opacity: 0.5;
+      filter: grayscale(50%);
+    }
+    & .episode-unavail {
+      font-size: 12px;
+      font-weight: bold;
+      font-family: 'Flama-semicondensed';
+      font-style: italic;
+      text-align: center;
+      margin-left: 5px;
+      padding: 3px;
+      position: absolute;
+      right: -5px;
+      top: 40%;
+      text-align: left;
+      opacity: 0.7;
+      color: $primary-color;
+    }
+  }
+}
+
+.episode-link-container.bad-episode {
+  cursor: default;
+  pointer-events: none;
+}
+
+div.content.episodes .episode-link-container:last-child {
+  .episode-link {
+    border-style: none;
+  }
+}
+
+.episode-circle {
+  display: block;
+  background-color: $secondary-color;
+  font-family: 'Museo';
+  font-weight: 900;
+  font-size: 18px;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 50px;
+  color: white;
+  margin-right: 10px;
+}
+.episode-name {
+  color: $primary-color;
+  font-weight: 900;
+  font-family: 'Museo';
+  font-size: 18px;
+  display: block;
+  margin: -45px 0 0 60px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.episode-description {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: $body-color;
+  margin: 5px 40px 0 60px;
+  font-size: 16px;
+  margin-bottom:15px;
+}
+.episode-arrow {
+  float: right;
+  transform: scale(2);
+  top: 0px;
+  bottom: 0px;
+  right: 5px;
+  margin: auto;
+  position: absolute;
+  fill: $primary-color !important;
+}
+
+.hero-space {
+  background-color: $secondary-color;
+  background-image: url('../images/shortcut-icon-bg.svg');
+  background-size: contain;
+  background-position: 0px 5px;
+  height: 370px;
+  position: relative;
+  .hero-content {
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+    height: 100%;
+    display:block;
+    float:left;
+    text-align:center;
+    width: 100%;
+    .for-tal {
+      font-family: 'Flama-semicondensed';
+      font-size: 30px;
+      margin-top: 20px;
+    }
+    .tagline {
+      margin-top: 70px;
+      font-family: 'Flama-semicondensed';
+      font-size: 32px;
+    }
+  }
+  .shortcut-logo-big {
+    height: 75px;
+    padding-top: 80px;
+    margin: 0 auto;
+  }
+
+  @media screen and (max-width:$break-s) {
+    & {
+      height: 250px;
+    }
+    .shortcut-logo-big {
+      height: 80px;
+      padding-top: 60px;
+      margin: 0 auto;
+    }
+    .hero-content {
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      width: auto;
+      .for-tal {
+        display: none;
+      }
+      .tagline {
+        margin-top: 30px;
+        font-size: 1.4em;
+      }
+    }
+  }
+
+  @media screen and (max-width:$break-xs) {
+    & {
+      height: 175px;
+    }
+    .shortcut-logo-big {
+      height: 50px;
+      padding-top: 45px;
+      margin: 0 auto;
+    }
+    .hero-content {
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      width: auto;
+      .for-tal {
+        display: none;
+      }
+      .tagline {
+        margin-top: 20px;
+        font-size: 1em;
+      }
+    }
+  }
+}

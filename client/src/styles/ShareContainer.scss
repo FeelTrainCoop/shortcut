@@ -1,0 +1,420 @@
+// post mobile
+@import '_variables';
+@import '_mixins';
+
+.sharecontainer-component {
+  max-width: 900px;
+  @include share-button();
+
+  &.content {
+    width: 100%;
+
+    @media screen and (max-width:$break-s) {
+      height: calc(100% - #{$navbar-height-sm + $button-height});
+      position: static;
+      float: left;
+      // display: flex;
+      // flex-direction: row;
+    }
+  }
+
+  @include episode-header();
+
+  &> div {
+    max-width: 980px;
+
+    @media screen and (max-width:$break-s) {
+      max-width: 100vw;
+    }
+  }
+
+  .preview-video-container {
+    background-color: $primary-color-post-compression;
+    height: $previewcontainer-height;
+    width: 100%;
+    float: left;
+    .preview-video {
+      margin: 0 auto !important;
+      padding-top: ($previewcontainer-height - $preview-video-width) / 2;
+      width: $preview-video-width;
+      display: block !important;
+      margin: auto;
+    }
+
+    @media screen and (max-width:$break-s) {
+      background: none;
+      width: 100%;
+      // height: 100%;
+      height: 35vh;
+      padding: 0px;
+      background-color: white;
+
+      .preview-video {
+        height: 100%;
+        width: auto;
+        margin: auto;
+
+        // width: 30vh;
+        max-width: $previewcontainer-height;
+        // margin-bottom: 20px;
+      }
+    }
+
+  }
+
+  .download-button {
+    background-color: $primary-color-button;
+    // width: 180px !important;
+    // height: 45px !important;
+    line-height: 45px !important;
+    margin-left: 2% !important;
+    @media screen and (max-width:$break-s) {
+      display: none !important;
+    }
+    span {
+      text-transform: none !important;
+      font-size: 18px !important;
+      line-height: 18px !important;
+    }
+  }
+
+
+  &> div > div:nth-child(1) {
+    padding: 0;
+  }
+
+  &> div > div:nth-child(2) {
+    background-color: $secondary-color !important;
+    height: $previewcontainer-height;
+    padding: 0;
+    color: white !important;
+
+    @media screen and (max-width:$break-s) {
+      background-color: white !important;
+    }
+  }
+
+  .share-options {
+    margin: 24px auto 0px;
+    position: relative;
+    color: #fff !important;
+
+    @media screen and (max-width:$break-s) {
+      margin: 10px auto 0px;
+      float: left;
+      width: 100%;
+      font-size: 12px;
+      position: absolute;
+      bottom: 45px;
+      height: 40%;
+
+      & svg {
+        // margin-right: 5px !important;
+        // width: 12px !important;
+        // height: 12px !important;
+      }
+    }
+  }
+
+  .suggested-text {
+    width: 100%;
+    margin: -10px auto 5px;
+    box-sizing: border-box;
+
+    @media screen and (max-width:$break-s) {
+      position: absolute;
+      top: 120px;
+      z-index: 100;
+      width: 100%;
+      text-align: center;
+      color: rgba(0,0,0,0.5);
+
+      & svg {
+        fill: rgba(0,0,0,0.5) !important;
+      }
+    }
+    cursor: pointer;
+
+    @media screen and (max-width:$break-s) {
+      width: 90%;
+      right: 0;
+      left: 0;
+      margin: auto;
+      border: 1px rgba(0,0,0,0.5) solid;
+      background-color: white;
+
+      & .suggested-item {
+        button {
+          // padding: none !important;
+          // width: auto !important;
+          // height: auto !important;
+          // padding-right: 12px !important;
+          padding: 6px 36px 6px 6px !important;
+          position: absolute;
+        }
+        float: left !important;
+        display: inline-block;
+        height: 36px;
+        font-size: 14px;
+
+      }
+    }
+
+    & .suggested-item-button-text {
+      cursor: pointer;
+      vertical-align: super;
+    }
+  }
+  
+  div > div > a {
+    -webkit-appearance: none;
+    width: 100%;
+    margin: 0 auto !important;
+
+    &.social-toggle-link {
+      display: inline;
+      width: auto;
+      margin: 0px;
+      -webkit-appearance: auto;
+      overflow: scroll;
+      display: inline-block;
+      width: auto;
+      float: right;
+    }
+  }
+
+  .social-textarea {
+    display: block !important;
+    margin: -24px auto 0px !important;
+    width: 90% !important;
+    label {
+      display: inline-block;
+      font-size: 18px;
+      color: darken($body-background, 20%) !important;
+      padding-left: 5px !important;
+      // margin-top: -5px !important;
+    }
+  }
+  .social-textarea > div > textarea {
+    background-color: #eee !important;
+    padding: 10px !important;
+    margin: 0 auto;
+    height: 125px !important;
+
+    @media screen and (max-width: $break-s) {
+      border: 1px rgba(0,0,0,0.5) solid !important;
+      background: white !important;
+    }
+
+  }
+  .social-toggle-container {
+    width: 100%;
+    position: relative;
+
+    @media screen and (max-width: $break-s) {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      position: absolute;
+      bottom: 0px;
+      .share-download {
+        display: none !important;
+      }
+    }
+
+    .social-toggle-item {
+      position: relative;
+      width: 95%;
+      overflow: hidden;
+      margin: auto;
+      justify-content: space-between;
+
+      @media screen and (max-width:$break-s) {
+        border: 1px solid $primary-color;
+        overflow: initial;
+        max-height: 50px;
+        background-color: $primary-color;
+        flex:1;
+        flex-basis: 200px;
+        flex-direction: row;
+        display: flex;
+        min-width: 120px;
+        position: relative;
+        text-align: center;
+
+        &:before {
+          content: ' ';
+          border-left: 2px solid white;
+          position: absolute;
+          left: -5px;
+          height: 100%;
+        }
+      }
+
+      & .connect-button {
+        font-size: 14px !important;
+        font-family: $helvetica !important;
+      }
+
+      & .loginrow-component {
+        margin: 15px 0 15px 0;
+        float: left;
+        height: 24px !important;
+        position: relative;
+        display: inline;
+        margin-left: 10px;
+        font-size: 14px;
+        font-family: $helvetica;
+        line-height: 24px;
+        color: $body-background;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        @media screen and (max-width:$break-s) {
+          font-size: 14px !important;
+          // padding-left: 5px;
+          // max-width: 100px;
+          // margin-left: 5px !important;
+          // line-height: 20px !important;
+        }
+
+        * {
+          font-size: 14px;
+          // font-family: Roboto, sans-serif;
+          line-height: 24px;
+          color: $body-background;
+
+          @media screen and (max-width:$break-s) {
+            font-size: 10px !important;
+          }
+        }
+
+        & .logout {
+          display: none !important;
+        }
+
+        & .loginrow-component .connect-button {
+          height: 24px !important;
+        }
+      }
+    }
+    .social-toggle {
+      margin: 15px 20px 15px 20px !important;
+      width: auto !important;
+      float: right;
+      color: $body-background;
+
+      @media screen and (max-width:$break-s) {
+        margin: 15px 0px 15px 8px !important;
+      }
+      div > label {
+        font-size: 18px;
+        color: $body-background !important;
+      }
+    }
+  }
+
+  hr {
+    width: 90%;
+    margin: auto;
+    opacity: 0.5;
+    margin-bottom: 10px;
+  }
+
+  h4 {
+    font-family: $helvetica;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin: 24px 0px 12px;
+  }
+  .social-pad {
+    width: 90%;
+    margin: auto;
+
+    @media screen and (max-width:$break-s) {
+      width: 100%;
+    }
+  }
+  a {
+    text-decoration: none;
+    border: none;
+  }
+  .half-white {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  // Mobile Share
+  @media screen and (max-width:$break-xs) and (orientation:landscape) and (max-aspect-ratio: 13/9) {
+    .navbar-component {
+      // display: none;
+    }
+
+    // .subhead-component {
+    //   display: none;
+    // }
+
+    .col-md-6.middle.flex-top {
+      display: none !important;
+    }
+
+    .col-md-6.middle.flex-bottom {
+      height: 100% !important;
+
+      .share-options {
+        top: 90px;
+
+        .social-textarea {
+          height: 110px !important;
+          overflow: hidden;
+        }
+
+        .suggested-text {
+          position: static;
+        }
+      }
+
+      .social-toggle-container {
+        // display: none;
+        position: static;
+      }
+    }
+  }
+
+}
+
+// grid system
+.row {
+  @include row();
+  @media screen and (max-width:$break-s) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.col-md-6 {
+  @include col(6,12);
+
+  @media screen and (max-width:$break-s) {
+    width: 100%;
+    // height: 42.5vh !important;
+    overflow: hidden;
+    flex: 1;
+    align-items: center;
+    display: flex !important;
+
+    &.flex-top {
+      flex-shrink: 3;
+      flex-basis: 25vh;
+      position: relative;
+ 
+      @media screen and (orientation: landscape) {
+        display: none;
+      }
+    }
+    &.flex-bottom {
+      flex-grow: 3;
+      flex-basis: 10vh;
+    }
+  }
+}
