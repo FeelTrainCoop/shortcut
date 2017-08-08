@@ -14,6 +14,7 @@ import LoginFacebookComponent from './LoginFacebookComponent';
 import Subhead from './SubheadComponent';
 
 import Helpers from '../helpers';
+import Config from '../../cfg/master';
 
 const moment = require('moment');
 const Store = require('store'); // localStorage
@@ -39,7 +40,7 @@ class ShareContainerComponent extends React.Component {
     }
 
     const episodeNumber = videoData.Key.match(/(\d+)_/)[1];
-    let defaultSocialMessage = `http://tal.fm/${episodeNumber}`;
+    let defaultSocialMessage = Config.socialMediaMessageDefault;
     let initialCharsUsed = this._calculateStatusLength('');
 
     var defaultState = {

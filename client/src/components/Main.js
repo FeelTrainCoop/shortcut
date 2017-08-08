@@ -121,20 +121,8 @@ class AppComponent extends React.Component {
 
     this.customTheme = getMuiTheme({
       palette: {
-        primary1Color: '#e53e19',
-        primary1ColorDark: '#b83214',
-        primaryColor1Button: '#f66048',
-        secondaryColor: '#42275a', // purple
-        secondaryColorLight: '#674785', // 103 71 133
-        secondaryColorLighter: '#8159a6', // 129 89 166
-        tertiaryColor: '#674785',
-        tertiaryColorDark: '#42275a',
-        tertiaryColorLight: '#8159a6',
-        whiteColor: '#fff'
-      },
-      toggle: {
-        thumbOnColor: '#ececec',
-        trackOnColor: '#4ae31b'
+        // Add your custom palettes here
+        // primary1Color: 'red'
       }
     });
   }

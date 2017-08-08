@@ -3,7 +3,7 @@
 import React from 'react';
 import { hashHistory } from 'react-router'
 
-import {AppBar, Drawer,FlatButton, IconButton, Popover, Menu, MenuItem} from 'material-ui';
+import {AppBar, Drawer, IconButton, MenuItem} from 'material-ui';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import { Link } from 'react-router'
 import LoginTwitterComponent from './LoginTwitterComponent';
@@ -12,7 +12,6 @@ import LoginFacebookComponent from './LoginFacebookComponent';
 require('styles//NavBar.scss');
 
 const shortcutLogo = require('../images/shortcut-logo.svg');
-const talLogo = require('../images/tal-logo.svg');
 
 class NavBarComponent extends React.PureComponent {
   constructor(props) {
@@ -56,7 +55,6 @@ class NavBarComponent extends React.PureComponent {
   }
 
   render() {
-    const aboutClass = this.props.view === 'about' ? 'nav-button nav-button__about' : 'nav-button';
     return (
       <div className="navbar-component">
         <AppBar
@@ -68,44 +66,6 @@ class NavBarComponent extends React.PureComponent {
           <Link to="/" className="no-underline white">
             <img src={shortcutLogo} className="shortcut-logo" alt="Shortcut"/>
           </Link>
-        </div>
-        <div className="nav-buttons">
-          <FlatButton label="About"
-            backgroundColor={this.props.muiTheme.palette.primary1Color}
-            onClick={this.toggleAbout.bind(this)}
-            href="/#/about"
-            className={aboutClass}
-          />
-          <FlatButton
-            backgroundColor={this.props.muiTheme.palette.primary1Color}
-            onTouchTap={this.handleTouchTap.bind(this)}
-            label="Connect"
-            className="nav-button"
-          />
-          <Popover
-            className="menu-popover"
-            open={this.state.open}
-            anchorEl={this.state.anchorEl}
-            anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-            targetOrigin={{horizontal: 'right', vertical: 'top'}}
-            onRequestClose={this.handleRequestClose.bind(this)}
-          >
-            <Menu>
-              <MenuItem className="login-row-menu" primaryText={
-                <LoginTwitterComponent
-                  twName={this.props.twName}
-                  twLogout={this.props.twLogout}
-                  />
-              }/>
-              <MenuItem className="login-row-menu" primaryText={
-                <LoginFacebookComponent
-                  fbName={this.props.fbName}
-                  fbLogout={this.props.fbLogout}
-                  />
-              }/>
-            </Menu>
-          </Popover>
-          <a href="http://thisamericanlife.org"><img src={talLogo} className="tal-logo" alt="This American Life"/></a>
         </div>
       <Drawer
         containerClassName="drawer"

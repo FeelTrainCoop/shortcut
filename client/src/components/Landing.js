@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router'
 import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import { Paper } from 'material-ui';
 
 const Infinite = require('react-infinite');
 const moment = require('moment');
@@ -77,24 +78,19 @@ function Landing(props) {
 
   const content=
     <div>
-      <div className="hero-space">
-        <div className="hero-content">
-          <img src={shortcutLogo} className="shortcut-logo-big" alt="Shortcut"/>
-          <h3 className="for-tal">From This American Life</h3>
-          <h2 className="tagline">Cut and share your favorite podcast on social media</h2>
+      <Paper>
+        <div className="content episodes">
+          <h3 className="recent-episodes">Recent episodes</h3>
+          <Infinite
+            elementHeight={50}
+            useWindowAsScrollContainer={true}
+            infiniteLoadBeginEdgeOffset={100}
+            onInfiniteLoad={props.loadMoreEpisodes}
+          >
+            {links}
+          </Infinite>
         </div>
-      </div>
-      <div className="content episodes">
-        <h3 className="recent-episodes">Recent episodes</h3>
-        <Infinite
-          elementHeight={50}
-          useWindowAsScrollContainer={true}
-          infiniteLoadBeginEdgeOffset={100}
-          onInfiniteLoad={props.loadMoreEpisodes}
-        >
-          {links}
-        </Infinite>
-      </div>
+      </Paper>
     </div>
 
   return content;
