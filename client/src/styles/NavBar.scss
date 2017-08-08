@@ -3,6 +3,7 @@
 .navbar-component {
   > div {
     height: $navbar-height !important;
+    background-color: $primary-color !important;
 
     @media screen and (max-width:$break-s) {
 
