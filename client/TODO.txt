@@ -1,0 +1,3 @@
+Things that are TAL features I'm taking out and will have to refactor:
+
+* "isBad" for individual episodes

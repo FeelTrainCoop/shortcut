@@ -9,16 +9,15 @@ $transcript-text-color: black;
 $disabled-color: #bdbdbd;
 $body-color: #444;
 $body-background: #ececec;
-$primary-color: #e53e19; // orange
-
-// $primary-color-light: hsla(11,80%,56%,0.3);
-$primary-color-light: #f9ccc2;
-$primary-color-post-compression: #3a1d54;
+//http://www.colourlovers.com/palette/4514856/Bubbly_Brat
+$primary-color: #1F97C9;
+$primary-color-light: lighten($primary-color, 30%);
+$primary-color-post-compression: #1F97C9;
 $selection-color: #ffffc4;
 $primary-color-button: #f66048;
-$secondary-color: #42275a; // purple
-$secondary-color-lighter: #7e49ac; // purpleLight
-$tertiary-color: hsl(271, 30%, 40%);
+$secondary-color: #DD4669;
+$secondary-color-lighter: lighten($secondary-color, 30%);
+$tertiary-color: #AFBF14;
 $success-green: #4ae31b;
 $break-xs: 767px;
 $break-s: 992px;
