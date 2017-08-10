@@ -10,13 +10,13 @@ class LoadingAnimationComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      anim: <div class="animation"><CircularProgress size={1.5}/></div>
+      anim: <div className="animation"><CircularProgress size={1.5}/></div>
     }
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.msg !== nextProps.msg) {
       this.setState({
-        anim: <div class="animation"><CircularProgress size={1.5}/></div>
+        anim: <div className="animation"><CircularProgress size={1.5}/></div>
       });
     }
   }

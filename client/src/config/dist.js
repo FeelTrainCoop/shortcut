@@ -13,7 +13,7 @@ let config = {
   authServer: '.',
   // dataBucket: 'https://d1bojkr1jokyfh.cloudfront.net/'
   dataBucket: '/d/',
-  analyticsPropertyId: 'UA-1548748-7'
+  analyticsPropertyId: '' // your gAnalytics ID
 };
 
 export default Object.freeze(Object.assign({}, baseConfig, config));
