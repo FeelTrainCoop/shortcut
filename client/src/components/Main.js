@@ -12,6 +12,8 @@ const dataBucket = require('config').default.dataBucket;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
 
+const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
+
 let tapMsg = {
   start: 'Tap a word to begin selection',
   next: 'Tap another to complete',
@@ -122,7 +124,10 @@ class AppComponent extends React.Component {
     this.customTheme = getMuiTheme({
       palette: {
         // Add your custom palettes here
-        // primary1Color: 'red'
+        primary1Color: scssVariables['$primary-color'].expressions[0],
+        primaryColorButton: scssVariables['$primary-color-button'].expressions[0],
+        secondaryColorLight: scssVariables['$secondary-color-light'].expressions[0],
+        tertiaryColor: scssVariables['$tertiary-color'].expressions[0],
       }
     });
   }
