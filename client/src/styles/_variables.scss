@@ -4,21 +4,34 @@
 $helvetica: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
 $open-sans: 'Open Sans', sans-serif;
 
+// background color of the transcript text area
 $bg-color: white;
+// transcript text color
 $transcript-text-color: black;
+// NOT WORKING YET, see ClippingContainerComponent.js line 314
 $disabled-color: #bdbdbd;
+// body text, really not used anywhere except the landing page and the title in mobile view?
 $body-color: #444;
+// the background in the editing view but not really in the landing view (because of Paper element?)
 $body-background: #ececec;
 //http://www.colourlovers.com/palette/4514856/Bubbly_Brat
+// the primary theme color
 $primary-color: #1F97C9;
+// computed color, as far as I can tell not used anywhere and $selection-color is used instead
 $primary-color-light: lighten($primary-color, 30%);
+// a tweak so the background color of the shareable video CSS area matches the post-compression CSS color
 $primary-color-post-compression: #1F97C9;
+// color when you click and drag to select but not the color after the selection itself is made
 $selection-color: #ffffc4;
+// background color of the download button
 $primary-color-button: #f66048;
+// secondary theme color: background of the ep number circle, color of the scrubber bars, context header background ("EDITING, SHARING"), background of the entire share box, color that the waveform selection area takes
 $secondary-color: #DD4669;
-$secondary-color-lighter: lighten($secondary-color, 30%);
-$tertiary-color: #AFBF14;
-$success-green: #4ae31b;
+// computed color, "add a link to your episode"
+$secondary-color-light: lighten($secondary-color, 30%);
+// color that the buttons light up when they're active to go to the next section
+$tertiary-color: green;
+
 $break-xs: 767px;
 $break-s: 992px;
 $break-m: 1200px;

@@ -175,6 +175,7 @@ class ShareContainerComponent extends React.Component {
                 <IconButton
                   label="Download"
                   labelStyle={{color: this.props.muiTheme.palette.whiteColor}}
+                  style={{backgroundColor: this.props.muiTheme.palette.primaryColorButton}}
                   className="download-button no-underline share-download"
                   onClick={() => {
                     window.ga('send', {
