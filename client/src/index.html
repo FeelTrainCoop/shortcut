@@ -13,5 +13,19 @@
   <div id="app"></div>
   <script>__REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__</script>
   <script type="text/javascript" src="/assets/app.js"></script>
+  <script>
+// https://stackoverflow.com/a/39165137
+window.FindReact = function(dom) {
+    for (var key in dom) {
+        if (key.startsWith("__reactInternalInstance$")) {
+            var compInternals = dom[key]._currentElement;
+            var compWrapper = compInternals._owner;
+            var comp = compWrapper._instance;
+            return comp;
+        }
+    }
+    return null;
+};
+  </script>
 </body>
 </html>
