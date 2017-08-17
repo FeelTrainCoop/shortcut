@@ -2,7 +2,7 @@
 
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
-import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
+import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
 
 require('styles/Subhead.scss');
 
@@ -14,7 +14,7 @@ const SubheadComponent = (props) => {
     <IconButton
       href={props.prev}
     >
-      <ArrowLeft/>
+      <KeyboardArrowLeft/>
     </IconButton>
     <h2 className="">{props.heading}</h2>
 

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import PlayCircle from 'material-ui/svg-icons/av/play-circle-outline';
+import PlayCircleFilled from 'material-ui-icons/PlayCircleFilled';
 
 import paper from 'paper';
 import Animator from '../animation/animator';
@@ -183,7 +183,7 @@ class PreviewContainerComponent extends React.Component {
       <div className="previewcontainer-component">
         <img src={animationFooter} id="animation-footer" ref="_footerImg" />
         <div className="preview-canvas-container" ref={(c) => this._canvasContainer = c}>
-          <PlayCircle
+          <PlayCircleFilled
             style={{
               position: 'absolute',
               width: '100%',
