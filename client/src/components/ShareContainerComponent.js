@@ -2,12 +2,12 @@
 
 import React from 'react';
 import { hashHistory } from 'react-router'
-import FlatButton from 'material-ui/FlatButton';
+import FlatButton from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import Toggle from 'material-ui/Toggle';
+import RaisedButton from 'material-ui/Button';
+import Toggle from 'material-ui/Switch';
 import TextField from 'material-ui/TextField';
-import DownloadIcon from 'material-ui/svg-icons/action/get-app';
+import DownloadIcon from 'material-ui-icons/GetApp';
 
 import LoginTwitterComponent from './LoginTwitterComponent';
 import LoginFacebookComponent from './LoginFacebookComponent';

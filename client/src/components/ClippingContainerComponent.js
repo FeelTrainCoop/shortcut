@@ -9,11 +9,12 @@ import Subhead from './SubheadComponent';
 
 import PreviewContainer from './PreviewContainerComponent';
 import TranscriptComponent from './TranscriptComponent';
-import Slider from 'material-ui/Slider';
-import FlatButton from 'material-ui/FlatButton';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
-import PlayCircle from 'material-ui/svg-icons/av/play-arrow';
-import PauseCircle from 'material-ui/svg-icons/av/stop';
+import PlayArrow from 'material-ui-icons/PlayArrow';
+import PauseCircle from 'material-ui-icons/Stop';
 import {_debounce, _throttle, getPeaksInRange} from '../helpers';
 
 require('styles/ClippingContainer.scss');
@@ -202,7 +203,7 @@ class ClippingContainer extends React.PureComponent {
               />
     );
 
-    const playPauseButton = this.state.playing ? <PauseCircle color="white"/> : <PlayCircle color="white"/>
+    const playPauseButton = this.state.playing ? <PauseCircle color="white"/> : <PlayArrow color="white"/>
     const leftContainerClass = `left-container ${this.props.view}`;
     const rightContainerClass = `right-container flex-top ${this.props.view}`;
 
@@ -275,8 +276,6 @@ class ClippingContainer extends React.PureComponent {
             step={1}
           />
           {scrubberX}
-          {scrubberY}
-
           {transcript}
           <div className="time time-desktop"><span>{this.state.posDisplay} / {this.convertPos(this.props.clippingDuration)}</span></div>
           {transcriptWaveform}
@@ -294,14 +293,7 @@ class ClippingContainer extends React.PureComponent {
               this.togglePlay();
             }}
           >
-            <IconButton
-              iconStyle={{
-                width: 48,
-                height: 48,
-                padding: 0,
-                margin: -12
-              }}
-            >
+            <IconButton>
               {playPauseButton}
             </IconButton>
           </span>
@@ -311,14 +303,10 @@ class ClippingContainer extends React.PureComponent {
           <span className="time time-mobile">{this.state.posDisplay} / {this.convertPos(this.props.clippingDuration)}</span>
         </div>
 
-        <FlatButton label="Next" labelStyle={{color: this.props.muiTheme.palette.whiteColor}}
-          backgroundColor={this.props.clipTooLong ? 'rgba(0, 0, 0, 0.298039)' : this.props.muiTheme.palette.tertiaryColor}
-          hoverColor={this.props.clipTooLong ? 'rgba(0, 0, 0, 0.298039)' : this.props.muiTheme.palette.tertiaryColorLight}
-          // disabled={
-          //     this.props.clipTooLong
-          // }
-          rippleColor={this.props.muiTheme.palette.whiteColor}
+        <Button
+          color="primary"
           className="preview-button desktop"
+          raised
           onClick={() => {
             if (this.props.clipTooLong) {
               window.alert('Clips must be between 0.5 and 30 seconds. Please select some text or use the waveform. If you dont see the waveform, click the Feedback button to file a bug report.');
@@ -326,14 +314,11 @@ class ClippingContainer extends React.PureComponent {
               this.createVideo();
             }
           }}
-        />
-        <FlatButton label={this.props.view === 'clipping' ? 'Next': 'Create Video'} labelStyle={{color: this.props.muiTheme.palette.whiteColor}}
-          backgroundColor={this.props.clipTooLong ? 'rgba(0, 0, 0, 0.298039)' : this.props.muiTheme.palette.tertiaryColor}
-          hoverColor={this.props.clipTooLong ? 'rgba(0, 0, 0, 0.298039)' : this.props.muiTheme.palette.tertiaryColorLight}
-          // disabled={
-          //     this.props.clipTooLong
-          // }
-          rippleColor={this.props.muiTheme.palette.whiteColor}
+        >
+          Next
+        </Button>
+        <Button label={this.props.view === 'clipping' ? 'Next': 'Create Video'}
+          raised
           className="preview-button mobile"
           // href={this.props.view === 'clipping' ? `/#/preview/${this.props.showNumber}` : null}
           onClick={() => {
