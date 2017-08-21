@@ -176,12 +176,19 @@ class ClippingContainer extends React.PureComponent {
 
     const scrubberX = this.state.innerWidth > '992' ? (<Slider
             className="scrubber"
+            trackStyle={{
+              height:10
+            }}
+            railStyle={{
+              height:10
+            }}
             onChange={
               _debounce(_throttle(this.scrubberChange.bind(this)), 5)
             }
-            defaultValue={0}
+            totalDuration={this.props.totalDuration}
             step={.001}
-            value={this.state.pos && this.props.totalDuration
+            max={1}
+            defaultValue={this.state.pos && this.props.totalDuration
               ? this.state.pos/this.props.totalDuration
               : 0
             }
@@ -191,13 +198,18 @@ class ClippingContainer extends React.PureComponent {
               <Slider
                 className="scrubber-vertical"
                 onChange={
-                  _debounce(_throttle(this.scrubberChange.bind(this)), 5)
+                  _debounce(_throttle(this.scrubberChange.bind(this, 'vertical')), 5)
                 }
-                defaultValue={0}
+                totalDuration={this.props.totalDuration}
                 step={.001}
-                axis="y-reverse"
+                vertical
+                max={1}
+                defaultValue={regionViewStart && this.props.clippingDuration
+                  ? 1-(regionViewStart/this.props.clippingDuration)
+                  : 0
+                }
                 value={regionViewStart && this.props.clippingDuration
-                  ? regionViewStart/this.props.clippingDuration
+                  ? 1-(regionViewStart/this.props.clippingDuration)
                   : 0
                 }
               />
@@ -276,6 +288,7 @@ class ClippingContainer extends React.PureComponent {
             step={1}
           />
           {scrubberX}
+          {scrubberY}
           {transcript}
           <div className="time time-desktop"><span>{this.state.posDisplay} / {this.convertPos(this.props.clippingDuration)}</span></div>
           {transcriptWaveform}
@@ -355,7 +368,14 @@ class ClippingContainer extends React.PureComponent {
   }
 
 
-  scrubberChange(e, value) {
+  scrubberChange(isVertical, value) {
+    console.log("ARG",arguments);
+    if (isVertical !== 'vertical') {
+      value = isVertical;
+    }
+    else {
+      value = 1 - value;
+    }
     const centerPos = value * this.props.clippingDuration;
 
     // update waveform
@@ -368,6 +388,8 @@ class ClippingContainer extends React.PureComponent {
       newState.posDisplay = this.convertPos(centerPos);
     }
     this.setState(newState);
+
+
   }
 
   // convert the pos (in seconds) to a timestamp format
