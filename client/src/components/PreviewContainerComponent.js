@@ -75,6 +75,10 @@ class PreviewContainerComponent extends React.Component {
     // destroy paper canvas
     this.paper.project.remove();
   }
+  // This looks weird at first but is a nice little trick. It means the simulation runs
+  // as fast as the FPS (which is fine because the sim isn't rendering, it's just doing
+  // some arithmetic), and then the draw call is still bound to requestAnimationFrame.
+  // So we get a very fast simulation and then the render just keeps up.
   draw() {
     window.setTimeout( () => {
       if (this.props.playing) {
