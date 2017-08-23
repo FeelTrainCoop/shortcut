@@ -39,15 +39,21 @@ $break-l: 1440px;
 
 $break-h-s: 720px;
 
-// Variables for the animation colors
+// Variables for the animation styling. These get passed to the server renderer so only
+// need to be defined here
 $anim-color-1: $primary-color;
 $anim-color-highlight-1: $secondary-color;
+$anim-color-wave-1: $tertiary-color;
 $anim-color-2: #79d1ad;
 $anim-color-highlight-2: #293271;
+$anim-color-wave-2: red;
 $anim-color-3: #03245b;
 $anim-color-highlight-3: #26d874;
+$anim-color-wave-3: $tertiary-color;
 $anim-color-4: #000000;
 $anim-color-highlight-4: red;
+$anim-color-wave-4: $tertiary-color;
+$anim-font-family: "Open Sans";
 
 // flexboxgrid breakpoints: https://github.com/kristoferjoseph/flexboxgrid/blob/master/src/css/flexboxgrid.css#L19
 // @custom-media --sm-viewport only screen and (min-width: 48em);
