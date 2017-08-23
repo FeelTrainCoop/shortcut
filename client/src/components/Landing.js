@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router'
-import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import ArrowRight from 'material-ui-icons/KeyboardArrowRight';
 import { Paper } from 'material-ui';
 
 const Infinite = require('react-infinite');

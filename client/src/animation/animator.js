@@ -17,6 +17,7 @@ var easing = 0.2;
  *  @param {number} height in pixels
  *  @param {string} style the style of animation and/or colorscheme
  *  @param {string} footerImgBase64 the base64 data of the footer image
+ *  @param {string} fontFamily the CSS font family for rendering text
  *  @param {object} paper instance of paper.js
  */
 var Animator = function(opts) {
@@ -24,6 +25,7 @@ var Animator = function(opts) {
 
   this.width = opts.width || 400;
   this.height = opts.height || 400;
+  this.fontFamily = opts.fontFamily || '"Open Sans"';
 
   this.xPadding = 0.05;
   this.yPadding = 0.05; // text winds up at 5% of height
@@ -31,7 +33,7 @@ var Animator = function(opts) {
   this.textColor1 = opts.style.textColor1 || 'white';
   this.textColor2 = opts.style.textColor2 || '#432958'; // highlight color
   this.bgColor = opts.style.bgColor || '#e44226';
-  this.waveColors = opts.style.waveColors || [ [255,0,255], [245,204,41], [219,188,64] ];
+  this.waveColor = convertWaveColors(opts.style.waveColor) || [ [255,0,255], [245,204,41], [219,188,64] ];
 
   this.footerImgBase64 = opts.footerImgBase64;
   this.epNum = opts.showNumber;
@@ -61,7 +63,7 @@ Animator.prototype = {
 
     text = new this.paper.PointText(new this.paper.Point(0, 0));
     text.style = {
-      fontFamily: '"Open Sans"',
+      fontFamily: this.fontFamily,
       // fontWeight: 600,
       fontSize: 0.086 * this.height,
       fillColor: this.textColor1
@@ -69,7 +71,7 @@ Animator.prototype = {
 
     textSaid = new this.paper.PointText(new this.paper.Point(0, 0));
     textSaid.style = {
-      fontFamily: '"Open Sans"',
+      fontFamily: this.fontFamily,
       // fontWeight: 600,
       fillColor: this.textColor2,
       fontSize: 0.086 * this.height,
@@ -331,7 +333,7 @@ Animator.prototype = {
       yOffset: this.width * 0.56,
       ratio: 1,
       bgColor: this.bgColor,
-      colors: this.waveColors
+      colors: this.waveColor
     };
     var waveform = new SiriWave9(opts);
     waveform.setSpeed(0.1);
@@ -357,6 +359,27 @@ Animator.prototype = {
 };
 
 // HELPERS
+
+// adapted from https://stackoverflow.com/a/13542669/4869657
+// takes a color array like [255, 128, 128] and then lightens or darkens
+// by a percentage 0 to 1
+function shadeRGBColor(colorArray, percent) {
+    var t = percent<0?0:255,p=percent<0?percent*-1:percent;
+    var R = colorArray[0];
+    var G = colorArray[1];
+    var B = colorArray[2];
+    return [Math.round((t-R)*p)+R,Math.round((t-G)*p)+G,Math.round((t-B)*p)+B];
+}
+
+// Converts a scss-extract object like {r: 0, g: 255, b: 128}
+// to [[0, 255, 128], [0, 255, 128], [0, 255, 128]]
+function convertWaveColors(waveColor) {
+  return [
+    [waveColor.r, waveColor.g, waveColor.b],
+    shadeRGBColor([waveColor.r, waveColor.g, waveColor.b],0.2),
+    shadeRGBColor([waveColor.r, waveColor.g, waveColor.b],0.4)
+  ]
+}
 
 // trim string
 if(typeof(String.prototype.trim) === "undefined")

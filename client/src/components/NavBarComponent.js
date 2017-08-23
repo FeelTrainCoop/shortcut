@@ -4,7 +4,7 @@ import React from 'react';
 import { hashHistory } from 'react-router'
 
 import {AppBar, Drawer, IconButton, MenuItem} from 'material-ui';
-import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
+import NavigationMenu from 'material-ui-icons/Menu';
 import { Link } from 'react-router'
 import LoginTwitterComponent from './LoginTwitterComponent';
 import LoginFacebookComponent from './LoginFacebookComponent';
@@ -59,7 +59,7 @@ class NavBarComponent extends React.PureComponent {
       <div className="navbar-component">
         <AppBar
           style={{backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}
-          onLeftIconButtonTouchTap={this.handleToggleDrawer.bind(this)}
+          //onLeftIconButtonTouchTap={this.handleToggleDrawer.bind(this)}
           title={this.props.episode && this.props.view !== 'default' ? `${this.props.episode}` : ''}
         >
         <div className="nav-title">
