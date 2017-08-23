@@ -185,8 +185,11 @@
 
   .social-textarea {
     display: block !important;
-    margin: -24px auto 0px !important;
+    margin: -14px auto 0px !important;
     width: 90% !important;
+    > div {
+      width: 100%;
+    }
     label {
       display: inline-block;
       font-size: 18px;
@@ -199,7 +202,7 @@
     background-color: #eee !important;
     padding: 10px !important;
     margin: 0 auto;
-    height: 125px !important;
+    height: 100px !important;
 
     @media screen and (max-width: $break-s) {
       border: 1px rgba(0,0,0,0.5) solid !important;
@@ -210,6 +213,9 @@
   .social-toggle-container {
     width: 100%;
     position: relative;
+    .share-download {
+      color: $secondary-color-text;
+    }
 
     @media screen and (max-width: $break-s) {
       display: flex;
