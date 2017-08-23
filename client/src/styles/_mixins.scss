@@ -3,7 +3,7 @@
 @mixin episode-header() {
   .episode-header {
     font-weight: 900;
-    font-family: 'Flama-semicondensed-book';
+    font-family: $episode-header-font;
     font-size: 18px;
     line-height: 24px;
     margin: 5px 0 10px 0;
@@ -22,16 +22,16 @@
     display: inline-block;
     background-color: $secondary-color;
     height: 24px;
-    font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
+    font-family: $helvetica;
     font-size: 14px;
     font-weight: 300;
     text-transform: uppercase;
     padding: 0px 5px 0 5px;
-    color: white;
+    color: $secondary-color-text;
     margin-right: 5px;
   }
   .air-date {
-    font-family: 'Flama-semicondensed';
+    font-family: $episode-air-date-font;
     font-size: 18px;
     line-height: 24px;
     font-weight: 300;
@@ -46,7 +46,7 @@
     margin: 0 !important;
     width: 100px;
     height: 45px !important;
-    // background-color: $tertiary-color;
+    background-color: $tertiary-color;
     right: 0 !important;
     border-radius: 0 !important;
     align-self: flex-end;
