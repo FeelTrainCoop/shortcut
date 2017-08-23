@@ -138,32 +138,32 @@
     width: 100%;
     margin: 0 auto;
     height: 30px;
-    &> div {
-      background-color: #bbb;
-      height: 30px !important;
-      margin-top: 0px !important;
-      margin-bottom: 0px !important;
+    padding: 15px 0;
+    .rc-slider-track {
+      background-color: $primary-color;
     }
-    div {
-      height: 30px;
-      margin-top: 7px;
-      div > div:nth-child(1) {
-        height: 4px !important;
-        margin-top: -2px !important;
-      }
-      div > div:nth-child(2) {
-        height: 4px !important;
-        margin-top: -2px !important;
-        background-color: $body-background !important;
-      }
-      div > div:nth-child(3) {
-        background-color: $secondary-color !important;
-        width: 14px !important;
-        height: 14px !important;
-      }
+    .rc-slider-handle {
+      background-color: $secondary-color;
+      border: none;
+      height: 16px;
+      width: 16px;
+      margin-top: -3px;
     }
   }
   .scrubber-vertical {
+    .rc-slider-rail {
+      background-color: $primary-color;
+    }
+    .rc-slider-track {
+      background-color: $disabled-color;
+    }
+    .rc-slider-handle {
+      background-color: $secondary-color;
+      border: none;
+      height: 16px;
+      width: 16px;
+      margin-top: -3px;
+    }
     width: 18px;
     height: calc(100% - #{$subhead-height}); // assuming fixed waveform height
     // height: 90%;
@@ -172,22 +172,6 @@
     right:0px;
     top: 20px;
     top: $subhead-height;
-    &> div {
-      background-color: #bbb;
-      margin-top: 0px !important;
-      margin-bottom: 0px !important;
-    }
-    div {
-      div > div:nth-child(2) {
-        background-color: $body-background !important;
-      }
-      div > div:nth-child(3) {
-        background-color: $secondary-color !important;
-        width: 14px !important;
-        height: 14px !important;
-      }
-    }
-
   }
   .show-waveform {
     // background-color: $primary-color;

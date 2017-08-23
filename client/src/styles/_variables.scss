@@ -3,28 +3,62 @@
 
 $helvetica: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
 $open-sans: 'Open Sans', sans-serif;
+$episode-header-font: 'Flama-semicondensed-book', Arial, sans-serif;
+$episode-air-date-font: 'Flama-semicondensed', Arial, sans-serif;
 
+// background color of the transcript text area
 $bg-color: white;
+// transcript text color
 $transcript-text-color: black;
+// NOT WORKING YET, see ClippingContainerComponent.js line 314
 $disabled-color: #bdbdbd;
+// body text, really not used anywhere except the landing page and the title in mobile view?
 $body-color: #444;
+// the background in the editing view but not really in the landing view (because of Paper element?)
 $body-background: #ececec;
 //http://www.colourlovers.com/palette/4514856/Bubbly_Brat
+// the primary theme color
 $primary-color: #1F97C9;
+// computed color, as far as I can tell not used anywhere and $selection-color is used instead
 $primary-color-light: lighten($primary-color, 30%);
+// a tweak so the background color of the shareable video CSS area matches the post-compression CSS color
 $primary-color-post-compression: #1F97C9;
+// color when you click and drag to select but not the color after the selection itself is made
 $selection-color: #ffffc4;
+// background color of the download button
 $primary-color-button: #f66048;
+// secondary theme color: background of the ep number circle, color of the scrubber bars, context header background ("EDITING, SHARING"), background of the entire share box, color that the waveform selection area takes
 $secondary-color: #DD4669;
-$secondary-color-lighter: lighten($secondary-color, 30%);
-$tertiary-color: #AFBF14;
-$success-green: #4ae31b;
+// This is the color of any text appearing on top of the secondary theme color
+$secondary-color-text: white;
+// computed color, "add a link to your episode"
+$secondary-color-light: lighten($secondary-color, 30%);
+// color that the buttons light up when they're active to go to the next section
+$tertiary-color: #66BB6A;
+$tertiary-color-light: lighten($tertiary-color, 30%);
+
 $break-xs: 767px;
 $break-s: 992px;
 $break-m: 1200px;
 $break-l: 1440px;
 
 $break-h-s: 720px;
+
+// Variables for the animation styling. These get passed to the server renderer so only
+// need to be defined here
+$anim-color-1: $primary-color;
+$anim-color-highlight-1: $secondary-color;
+$anim-color-wave-1: $secondary-color;
+$anim-color-2: #79d1ad;
+$anim-color-highlight-2: #293271;
+$anim-color-wave-2: $secondary-color;
+$anim-color-3: #03245b;
+$anim-color-highlight-3: #26d874;
+$anim-color-wave-3: $secondary-color;
+$anim-color-4: #000000;
+$anim-color-highlight-4: red;
+$anim-color-wave-4: $secondary-color;
+$anim-font-family: "Open Sans";
 
 // flexboxgrid breakpoints: https://github.com/kristoferjoseph/flexboxgrid/blob/master/src/css/flexboxgrid.css#L19
 // @custom-media --sm-viewport only screen and (min-width: 48em);

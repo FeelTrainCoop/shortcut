@@ -12,6 +12,8 @@ const dataBucket = require('config').default.dataBucket;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
 
+const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
+
 let tapMsg = {
   start: 'Tap a word to begin selection',
   next: 'Tap another to complete',
@@ -31,10 +33,10 @@ let useBackupAPI = false;
 import React from 'react';
 import { hashHistory } from 'react-router'
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import createMuiTheme from 'material-ui/styles/theme';
+import { MuiThemeProvider } from 'material-ui/styles';
 import Snackbar from 'material-ui/Snackbar';
-import ScreenLockPortrait from 'material-ui/svg-icons/device/screen-lock-portrait';
+import ScreenLockPortrait from 'material-ui-icons/ScreenLockPortrait';
 
 import ClippingHLSWrapper from './ClippingHLSWrapper';
 import NavBar from 'components/NavBarComponent';
@@ -119,11 +121,7 @@ class AppComponent extends React.Component {
       this.state.sessionId = userState.sessionId;
     }
 
-    this.customTheme = getMuiTheme({
-      palette: {
-        // Add your custom palettes here
-        // primary1Color: 'red'
-      }
+    this.customTheme = createMuiTheme({
     });
   }
   componentWillMount() {
@@ -810,7 +808,7 @@ class AppComponent extends React.Component {
 
   /** Render the application. This also loads our custom React theme, and renders different views based on the state of `view`. */
   render() {
-    const customTheme = getMuiTheme(this.customTheme);
+    const customTheme = createMuiTheme(this.customTheme);
     let content;
 
     switch(this.state.view) {
@@ -985,7 +983,7 @@ class AppComponent extends React.Component {
       break;
     }
     return (
-    <MuiThemeProvider className="index" muiTheme={customTheme}>
+    <MuiThemeProvider className="index" theme={customTheme}>
       <div className="index" onClick={this._cancelTranscriptTap.bind(this)}>
         <NavBar
           fbAuth={this.state.fbAuthToken}
