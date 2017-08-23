@@ -99,13 +99,13 @@ class ShareContainerComponent extends React.Component {
               <TextField
                 className="social-textarea"
                 // defaultValue={this.state.defaultSocialMessage}
-                floatingLabelText={this.state
+                placeholder={this.state
                   ? (this.state.charsUsed + 140 - tweetMaxChars) + '/' + 140
                   : 0
                 }
                 fullWidth={true}
                 rows={4}
-                multiLine={true}
+                multiline={true}
                 ref={(txtField) => this._textField = txtField}
                 value={this.state ? this.state.textFieldValue : ''}
                 onChange={(e) => {
@@ -115,6 +115,7 @@ class ShareContainerComponent extends React.Component {
               <div className="suggested-text">
                 <div className="social-pad">
                   <RaisedButton
+                   className="share-button"
                     onClick={
                       () => {
                         window.ga('send', {
@@ -126,10 +127,9 @@ class ShareContainerComponent extends React.Component {
                         this.insertSocialMsg(this.state.defaultSocialMessage);
                     }}
                     style={{width:'100%', overflow: 'hidden'}}
-                    backgroundColor={this.props.muiTheme.palette.secondaryColorLight}
-                    labelColor={this.props.muiTheme.palette.whiteColor}
-                    label={Helpers.isMobile() ? `Add a link to your episode` : `Add a link to your episode: ${this.state.defaultSocialMessage}`}
-                  />
+                  >
+                    {Helpers.isMobile() ? `Add a link to your episode` : `Add a link to your episode: ${this.state.defaultSocialMessage}`}
+                  </RaisedButton>
                 </div>
               </div>
 
@@ -173,9 +173,6 @@ class ShareContainerComponent extends React.Component {
                 <hr className="hide-s"/>
 
                 <IconButton
-                  label="Download"
-                  labelStyle={{color: this.props.muiTheme.palette.whiteColor}}
-                  style={{backgroundColor: this.props.muiTheme.palette.primaryColorButton}}
                   className="download-button no-underline share-download"
                   onClick={() => {
                     window.ga('send', {
@@ -202,21 +199,20 @@ class ShareContainerComponent extends React.Component {
                     });
                   }}
                 >
-                  <span className="half-white"> Download</span>
+                  <span> Download</span>
                 </a>
               </div>
             </div>
           </div>
         </div>
 
-        <FlatButton label="Share" labelStyle={{color: 'white'}}
-          backgroundColor={this.props.muiTheme.palette.tertiaryColor}
-          hoverColor={this.props.muiTheme.palette.tertiaryColorLight}
+        <FlatButton
           disabled={ (!this.state || !this.state.twitterToggle && !this.state.facebookToggle) || (this.state.twitterToggle && this.state.charsUsed > tweetMaxChars) ? true : false}
-          rippleColor="white"
           className="share-button"
           onClick={this.createSocialMedia.bind(this)}
-        />
+        >
+          Share
+        </FlatButton>
       </div>
     );
   }
