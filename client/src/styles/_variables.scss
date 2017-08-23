@@ -59,7 +59,9 @@ $anim-color-4: #000000;
 $anim-color-highlight-4: red;
 $anim-color-wave-4: $secondary-color;
 $anim-font-family: "Open Sans";
-$anim-footer-image: "../images/animation-footer.png";
+// This is the footer of the animation itself. It gets rendered into the final mp4.
+// It should be a 400x80 transparent PNG.
+$anim-footer-image: "animation-footer.png";
 
 // flexboxgrid breakpoints: https://github.com/kristoferjoseph/flexboxgrid/blob/master/src/css/flexboxgrid.css#L19
 // @custom-media --sm-viewport only screen and (min-width: 48em);
