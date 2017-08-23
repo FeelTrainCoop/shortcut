@@ -188,7 +188,6 @@ class PreviewContainerComponent extends React.Component {
 
     return (
       <div className="previewcontainer-component">
-        <img src={animationFooter} id="animation-footer" ref="_footerImg" />
         <div className="preview-canvas-container" ref={(c) => this._canvasContainer = c}>
           <PlayCircleFilled
             style={{
