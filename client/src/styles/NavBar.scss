@@ -49,24 +49,6 @@
       display: none !important;
     }
   }
-  .tal-logo {
-    position: fixed;
-    right: 10px;
-    display: inline-block;
-    height: 100px;
-    background-color: white;
-    vertical-align: middle;
-    padding: 5px;
-    margin-top: -5px;
-    margin-left: 5px;
-    z-index: 10;
-
-    @media screen and (max-width:$break-s) {
-      height: 50px;
-      border: 2px #c5c5c5 solid;
-    }
-
-  }
 }
 
 .nav-title {
