@@ -6,7 +6,6 @@ import { Paper } from 'material-ui';
 const Infinite = require('react-infinite');
 const moment = require('moment');
 const Helpers = require('../helpers');
-const shortcutLogo = require('../images/shortcut-logo.svg');
 
 require('styles/Landing.scss');
 
