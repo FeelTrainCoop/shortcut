@@ -330,7 +330,7 @@ class ClippingContainer extends React.PureComponent {
         >
           Next
         </Button>
-        <Button label={this.props.view === 'clipping' ? 'Next': 'Create Video'}
+        <Button
           raised
           className="preview-button mobile"
           // href={this.props.view === 'clipping' ? `/#/preview/${this.props.showNumber}` : null}
@@ -341,7 +341,9 @@ class ClippingContainer extends React.PureComponent {
               this.props.view === 'preview' ? this.createVideo() : this.props.view === 'clipping' ? window.location.href = `/#/preview/${this.props.showNumber}` : null
             }
           }}
-        />
+        >
+           {this.props.view === 'clipping' ? 'Next': 'Create Video'}
+        </Button>
       </div>
     );
   }
