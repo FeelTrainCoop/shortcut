@@ -18,22 +18,23 @@ const colorOptions =  [
   {
     bgColor: scssVariables['$anim-color-1'].value.hex,
     hColor: scssVariables['$anim-color-highlight-1'].value.hex,
-    waveColors: [[245,245,41], [245,204,41], [219,188,64]]
+    // we pass "value" because it's an object containing r/g/b vals the anim consumes
+    waveColor: scssVariables['$anim-color-wave-1'].value
   },
   {
     bgColor: scssVariables['$anim-color-2'].value.hex,
     hColor: scssVariables['$anim-color-highlight-2'].value.hex,
-    waveColors: [[245,245,41], [245,204,41], [219, 188, 64]]
+    waveColor: scssVariables['$anim-color-wave-2'].value
   },
   {
     bgColor: scssVariables['$anim-color-3'].value.hex,
     hColor: scssVariables['$anim-color-highlight-3'].value.hex,
-    waveColors: [[45, 185, 214], [51, 219, 254],[39, 164, 191]]
+    waveColor: scssVariables['$anim-color-wave-3'].value
   },
   {
     bgColor: scssVariables['$anim-color-4'].value.hex,
     hColor: scssVariables['$anim-color-highlight-4'].value.hex,
-    waveColors: [[255,255,255], [250,250,250], [252,252,252]]
+    waveColor: scssVariables['$anim-color-wave-4'].value
   }
 ];
 
@@ -101,6 +102,7 @@ class PreviewContainerComponent extends React.Component {
       paper: this.paper,
       width: this._canvasContainer.getBoundingClientRect().width,
       height: this._canvasContainer.getBoundingClientRect().height,
+      fontFamily: scssVariables['$anim-font-family'].value,
       fps: this.fps,
       showNumber: this.props.showNumber,
       // footerImgBase64: this.refs._footerImg.src,
@@ -109,7 +111,7 @@ class PreviewContainerComponent extends React.Component {
         textColor1 : 'white',
         textColor2 : colorOptions[colorIndex].hColor || '#432958',
         bgColor    : colorOptions[colorIndex].bgColor || '#e44226',
-        waveColors: colorOptions[colorIndex].waveColors || [ [255,0,255], [245,204,41], [219,188,64] ]
+        waveColor: colorOptions[colorIndex].waveColor || {r: 255, g: 255, b: 255}
       }
     });
     this.animator._resize();
