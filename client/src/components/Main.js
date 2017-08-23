@@ -122,13 +122,6 @@ class AppComponent extends React.Component {
     }
 
     this.customTheme = createMuiTheme({
-//      palette: {
-//        // Add your custom palettes here
-//        primary1Color: scssVariables['$primary-color'].expressions[0],
-//        primaryColorButton: scssVariables['$primary-color-button'].expressions[0],
-//        secondaryColorLight: scssVariables['$secondary-color-light'].expressions[0],
-//        tertiaryColor: scssVariables['$tertiary-color'].expressions[0],
-//      }
     });
   }
   componentWillMount() {
