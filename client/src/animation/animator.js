@@ -25,7 +25,8 @@ var Animator = function(opts) {
 
   this.width = opts.width || 400;
   this.height = opts.height || 400;
-  this.fontFamily = opts.fontFamily || '"Open Sans"';
+  this.fontFamily = opts.fontFamily || 'sans-serif';
+  this.fontFamilyEpNum = opts.fontFamilyEpNum || 'sans-serif';
 
   this.xPadding = 0.05;
   this.yPadding = 0.05; // text winds up at 5% of height
@@ -111,7 +112,7 @@ Animator.prototype = {
     const epNumY = this.height - this.yPadding * this.height - epNumFontSize/2.5;
     epNumText = new this.paper.PointText( new this.paper.Point(epNumX, epNumY));
     epNumText.style = {
-      fontFamily: 'Oswald',
+      fontFamily: this.fontFamilyEpNum,
       fillColor: this.textColor1,
       fontSize: epNumFontSize
     };
