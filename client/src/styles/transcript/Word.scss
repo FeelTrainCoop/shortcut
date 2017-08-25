@@ -1,7 +1,7 @@
 @import '../_variables';
 
 .word-component {
-  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
+  font-family: $body-font-family;
   display:inline-block;
   font-size: $transcript-font-size;
   line-height: $transcript-line-height;
