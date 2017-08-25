@@ -1,10 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600');
 @import url('https://fonts.googleapis.com/css?family=Oswald:300');
 
-$helvetica: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
-$open-sans: 'Open Sans', sans-serif;
+$body-font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
+$header-font-family: 'Flama-semicondensed-book', Arial, sans-serif;
 $episode-header-font: 'Flama-semicondensed-book', Arial, sans-serif;
 $episode-air-date-font: 'Flama-semicondensed', Arial, sans-serif;
+$open-sans: 'Open Sans', sans-serif;
 
 // background color of the transcript text area
 $bg-color: white;
@@ -26,7 +27,7 @@ $primary-color-post-compression: #1F97C9;
 // color when you click and drag to select but not the color after the selection itself is made
 $selection-color: #ffffc4;
 // secondary theme color: background of the ep number circle, color of the scrubber bars, context header background ("EDITING, SHARING"), background of the entire share box, color that the waveform selection area takes
-$secondary-color: #DD4669;
+$secondary-color: green;
 // This is the color of any text appearing on top of the secondary theme color
 $secondary-color-text: white;
 // computed color, "add a link to your episode"

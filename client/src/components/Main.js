@@ -1,5 +1,4 @@
 require('normalize.css/normalize.css');
-require('styles/museo.scss');
 require('styles/flama.scss');
 require('styles/App.scss');
 
