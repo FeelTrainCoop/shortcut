@@ -259,7 +259,7 @@
 
       & .connect-button {
         font-size: 14px !important;
-        font-family: $helvetica !important;
+        font-family: $body-font-family !important;
       }
 
       & .loginrow-component {
@@ -270,7 +270,7 @@
         display: inline;
         margin-left: 10px;
         font-size: 14px;
-        font-family: $helvetica;
+        font-family: $body-font-family;
         line-height: 24px;
         color: $body-background;
         overflow: hidden;
@@ -328,7 +328,7 @@
   }
 
   h4 {
-    font-family: $helvetica;
+    font-family: $body-font-family;
     font-size: 14px;
     font-weight: 600;
     color: white;
