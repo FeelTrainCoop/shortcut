@@ -106,6 +106,7 @@ class PreviewContainerComponent extends React.Component {
       width: this._canvasContainer.getBoundingClientRect().width,
       height: this._canvasContainer.getBoundingClientRect().height,
       fontFamily: scssVariables['$anim-font-family'].value,
+      fontFamilyEpNum: scssVariables['$anim-font-family-episode-number'].value,
       fps: this.fps,
       showNumber: this.props.showNumber,
       // footerImgBase64: this.refs._footerImg.src,
