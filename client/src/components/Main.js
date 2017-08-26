@@ -1,5 +1,4 @@
 require('normalize.css/normalize.css');
-require('styles/museo.scss');
 require('styles/flama.scss');
 require('styles/App.scss');
 
@@ -11,8 +10,6 @@ const apiEndpoint_backup = require('config').default.apiEndpointBackup;
 const dataBucket = require('config').default.dataBucket;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
-
-const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
 
 let tapMsg = {
   start: 'Tap a word to begin selection',

@@ -63,7 +63,7 @@
   }
 
   .download-button {
-    background-color: $primary-color-button;
+    background-color: $secondary-color;
     // width: 180px !important;
     // height: 45px !important;
     line-height: 45px !important;
@@ -259,7 +259,7 @@
 
       & .connect-button {
         font-size: 14px !important;
-        font-family: $helvetica !important;
+        font-family: $body-font-family !important;
       }
 
       & .loginrow-component {
@@ -270,7 +270,7 @@
         display: inline;
         margin-left: 10px;
         font-size: 14px;
-        font-family: $helvetica;
+        font-family: $body-font-family;
         line-height: 24px;
         color: $body-background;
         overflow: hidden;
@@ -305,17 +305,11 @@
       }
     }
     .social-toggle {
-      margin: 15px 20px 15px 20px !important;
-      width: auto !important;
       float: right;
       color: $body-background;
 
       @media screen and (max-width:$break-s) {
         margin: 15px 0px 15px 8px !important;
-      }
-      div > label {
-        font-size: 18px;
-        color: $body-background !important;
       }
     }
   }
@@ -328,7 +322,7 @@
   }
 
   h4 {
-    font-family: $helvetica;
+    font-family: $body-font-family;
     font-size: 14px;
     font-weight: 600;
     color: white;

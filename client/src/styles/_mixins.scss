@@ -22,7 +22,7 @@
     display: inline-block;
     background-color: $secondary-color;
     height: 24px;
-    font-family: $helvetica;
+    font-family: $body-font-family;
     font-size: 14px;
     font-weight: 300;
     text-transform: uppercase;
@@ -47,9 +47,14 @@
     width: 100px;
     height: 45px !important;
     background-color: $tertiary-color;
+    color: $tertiary-color-text;
     right: 0 !important;
     border-radius: 0 !important;
     align-self: flex-end;
+
+    &:hover {
+      background-color: $tertiary-color-light;
+    }
 
     &.mobile {
       display: none !important;

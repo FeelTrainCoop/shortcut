@@ -1,12 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600');
 @import url('https://fonts.googleapis.com/css?family=Oswald:300');
 
-$helvetica: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
-$open-sans: 'Open Sans', sans-serif;
+$body-font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
+$header-font-family: 'Flama-semicondensed-book', Arial, sans-serif;
 $episode-header-font: 'Flama-semicondensed-book', Arial, sans-serif;
 $episode-air-date-font: 'Flama-semicondensed', Arial, sans-serif;
+$open-sans: 'Open Sans', sans-serif;
 
-// background color of the transcript text area
+// background color of most text areas
 $bg-color: white;
 // transcript text color
 $transcript-text-color: black;
@@ -20,7 +21,7 @@ $body-background: #ececec;
 // the primary theme color
 $primary-color: #1F97C9;
 // computed color, as far as I can tell not used anywhere and $selection-color is used instead
-$primary-color-light: lighten($primary-color, 30%);
+$primary-color-light: lighten($primary-color, 20%);
 // a tweak so the background color of the shareable video CSS area matches the post-compression CSS color
 $primary-color-post-compression: #1F97C9;
 // color when you click and drag to select but not the color after the selection itself is made
@@ -30,13 +31,11 @@ $secondary-color: #DD4669;
 // This is the color of any text appearing on top of the secondary theme color
 $secondary-color-text: white;
 // computed color, "add a link to your episode"
-$secondary-color-light: lighten($secondary-color, 30%);
+$secondary-color-light: lighten($secondary-color, 20%);
 // color that the buttons light up when they're active to go to the next section
 $tertiary-color: #66BB6A;
-$tertiary-color-light: lighten($tertiary-color, 30%);
+$tertiary-color-light: lighten($tertiary-color, 20%);
 $tertiary-color-text: white;
-// background color of the download button
-$primary-color-button: $secondary-color;
 
 $break-xs: 767px;
 $break-s: 992px;
