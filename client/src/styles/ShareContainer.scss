@@ -305,17 +305,11 @@
       }
     }
     .social-toggle {
-      margin: 15px 20px 15px 20px !important;
-      width: auto !important;
       float: right;
       color: $body-background;
 
       @media screen and (max-width:$break-s) {
         margin: 15px 0px 15px 8px !important;
-      }
-      div > label {
-        font-size: 18px;
-        color: $body-background !important;
       }
     }
   }
