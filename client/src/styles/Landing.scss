@@ -2,19 +2,19 @@
 
 .recent-episodes {
   text-transform: uppercase;
-  font-family: 'Flama-semicondensed';
+  font-family: $header-font-family;
   font-size: 18px;
   margin-top: 20px;
   margin-bottom:0px;
   padding-bottom: 10px;
   border-bottom: 0.5px solid #ccc;
-  color: black;
+  color: $body-color;
   max-width: 900px;
 }
 
 .episodes {
   max-width: 900px !important;
-  background:white;
+  background: $bg-color;
   padding: 15px;
   margin-bottom: 300px !important;
 }
@@ -93,7 +93,8 @@ div.content.episodes .episode-link-container:last-child {
 .episode-circle {
   display: block;
   background-color: $secondary-color;
-  font-family: 'Museo';
+  color: $secondary-color-text;
+  font-family: $header-font-family;
   font-weight: 900;
   font-size: 18px;
   width: 50px;
@@ -102,13 +103,12 @@ div.content.episodes .episode-link-container:last-child {
   border-radius: 50%;
   text-align: center;
   line-height: 50px;
-  color: white;
   margin-right: 10px;
 }
 .episode-name {
   color: $primary-color;
   font-weight: 900;
-  font-family: 'Museo';
+  font-family: $header-font-family;
   font-size: 18px;
   display: block;
   margin: -45px 0 0 60px;
