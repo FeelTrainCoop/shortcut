@@ -2,8 +2,10 @@
 
 import React from 'react';
 import { hashHistory } from 'react-router'
+import { withStyles } from 'material-ui/styles';
 import FlatButton from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
+import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/Button';
 import Toggle from 'material-ui/Switch';
 import TextField from 'material-ui/TextField';
@@ -18,8 +20,19 @@ import Config from '../../cfg/master';
 
 const moment = require('moment');
 const Store = require('store'); // localStorage
-
 const tweetMaxChars = 115;
+
+const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
+// Style override for toggle switch
+const styles = {
+  bar: {},
+  checked: {
+    color: scssVariables['$primary-color'].value.hex,
+    '& + $bar': {
+      backgroundColor: scssVariables['$primary-color'].value.hex,
+    },
+  },
+};
 
 require('styles//ShareContainer.scss');
 
@@ -147,11 +160,11 @@ class ShareContainerComponent extends React.Component {
                     twLogout={this.props.twLogout}
                   />
                   <Toggle
+                    classes={{ checked: this.props.classes.checked, bar: this.props.classes.bar }}
                     className="social-toggle"
-                    defaultToggled={this.props.twAuth ? true : false}
-                    toggled={this.state ? this.state.twitterToggle : false}
-                    onToggle={this.handleTwitterToggle.bind(this)}
-                    labelPosition="right"
+                    disabled={this.props.twAuth ? false : true}
+                    checked={this.state ? this.state.twitterToggle : false}
+                    onChange={this.handleTwitterToggle.bind(this)}
                   />
                 </div>
                 <div
@@ -163,11 +176,11 @@ class ShareContainerComponent extends React.Component {
                     href="http://hello.com"
                   />
                   <Toggle
+                    classes={{ checked: this.props.classes.checked, bar: this.props.classes.bar }}
                     className="social-toggle"
-                    toggled={this.state ? this.state.facebookToggle : false}
-                    defaultToggled={this.props.fbAuth ? true : false}
-                    onToggle={this.handleFacebookToggle.bind(this)}
-                    labelPosition="right"
+                    checked={this.state ? this.state.facebookToggle : false}
+                    disabled={this.props.fbAuth ? false : true}
+                    onChange={this.handleFacebookToggle.bind(this)}
                   />
                 </div>
                 <hr className="hide-s"/>
@@ -321,14 +334,7 @@ ShareContainerComponent.displayName = 'ShareContainerComponent';
 
 // Uncomment properties you need
 ShareContainerComponent.propTypes = {
-  muiTheme: React.PropTypes.shape({
-    palette: React.PropTypes.shape({
-      secondaryColorLight: React.PropTypes.string,
-      whiteColor: React.PropTypes.string,
-      tertiaryColor: React.PropTypes.string,
-      tertiaryColorLight: React.PropTypes.string
-    })
-  })
+  classes: PropTypes.object.isRequired
 };
 ShareContainerComponent.defaultProps = {
   muiTheme: {
@@ -341,4 +347,4 @@ ShareContainerComponent.defaultProps = {
   }
 };
 
-export default ShareContainerComponent;
+export default withStyles(styles)(ShareContainerComponent);
