@@ -11,8 +11,6 @@ const dataBucket = require('config').default.dataBucket;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
 
-const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
-
 let tapMsg = {
   start: 'Tap a word to begin selection',
   next: 'Tap another to complete',
