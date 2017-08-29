@@ -12,8 +12,6 @@ AWS.config.update({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
 
-const krypto = require('./kms-crypto')(AWS, process.env.AWS_KMS_KEY_ID);
-
 function init(app) {
   app.use(passport.initialize());
 
@@ -32,20 +30,14 @@ function init(app) {
         userId: profile.id
       });
 
-      krypto.encrypt(userInfo, function(err, res) {
-        if (err) {
-          done(err);
+      var user = {
+        facebook: {
+          info: userInfo,
+          displayName: profile.displayName
         }
-        else {
-          var user = {
-            facebook: {
-              info: res,
-              displayName: profile.displayName
-            }
-          }
-          done(null, user);
-        }
-      });
+      }
+
+      done(null, user);
     }
   ));
 
@@ -62,21 +54,14 @@ function init(app) {
         userId: profile.id
       });
 
-      krypto.encrypt(userInfo, function(err, res) {
-        if (err) {
-          done(err);
+      var user = {
+        twitter: {
+          info: userInfo,
+          userName: profile.username
         }
-        else {
-          var user = {
-            twitter: {
-              info: res,
-              userName: profile.username
-            }
-          }
+      }
 
-          done(null, user);
-        }
-      });
+      done(null, user);
     }
   ));
 

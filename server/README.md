@@ -19,7 +19,6 @@ npm install -g nodemon
 Copy `.env-template` to `.env` and fill in environment variables. 
 
 A couple environment variables to note:
-- `AWS_KMS_KEY_ID` - oAuth tokens are encrypted with AWS KMS (Key Management Service). Create this from the AWS IAM console, add the key ID to the .env file (AWS_KMS_KEY_ID), and make sure the AWS IAM entity has access in the AWS region. In "tal-serverless", ensure that the IAM role that executes the social share function also has access to the key.
 
 - `APP_VERSION` - version of the tal-client JS bundle, i.e. `//d2wyy28kxzazzz.cloudfront.net/app_${APP_VERSION}.js`. See "tal-client" for info on how to build this.
 
