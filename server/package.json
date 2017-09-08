@@ -12,22 +12,28 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.5.0",
     "aws-cloudfront-sign": "^2.1.2",
     "aws-sdk": "^2.3.16",
     "basic-auth": "^1.0.4",
+    "body-parser": "^1.17.2",
+    "canvas": "^1.6.6",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.1",
+    "cors": "^2.8.4",
     "dotenv": "^2.0.0",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
     "helmet": "^2.2.0",
     "marko": "^3.11.3",
     "mysql": "^2.11.1",
+    "paper-jsdom-canvas": "^0.11.4",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-twitter": "^1.0.4",
     "request": "^2.73.0",
+    "twit": "^2.2.9",
     "urlsafe-base64": "^1.0.0"
   }
 }

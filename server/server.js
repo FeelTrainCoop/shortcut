@@ -9,7 +9,9 @@ const express = require('express'),
   cookieParser = require('cookie-parser'),
   errorHandler = require('errorhandler'),
   session = require('cookie-session'),
-  helmet = require('helmet');
+  helmet = require('helmet'),
+  bodyParser = require('body-parser'),
+  cors = require('cors');
 
 // template with marko https://github.com/marko-js/marko
 require('marko/express');
@@ -26,6 +28,8 @@ const passportMiddleware = require('./auth/passport-middleware.js');
 app.set('port', process.env.PORT || 3000);
 app.use(compression());
 app.disable('x-powered-by');
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // add pw protection if the following environment variables are provided (i.e on staging not prod)
 if (process.env.BETA_LOGIN && process.env.BETA_PW) {
@@ -56,6 +60,10 @@ app.use('/api/3i8IDx8Xx0zF98q21O24yh8aB7j0tML3/episode/:show', routes.getEpisode
 // passport authentication
 passportMiddleware.init(app);
 app.use('/auth', routes.auth);
+
+// create snippet video
+app.options('/create-video', cors());
+app.post('/create-video', cors(), routes.createVideo);
 
 app.use(helmet());
 

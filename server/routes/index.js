@@ -6,5 +6,6 @@ module.exports = {
   getEpisode: require('./get-episode'),
   update: require('./update.js'),
   allEpisodeData: require('./all-episode-data'),
-  auth: require('./auth')
+  auth: require('./auth'),
+  createVideo: require('./create-video'),
 };
