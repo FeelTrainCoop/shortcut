@@ -42,7 +42,12 @@ router.get('/twitter/callback',
   }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect(`${(req.headers['x-forwarded-proto'] || req.protocol) + '://' + req.get('host')}/#/login/twitter/${req.user.twitter.userName}/${req.user.twitter.info}`);
+    if ('development' == req.app.get('env')) {
+      res.redirect(`http://localhost:8000/#/login/twitter/${req.user.twitter.userName}/${req.user.twitter.info}`);
+    }
+    else {
+      res.redirect(`${(req.headers['x-forwarded-proto'] || req.protocol) + '://' + req.get('host')}/#/login/twitter/${req.user.twitter.userName}/${req.user.twitter.info}`);
+    }
   }
 );
 
