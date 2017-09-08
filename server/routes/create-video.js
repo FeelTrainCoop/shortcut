@@ -13,7 +13,7 @@ AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
-const bucketName = process.env.BUCKET_NAME;
+const bucketName = process.env.AWS_S3_BUCKET_NAME;
 const extension = '.mp4';
 const dataBucket = process.env.DATA_BUCKET;
 const segmentLength = 10; // length of .ts source files in seconds
