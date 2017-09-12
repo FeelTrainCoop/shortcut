@@ -65,6 +65,10 @@ app.use('/auth', routes.auth);
 app.options('/create-video', cors());
 app.post('/create-video', cors(), routes.createVideo);
 
+// post to social media
+app.options('/social-post', cors());
+app.post('/social-post', cors(), routes.socialPost);
+
 app.use(helmet());
 
 // index route
