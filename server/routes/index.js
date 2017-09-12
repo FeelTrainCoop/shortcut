@@ -8,4 +8,5 @@ module.exports = {
   allEpisodeData: require('./all-episode-data'),
   auth: require('./auth'),
   createVideo: require('./create-video'),
+  socialPost: require('./social-post'),
 };

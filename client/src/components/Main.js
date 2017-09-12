@@ -485,7 +485,6 @@ class AppComponent extends React.Component {
       view: 'creatingVideo'
     });
     
-    console.log('HIIIIII', apiEndpoint);
     jQuery.ajax({
       url: apiEndpoint + '/create-video',
       type: 'POST',
@@ -553,7 +552,7 @@ class AppComponent extends React.Component {
     }
 
     jQuery.ajax({
-      url: apiEndpoint + 'tweet',
+      url: apiEndpoint + '/social-post',
       type: 'POST',
       data: JSON.stringify(data),
       crossDomain: true,
