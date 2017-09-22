@@ -39,9 +39,10 @@ router.get('/', function(req, res) {
 });
 
 // http://localhost:3000/api/ABC123/update/580
-// create or update show data (waveform + transcrtipt json) for a specific show
+// create or update show data (waveform + transcript json) for a specific show
 router.get('/:episodeNumber', function(req, res) {
   addEpisode(req.params.episodeNumber, function(err, success) {
+    console.log('we did it', err, success);
     if (err) {
       return res.status(500).json(err);
     } else {
@@ -54,16 +55,6 @@ router.get('/:episodeNumber', function(req, res) {
 function addEpisode(episodeNum, callback) {
   const targetWidth = 30000;
   const mp3Path = `${process.env.DATA_BUCKET}${episodeNum}/${episodeNum}.mp3`;
-
-  const payload = JSON.stringify({
-    episode: String(episodeNum),
-    width: waveformWidth
-  });
-
-  const params = {
-    FunctionName: 'shortcut-addEpisode', //process.env.LAMBDA_FUNCTION_NAME, /* required */
-    Payload: payload
-  };
 
   async.parallel({
     waveform: function(callback) {
@@ -102,73 +93,26 @@ function addEpisode(episodeNum, callback) {
     };
 
     uploadWaveformAndTranscriptData(episodeNum, dataToSave, function(err, success) {
-      if (err) return cb(err);
+      if (err) return {message: err};
       const newKey = success.Key;
       console.log('uploaded', newKey);
       // clean up temp directory and mp3
       helpers.cleanDir(tempDir);
-
-      // TO DO: update key in database
-      var dbValues = {
-        "EPISODE_NUMBER": episodeNumber,
-        "KEYNAME": success.Key
-      };
-
-      db.upsert('episode', dbValues, function(err, success) {
-        if (err) return cb(err);
-        else {
-          // cleanup older versions of this show from s3 files
-          var params = {
-            Bucket: bucketName, /* required */
-            Prefix: newKey.split('-')[0] + '-' // i.e. episodes/36-
-          };
-          s3.listObjects(params, function(err, data) {
-            if (err) return done(err);
-            if (data.Contents.length > 1) {
-              var params = {
-                Bucket: bucketName, /* required */
-                Delete: { /* required */
-                  Objects: data.Contents.map( (item) => {
-                    return {Key: item.Key}
-                  }).filter( (item) => {
-                    return item.Key !== newKey;
-                  })
-                }
-              };
-              s3.deleteObjects(params, function(err, data) {
-                if (err) console.log(err, err.stack); // an error occurred
-                // finish Lambda
-                else return cb(null, {
-                  message: newKey
-                });
-              });
-            }
-            else {
-              // finish Lambda
-              return cb(null, { message: newKey });
-            }
-
-          });
-        }
-      });
+      if (err) {
+        callback({
+          status: 'error',
+          message: err
+        });
+      }
+      else {
+        callback(null, {
+          status: 'success',
+          showNumber: episodeNum
+        });
+      }
     });
   }
 
-/*
-  if (err) {
-    callback({
-      status: 'error',
-      message: err
-    });
-  }
-  else {
-    callback(null, {
-      status: 'success',
-      message: JSON.parse(data.Payload).message,
-      showNumber: episodeNum
-    });
-  }
-  */
 }
 
 function downloadEpisode(mp3Path, cb) {
