@@ -51,11 +51,11 @@ app.get('/recent', verifyHeaders, routes.recentEpisodes);
 app.get('/search', routes.search);
 
 // update episode data with latest info, or update/add invidividual episode
-app.use('/api/3i8IDx8Xx0zF98q21O24yh8aB7j0tML3/update/', routes.update);
+app.use(`/api/${process.env.API_HASH}/update/`, routes.update);
 
 // redirect to get data for a specific show from cloudfront / s3
 app.get('/d/:show', verifyHeaders, routes.getEpisode);
-app.use('/api/3i8IDx8Xx0zF98q21O24yh8aB7j0tML3/episode/:show', routes.getEpisode);
+app.use(`/api/${process.env.API_HASH}/episode/:show`, routes.getEpisode);
 
 // passport authentication
 passportMiddleware.init(app);
