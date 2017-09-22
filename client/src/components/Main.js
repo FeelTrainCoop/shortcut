@@ -247,7 +247,7 @@ class AppComponent extends React.Component {
 
   }
   _loadEpisodeChunk(showNumber, signedURL, shouldCache) {
-    let path = `${dataBucket + showNumber}-data.json`;
+    let path = `${dataBucket}/${showNumber}/${showNumber}-data.json`;
     if (signedURL) path = signedURL;
 
     // check to see if episode is available
@@ -724,6 +724,8 @@ class AppComponent extends React.Component {
       reducedWords,
       wordStartTimeArray
     );
+
+    console.log(reducedWords, reducedParagraphs);
 
     this.setState({
       wordDictionary: reducedWords,
