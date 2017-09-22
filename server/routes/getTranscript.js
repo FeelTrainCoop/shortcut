@@ -28,8 +28,6 @@ function episodeDataCallback(err, body, _startTime, _endTime, cb) {
   const startTimeMillis = startTime * 1000;
   const endTimeMillis = endTime * 1000;
 
-  console.log(showData.words, startTimeMillis, endTimeMillis);
-
   let lastValidTimestamp;
   const wordsInRange = showData.words.map(function(word, i) {
     // keep track of the last known valid timestamp so we can fake times we don't have alignment for
@@ -50,12 +48,9 @@ function episodeDataCallback(err, body, _startTime, _endTime, cb) {
   // add a placeholder empty string at time 0 (necessary for the reduce function that the client does)
   wordsInRange.unshift(["0",""]);
 
-  console.log(wordsInRange);
-
   // Fake paragraph breaks on every word that contains a terminal punctuation.
   let paragraphsInRange = wordsInRange.filter(word => word[1].match(/(\?\s|\.\s|\!\s|\"\s)$/))
                           .map(word => +word[0]);
-  console.log(paragraphsInRange);
 
   cb(err, {
     showData: {

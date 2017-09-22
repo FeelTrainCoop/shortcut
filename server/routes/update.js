@@ -4,11 +4,21 @@ const express = require('express');
 const router = express.Router();
 const allEpisodeData = require('./all-episode-data');
 const AWS = require('aws-sdk');
+AWS.config.update({
+  region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+const s3 = new AWS.S3({
+  region: process.env.AWS_REGION
+});
+const bucketName = process.env.AWS_S3_BUCKET_NAME;
 const waveformWidth = 30000;
 const async = require('async');
 const makeWaveform = require('./makeWaveform');
 const getTranscript = require('./getTranscript');
 const helpers = require('./helpers');
+const tempDir = process.env['TEMP'] || '/tmp';
 
 // update show data (list of all episodes and their show data version numbers)
 router.get('/', function(req, res) {
@@ -42,6 +52,7 @@ router.get('/:episodeNumber', function(req, res) {
 });
 
 function addEpisode(episodeNum, callback) {
+  const targetWidth = 30000;
   const mp3Path = `${process.env.DATA_BUCKET}${episodeNum}/${episodeNum}.mp3`;
 
   const payload = JSON.stringify({
@@ -82,11 +93,7 @@ function addEpisode(episodeNum, callback) {
     let waveformData = msg.waveform;
     regionData.pointsPerSecond = msg.waveform.length / showData.duration;
 
-    if (regionData.end !== showData.duration) {
-      regionData.waveform = spliceWaveformSegment(regionData.start, regionData.end, waveformData, regionData.pointsPerSecond);
-    } else {
-      regionData.waveform = waveformData;
-    }
+    regionData.waveform = waveformData;
 
     const dataToSave = {
       date: new Date(),
@@ -94,7 +101,7 @@ function addEpisode(episodeNum, callback) {
       regionData: regionData
     };
 
-    uploadWaveformAndTranscriptData(episodeNumber, dataToSave, function(err, success) {
+    uploadWaveformAndTranscriptData(episodeNum, dataToSave, function(err, success) {
       if (err) return cb(err);
       const newKey = success.Key;
       console.log('uploaded', newKey);
