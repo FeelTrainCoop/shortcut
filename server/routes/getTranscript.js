@@ -2,25 +2,32 @@
 
 const request = require('request');
 const striptags = require('striptags');
+const dataBucket = process.env.DATA_BUCKET;
 
 module.exports = {
 
   go: function(episodeNumber, startTime, endTime, cb) {
-    const episodeDataURL = `${process.env.DATA_BUCKET}${episodeNumber}/${episodeNumber}.json`;
+    const episodeDataURL = `${dataBucket}${episodeNumber}/${episodeNumber}.json`;
 
     request.get({
       url: episodeDataURL,
       rejectUnauthorized: false
       }, function(err, response, body) {
-      episodeDataCallback(err, body, startTime, endTime, cb);
+      episodeDataCallback(err, body, startTime, endTime, episodeNumber, cb);
     });
   }
 
 };
 
-function episodeDataCallback(err, body, _startTime, _endTime, cb) {
+function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, cb) {
   if (err) console.log('error', err);
   const showData = JSON.parse(body);
+
+  if (!showData.duration) {
+    showData.duration = Math.round(showData.words[showData.words.length-1].end);
+  }
+  showData.number = episodeNumber;
+  showData.hls = `${dataBucket}${episodeNumber}/${episodeNumber}.m3u8`;
 
   // not currently in use but may be useful in the future
   const startTime = _startTime || 0;
