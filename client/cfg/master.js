@@ -3,5 +3,5 @@
  */
 
 module.exports = {
-  socialMediaMessageDefault: `This is the default social media message!`
+  socialMediaMessageDefault: 'This is the default social media message!'
 }

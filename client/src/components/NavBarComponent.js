@@ -3,8 +3,9 @@
 import React from 'react';
 import { hashHistory } from 'react-router'
 
-import {AppBar, Drawer, IconButton, MenuItem} from 'material-ui';
-import NavigationMenu from 'material-ui-icons/Menu';
+import {AppBar, Button, Drawer, IconButton, Menu, MenuItem, Toolbar, Typography} from 'material-ui';
+import { withStyles } from 'material-ui/styles';
+import MenuIcon from 'material-ui-icons/Menu';
 import { Link } from 'react-router'
 import LoginTwitterComponent from './LoginTwitterComponent';
 import LoginFacebookComponent from './LoginFacebookComponent';
@@ -12,6 +13,14 @@ import LoginFacebookComponent from './LoginFacebookComponent';
 require('styles//NavBar.scss');
 
 const shortcutLogo = require('../images/shortcut-logo.svg');
+
+const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
+// Style override for AppBar
+const styles = {
+  colorPrimary: {
+    backgroundColor: scssVariables['$primary-color'].value.hex,
+  },
+};
 
 class NavBarComponent extends React.PureComponent {
   constructor(props) {
@@ -57,65 +66,39 @@ class NavBarComponent extends React.PureComponent {
   render() {
     return (
       <div className="navbar-component">
-        <AppBar
-          style={{backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}
-          //onLeftIconButtonTouchTap={this.handleToggleDrawer.bind(this)}
-          title={this.props.episode && this.props.view !== 'default' ? `${this.props.episode}` : ''}
-        >
-        <div className="nav-title">
-          <Link to="/" className="no-underline white">
-            <img src={shortcutLogo} className="shortcut-logo" alt="Shortcut"/>
-          </Link>
-        </div>
-      <Drawer
-        containerClassName="drawer"
-        docked={false}
-        open={this.state.drawerOpen}
-        width={280}
-        onRequestChange={(drawerOpen) => this.setState({drawerOpen})}
+      <AppBar
+        classes={{ colorPrimary: this.props.classes.colorPrimary }}
+        position="static"
       >
-        <div className="navbar-component">
-          <AppBar
-            style={{backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}
-            showMenuIconButton={false}
-            iconElementRight={<IconButton onClick={this.handleToggleDrawer.bind(this)}><NavigationMenu/></IconButton>}
-          />
-        </div>
-        <div className="top">
-          <MenuItem className="login-row-menu" primaryText={
-            <LoginTwitterComponent
-              twName={this.props.twName}
-              twLogout={this.props.twLogout}
+        <Toolbar>
+          <Typography type="title" color="inherit" className="title-bar">
+            <img src={shortcutLogo} className="shortcut-logo" alt="Shortcut"/>
+          </Typography>
+          <Button
+            color="contrast"
+            onClick={this.handleTouchTap.bind(this)}
+          >
+            Connect
+          </Button>
+          <Menu
+            open={this.state.open}
+            anchorEl={this.state.anchorEl}
+            onRequestClose={this.handleRequestClose.bind(this)}
+          >
+            <MenuItem className="login-row-menu">
+              <LoginTwitterComponent
+                twName={this.props.twName}
+                twLogout={this.props.twLogout}
               />
-          }/>
-          <MenuItem className="login-row-menu" primaryText={
-            <LoginFacebookComponent
-              fbName={this.props.fbName}
-              fbLogout={this.props.fbLogout}
+            </MenuItem>
+            <MenuItem className="login-row-menu">
+              <LoginFacebookComponent
+                fbName={this.props.fbName}
+                fbLogout={this.props.fbLogout}
               />
-          }/>
-        </div>
-
-        <div className="bottom">
-          <MenuItem
-            className="login-row-menu"
-            href="/#/"
-            onClick={this.handleToggleDrawer.bind(this)}
-            primaryText="Home"
-          />
-          <MenuItem
-            className="login-row-menu"
-            href="/#/about"
-            onClick={this.handleToggleDrawer.bind(this)}
-            primaryText="About"
-          />
-          <MenuItem
-            className="login-row-menu"
-            primaryText="thisamericanlife.org"
-            href="http://thisamericanlife.org"
-          />
-        </div>
-      </Drawer>
+            </MenuItem>
+          </Menu>
+        </Toolbar>
       </AppBar>
     </div>
     );
@@ -140,4 +123,4 @@ NavBarComponent.defaultProps = {
   }
 };
 
-export default NavBarComponent;
+export default withStyles(styles)(NavBarComponent);
