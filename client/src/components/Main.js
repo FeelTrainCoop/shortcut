@@ -247,7 +247,7 @@ class AppComponent extends React.Component {
 
   }
   _loadEpisodeChunk(showNumber, signedURL, shouldCache) {
-    let path = `${dataBucket + showNumber}-data.json`;
+    let path = `${dataBucket}/${showNumber}/${showNumber}-data.json`;
     if (signedURL) path = signedURL;
 
     // check to see if episode is available
@@ -457,7 +457,7 @@ class AppComponent extends React.Component {
 
   /** POST request to create video on Lambda (triggered when user clicks the "Preview" button in {@link PreviewContainerComponent|PreviewContainer}). */
   createVideo(data) {
-    let apiEndpoint = useBackupAPI ? apiEndpoint_backup : apiEndpoint_default;
+    let apiEndpoint = apiEndpoint_default;
     var that = this;
     const h = this.state.h;
     // add color option
@@ -484,9 +484,9 @@ class AppComponent extends React.Component {
     this.setState({
       view: 'creatingVideo'
     });
-
+    
     jQuery.ajax({
-      url: apiEndpoint + 'snippet',
+      url: apiEndpoint + '/create-video',
       type: 'POST',
       data: JSON.stringify(data),
       crossDomain: true,
@@ -495,7 +495,7 @@ class AppComponent extends React.Component {
           'Content-Type': 'application/json'
       },
       success: (res) => {
-        // console.log('success posting snippet');
+        console.log('success posting snippet', res);
 
         // catch cases where API Gateway does not send the proper response codes
         if (res.errorMessage) {
@@ -552,7 +552,7 @@ class AppComponent extends React.Component {
     }
 
     jQuery.ajax({
-      url: apiEndpoint + 'tweet',
+      url: apiEndpoint + '/social-post',
       type: 'POST',
       data: JSON.stringify(data),
       crossDomain: true,
@@ -724,6 +724,8 @@ class AppComponent extends React.Component {
       reducedWords,
       wordStartTimeArray
     );
+
+    console.log(reducedWords, reducedParagraphs);
 
     this.setState({
       wordDictionary: reducedWords,
