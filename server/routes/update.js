@@ -42,7 +42,6 @@ router.get('/', function(req, res) {
 // create or update show data (waveform + transcript json) for a specific show
 router.get('/:episodeNumber', function(req, res) {
   addEpisode(req.params.episodeNumber, function(err, success) {
-    console.log('we did it', err, success);
     if (err) {
       return res.status(500).json(err);
     } else {
