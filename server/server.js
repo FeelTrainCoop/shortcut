@@ -54,8 +54,8 @@ app.get('/search', routes.search);
 app.use(`/api/${process.env.API_HASH}/update/`, routes.update);
 
 // redirect to get data for a specific show from cloudfront / s3
-app.get('/d/:show', verifyHeaders, routes.getEpisode);
-app.use(`/api/${process.env.API_HASH}/episode/:show`, routes.getEpisode);
+//app.get('/d/:show', verifyHeaders, routes.getEpisode);
+//app.use(`/api/${process.env.API_HASH}/episode/:show`, routes.getEpisode);
 
 // passport authentication
 passportMiddleware.init(app);
