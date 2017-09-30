@@ -81,10 +81,8 @@ app.get('/', function(req, res) {
   // inject latest episodes and app version into Marko HTML template
   res.marko(template, {
     // version of client JS code
-    version: process.env.APP_VERSION,
     latestEpisodes: latestEpisodes,
-    inactiveEpisodes: process.env.BAD_EPISODES,
-    bugMuncherKey: process.env.BUG_MUNCHER_API_KEY
+    inactiveEpisodes: process.env.BAD_EPISODES
   });
 });
 
