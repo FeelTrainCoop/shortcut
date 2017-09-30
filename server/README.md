@@ -18,10 +18,6 @@ npm install -g nodemon
 ##### Env Variables
 Copy `.env-template` to `.env` and fill in environment variables. 
 
-A couple environment variables to note:
-
-- `APP_VERSION` - version of the tal-client JS bundle, i.e. `//d2wyy28kxzazzz.cloudfront.net/app_${APP_VERSION}.js`. See "tal-client" for info on how to build this.
-
 *NOTE: Environment Variables are not automatically copied over to Elastic Beanstalk deployments. Enter the environment variables manually in the EB console.
 
 ### Run Locally
