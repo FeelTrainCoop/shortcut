@@ -21,7 +21,6 @@ const errorTemplate = require('./views/error.marko');
 
 const app = express();
 const routes = require('./routes');
-const verifyHeaders = require('./auth/verify-headers.js');
 const passportMiddleware = require('./auth/passport-middleware.js');
 
 // all environments
@@ -45,7 +44,7 @@ app.use(session({
 }));
 
 // get recent episodes to display on main page
-app.get('/recent', verifyHeaders, routes.recentEpisodes);
+app.get('/recent', routes.recentEpisodes);
 
 // seach episode data (not currently used)
 app.get('/search', routes.search);
@@ -54,7 +53,7 @@ app.get('/search', routes.search);
 app.use(`/api/${process.env.API_HASH}/update/`, routes.update);
 
 // redirect to get data for a specific show from cloudfront / s3
-//app.get('/d/:show', verifyHeaders, routes.getEpisode);
+app.get('/d/:show', routes.getEpisode);
 //app.use(`/api/${process.env.API_HASH}/episode/:show`, routes.getEpisode);
 
 // passport authentication
