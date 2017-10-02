@@ -31,8 +31,7 @@ let useBackupAPI = false;
 import React from 'react';
 import { hashHistory } from 'react-router'
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import createMuiTheme from 'material-ui/styles/theme';
-import { MuiThemeProvider } from 'material-ui/styles';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import Snackbar from 'material-ui/Snackbar';
 import ScreenLockPortrait from 'material-ui-icons/ScreenLockPortrait';
 
