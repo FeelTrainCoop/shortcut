@@ -10,6 +10,7 @@ const apiEndpoint_backup = require('config').default.apiEndpointBackup;
 const dataBucket = require('config').default.dataBucket;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
+const env = require('config').default.appEnv;
 
 let tapMsg = {
   start: 'Tap a word to begin selection',
@@ -105,6 +106,27 @@ class AppComponent extends React.Component {
 
     // get episode data rendered by server
     this.state.eps = window.__latestEpisodes || props.eps;
+    // BUT, if we're in a development environment, just grab the JSON file of all episodes and overwrite
+    if (env === 'dev') {
+      jQuery.ajax({
+        method: 'GET',
+        url:  dataBucket + 'episodes.json',
+        crossDomain : true,
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        success: (data) => {
+          this.setState({
+            eps: data
+          });
+        },
+        error: function(xhr, status, err) {
+          window.ga('send', 'exception', {
+            'exDescription': 'loadMoreEpisodesAJAX'
+          });
+          window.console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      })
+    }
+
     this.state.episodesWithProblems = window.__inactiveEpisodes || require('config').default.episodesWithProblems;
 
 
@@ -1108,7 +1130,7 @@ AppComponent.defaultProps = {
   clippingOffset: 0,
   tappedWord: undefined,
   h: undefined,
-  eps: require('../data/most-recent-placeholder'),
+  eps: [],
   episodesWithProblems: require('config').default.episodesWithProblems,
   params: {
     showNumber: '500'
