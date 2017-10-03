@@ -29,6 +29,7 @@ module.exports = {
         '-t', duration,
         // fade in / out
         // '-af', 'afade=t=in:st=0:d=' + fadeTime + ', afade=t=out:st=' + String(duration - fadeTime)  + ':d=' + fadeTime,
+        '-c:a','aac',
         `${tempDir}/audio.wav`
       ],
       function(err, stdout, stderr) {
