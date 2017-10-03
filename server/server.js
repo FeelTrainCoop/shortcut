@@ -97,7 +97,8 @@ app.get('/*', function (req, res, next) {
   next();
 });
 
-app.use(express.static('public', {
+// serve the compiled distribution assets from the client directory
+app.use(express.static('../client/dist', {
   maxAge: 128000
 }));
 
