@@ -11,6 +11,8 @@ const dataBucket = require('config').default.dataBucket;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
 const env = require('config').default.appEnv;
+const s3Region = require('config').default.s3Region;
+const s3Bucket = require('config').default.s3Bucket;
 
 let tapMsg = {
   start: 'Tap a word to begin selection',
@@ -264,11 +266,9 @@ class AppComponent extends React.Component {
     }, () => {
       this._loadEpisodeChunk(showNumber);
     });
-
-
   }
   _loadEpisodeChunk(showNumber, signedURL, shouldCache) {
-    let path = `${dataBucket}/${showNumber}/${showNumber}-data.json`;
+    let path = `https://s3-${s3Region}.amazonaws.com/${s3Bucket}/episodes/${showNumber}-data.json`;
     if (signedURL) path = signedURL;
 
     // check to see if episode is available
