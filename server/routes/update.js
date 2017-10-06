@@ -127,6 +127,7 @@ function uploadWaveformAndTranscriptData(episodeNumber, showData, cb) {
     Key: dstKey,
     ContentType: 'application/json',
     Body: body,
+    ACL: 'public-read',
     CacheControl: 'max-age=31536000' // 1 year (60 * 60 * 24 * 365)
   };
 
