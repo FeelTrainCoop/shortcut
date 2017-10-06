@@ -12,8 +12,8 @@ let config = {
   apiEndpoint: 'http://localhost:3000',
   //dataBucket: 'https://d1bojkr1jokyfh.cloudfront.net/'
   dataBucket: 'http://localhost/explainjojo-assets/',
-  s3region: 'us-west-2',
-  s3bucket: 'shortcut-getting-started',
+  s3Region: 'us-west-2',
+  s3Bucket: 'shortcut-getting-started',
 };
 
 export default Object.freeze(Object.assign({}, baseConfig, config));
