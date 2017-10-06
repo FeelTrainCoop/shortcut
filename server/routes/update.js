@@ -111,7 +111,6 @@ function addEpisode(episodeNum, callback) {
       }
     });
   }
-
 }
 
 function downloadEpisode(mp3Path, cb) {
@@ -119,10 +118,8 @@ function downloadEpisode(mp3Path, cb) {
 }
 
 function uploadWaveformAndTranscriptData(episodeNumber, showData, cb) {
-  const newVersion = new Date().valueOf().toString();
-  const dstKey = `episodes/${episodeNumber}-data_${newVersion}.json`;
+  const dstKey = `episodes/${episodeNumber}-data.json`;
 
-  // TO DO: gzip and encrypt first (a la https://github.com/binoculars/aws-lambda-ffmpeg)
   var body = JSON.stringify(showData);
 
   var params = {

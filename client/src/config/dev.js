@@ -11,7 +11,9 @@ let config = {
   // apiEndpointBackup: 'https://wanz89yyu8.execute-api.us-east-1.amazonaws.com/shortcutdev/',
   apiEndpoint: 'http://localhost:3000',
   //dataBucket: 'https://d1bojkr1jokyfh.cloudfront.net/'
-  dataBucket: 'http://localhost/explainjojo-assets/'
+  dataBucket: 'http://localhost/explainjojo-assets/',
+  s3region: 'us-west-2',
+  s3bucket: 'shortcut-getting-started',
 };
 
 export default Object.freeze(Object.assign({}, baseConfig, config));

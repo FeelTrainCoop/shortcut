@@ -12,6 +12,8 @@ let config = {
   apiEndpoint: 'http://localhost:3000',
   //dataBucket: 'https://d1bojkr1jokyfh.cloudfront.net/'
   dataBucket: 'http://localhost/explainjojo-assets/',
+  s3region: 'us-west-2',
+  s3bucket: 'shortcut-getting-started',
   analyticsPropertyId: '' // your gAnalytics ID
 };
 
