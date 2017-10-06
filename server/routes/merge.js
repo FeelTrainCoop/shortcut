@@ -28,8 +28,6 @@ module.exports = {
         `${tempDir}/audio.wav`
       ],
       function(err, stdout, stderr) {
-        console.log('ffmpeg', '-y', '-loglevel', 'warning', '-i', inputString, '-bsf:a', 'aac_adtstoasc', '-strict', '-2', '-ss', startTime, '-t', duration, '-c:a','aac', `${tempDir}/audio.wav`)
-        console.log(err, stdout, stderr);
         child_process.execFile(
           'ffmpeg',
           [
