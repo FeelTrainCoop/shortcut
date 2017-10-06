@@ -22,17 +22,14 @@ module.exports = {
         '-y',
         '-loglevel', 'warning',
         '-i', inputString,
-        // '-acodec', 'copy',
-        '-bsf:a', 'aac_adtstoasc',
         '-strict', '-2',
         '-ss', startTime,
         '-t', duration,
-        // fade in / out
-        // '-af', 'afade=t=in:st=0:d=' + fadeTime + ', afade=t=out:st=' + String(duration - fadeTime)  + ':d=' + fadeTime,
-        '-c:a','aac',
         `${tempDir}/audio.wav`
       ],
       function(err, stdout, stderr) {
+        console.log('ffmpeg', '-y', '-loglevel', 'warning', '-i', inputString, '-bsf:a', 'aac_adtstoasc', '-strict', '-2', '-ss', startTime, '-t', duration, '-c:a','aac', `${tempDir}/audio.wav`)
+        console.log(err, stdout, stderr);
         child_process.execFile(
           'ffmpeg',
           [
