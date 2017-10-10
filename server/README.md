@@ -1,3 +1,7 @@
+# THE DOCS BELOW ARE DEPRECATED!
+
+Please refer to [the wiki](https://github.com/FeelTrainCoop/shortcut/wiki) instead. This README will soon be updated to reflect the current state of the project.
+
 # tal-server
 A node/express server that
 - serves a single page application ("tal-client")
