@@ -5,6 +5,8 @@ An open source tool for fans to cut and share their favorite podcast clips.
 
 Please [check out our wiki](https://github.com/FeelTrainCoop/shortcut/wiki) for information on the project, installation instructions, contribution instructions, and more!
 
+By participating in our community you agree to abide by the [Shortcut Code of Conduct](https://github.com/FeelTrainCoop/shortcut/wiki/Shortcut-Code-of-Conduct).
+
 Contribute
 ----------
 
