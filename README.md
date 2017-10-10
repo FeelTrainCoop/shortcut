@@ -1,7 +1,7 @@
 Shortcut
 ========
 
-An open source tool for fans to cut and share their favorite podcast clips.
+An open source tool for fans to cut and share their favorite podcast clips. 
 
 Please [check out our wiki](https://github.com/FeelTrainCoop/shortcut/wiki) for information on the project, installation instructions, contribution instructions, and more!
 
@@ -17,6 +17,11 @@ Support
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/Shortcut-support/Lobby)
 
 We provide support through a Gitter chatroom. Come by and say hello!
+
+Authors and Sponsors
+-------
+
+Shortcut is maintained by [Feel Train](https://feeltrain.com), and was created with [This American Life](https://thisamericanlife.org) with support from the John S. and James L. Knight Foundation, and the Tow Center for Digital Journalism at the Columbia University Graduate School of Journalism. It was conceived at This American Life's Audio Hackathon 2015.
 
 License
 -------
