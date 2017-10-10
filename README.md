@@ -8,8 +8,8 @@ Please [check out our wiki](https://github.com/FeelTrainCoop/shortcut/wiki) for 
 Contribute
 ----------
 
-- Issue Tracker: github.com/feeltraincoop/shortcut/issues
-- Source Code: github.com/feeltraincoop/shortcut
+- Issue Tracker: https://github.com/feeltraincoop/shortcut/issues
+- Source Code: https://github.com/feeltraincoop/shortcut
 
 Support
 -------
