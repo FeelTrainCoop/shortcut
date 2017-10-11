@@ -28,4 +28,4 @@ Shortcut is maintained by [Feel Train](https://feeltrain.com), and was created w
 License
 -------
 
-License forthcoming once we work it out with our lawyers. We are currently eyeing MIT or GPLv3. Let us know in the support chat if you have any strong opinions, especially if either license would prevent you from using Shortcut!
+License forthcoming once we work it out with our lawyers. We are currently eyeing MIT or GPLv3. Let us know in the support chat if you have any strong opinions, especially if either license would prevent you from using Shortcut! If you want updates on this task, feel free to track [the associated issue](https://github.com/FeelTrainCoop/shortcut/issues/4) in our issue tracker.
