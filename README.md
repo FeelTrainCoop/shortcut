@@ -13,6 +13,10 @@ Contribute
 - Issue Tracker: https://github.com/feeltraincoop/shortcut/issues
 - Source Code: https://github.com/feeltraincoop/shortcut
 
+<a href="https://app.zenhub.com/workspace/o/feeltraincoop/shortcut/boards?repos=99033570"><img src="https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png"></a>
+
+We use ZenHub to manage this project. Check out [our Zenhub project board](https://app.zenhub.com/workspace/o/feeltraincoop/shortcut/boards?repos=99033570) to see the current status of the project!
+
 Support
 -------
 
