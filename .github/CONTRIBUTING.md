@@ -59,7 +59,6 @@ Just like bugs, you can suggest an enhancement by [opening an issue on Github](h
 * Do not include issue numbers in the PR title
 * Include screenshots and animated GIFs in your pull request whenever possible
 * Follow the [JavaScript](#javascript-styleguide) styleguide
-compatibility/)
 
 ## Styleguides
 We like to keep things consistent! Here are some style guides we try to follow. Nobody's perfect but please keep these in mind when contributing.
