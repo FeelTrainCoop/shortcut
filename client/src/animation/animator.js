@@ -305,7 +305,7 @@ Animator.prototype = {
 
       // account for the fact that some "words" from our transcript selection actually have spaces in them
       var wordsWithSpacesSoFar = words.slice(0, wordIndex)
-        .map(function(word) { return word.text })
+        .map(function(word) { return word.text.trim() })
         .reduce(function(prevVal, val){ return prevVal + (val.match(/ /g) || []).length - (val.indexOf(' ') === 0 ? 1 : 0)}, 0);
 
       // highlight words so far
