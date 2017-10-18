@@ -837,50 +837,14 @@ class AppComponent extends React.Component {
           <div className="content">
             <div className="about-page">
               <h1>About Shortcut</h1>
-              <p> Shortcut is a web app that lets you quickly and easily turn your favorite podcast moments into personalized, animated, and transcribed videos that can be shared to social media with just one click.</p>
-              <p> Shortcut was prompted by our desire to make creating and sharing audio content as easy as sharing visual content. Most people discover video and print online by way of small segments that are easy to share on social media: gifs, reaction images, highlighted and screencapped sections of text. We believe the fact that podcasts can't easily be snipped and shared online is inhibiting the growth of the podcast industry, and Shortcut is a prototype that explores how we can make that process intuitive, easy, and fun.  </p>
-              <p> This prototype is based around the archives of This American Life. The codebase for Shortcut will be open-sourced, meaning any podcast creator can set it up for their own archives and allow their fans a new avenue to express their fandom. <a className="about__email" href="http://thisamericanlife.us2.list-manage.com/subscribe?u=231d7e24815c65f94bf421633&id=b22b938c5e" target="_blank">Contact us</a> if you’re interested in setting Shortcut up for your own podcast or audio project.</p>
-              <h2>Acknowledgements</h2>
-              <p> Shortcut is created by This American Life, with support from the Knight Prototype Fund, an initiative of the John S. and James L. Knight Foundation, and the Tow Center for Digital Journalism at the Columbia University Graduate School of Journalism. It was conceived at This American Life's Audio Hackathon 2015. </p>
-              <h3>Shortcut's Team</h3>
-              <p>
-                <ul>
-                  <li>Stephanie Foo - Project Lead</li>
-                  <li>Courtney Stanton - Project Manager</li>
-                  <li>Darius Kazemi - Developer</li>
-                  <li>Jason Sigal - Developer</li>
-                  <li>Jane Friedhoff - UX Designer</li>
-                  <li>Dalit Shalom - UI Designer</li>
-                  <li>Eve Weinberg - Motion Graphics</li>
-                </ul>
-              </p>
-              <h3>Special Thanks</h3>
-                <ul>Seth Lind, Rich Orris, Elise Bergerson, Ira Glass, Elizabeth Hansen and Claire Wardle.</ul>
-                <ul>Transcripts provided by <a href="http://www.3playmedia.com/" target="_blank">3Play Media</a></ul>
+              <p>You can put your About text here!</p>
               <h3>Open Source</h3>
                 <ul><li>
-                  Shortcut was developed with open source libraries and we would like to extend special thanks to the following:
-                </li></ul>
-                <ul>
-                  <li><a target="_blank" href="https://github.com/caffeinalab/siriwavejs">SiriWave.js</a> <small><a target="_blank" href="https://github.com/caffeinalab/siriwavejs/blob/master/LICENSE">© Caffeina, (MIT License) </a></small></li>
-                  <li><a target="_blank" href="https://ffmpeg.org">FFmpeg</a><small>, <a target="_blank" href="https://ffmpeg.org">a trademark of Fabrice Bellard, and libraries from the FFmpeg project </a> <a target="_blank" href="http://www.gnu.org/licenses/gpl.html">(GPL)</a></small></li>
-                  <li><a target="_blank" href="https://github.com/Automattic/node-canvas">Node-Canvas</a> <small><a target="_blank" href="https://github.com/Automattic/node-canvas#license">© LearnBoost Automattic, Inc and contributors (MIT License)</a></small></li>
-                  <li><a target="_blank" href="https://github.com/dailymotion/hls.js">Hls.js</a> <small><a target="_blank" href="https://github.com/dailymotion/hls.js/blob/master/LICENSE" target="_blank">© DailyMotion (Apache License)</a></small></li>
-                  <li><a target="_blank" href="http://paperjs.org/">Paper.js</a> <small><a target="_blank" href="https://github.com/paperjs/paper.js/blob/develop/LICENSE.txt">© Juerg Lehni & Jonathan Puckey (MIT License)</a></small></li>
-                  <li><a target="_blank" href="material-ui.com/#/">Material-ui</a> <small><a target="_blank" href="https://github.com/callemall/material-ui/blob/master/LICENSE">© Call-Em-All (MIT License)</a></small></li>
-                  <li><a target="_blank" href="http://passportjs.org/">Passport</a> <small><a target="_blank" href="https://github.com/jaredhanson/passport#license">© Jared Hanson (MIT License)</a></small></li>
-                  <li><a target="_blank" href="https://facebook.github.io/react/">React</a> <small><a target="_blank" href="https://github.com/facebook/react/blob/master/LICENSE">© Facebook, Inc (BSD License)</a></small></li>
-                  <li><a target="_blank" href="http://jedwatson.github.io/react-tappable/">React Tappable</a> <small><a target="_blank" href="https://github.com/JedWatson/react-tappable/blob/master/LICENSE">© Jed Watson (MIT License)</a></small></li>
-                  <li><a target="_blank" href="https://github.com/seatgeek/react-infinite">React Infinite</a> <small><a target="_blank" href="https://github.com/seatgeek/react-infinite">© SeatGeek, Inc. (BSD-3 License)</a></small></li>
-                  <li><a target="_blank" href="https://serverless.com/">Serverless</a> <small><a target="_blank"href="https://github.com/serverless/serverless/blob/master/LICENSE.txt">© 2016 Serverless, Inc. (MIT License)</a></small></li>
-                  <li><a target="_blank" href="https://www.cairographics.org/">Cairo Graphics</a> <small><a target="_blank" href="https://www.mozilla.org/en-US/MPL/1.1/">© Cairo contributors, Mozilla Public License</a></small></li>
-                </ul>
-                <ul><li>
-                  We look forward to contributing to the open source and audio communities. <a className="about__email" href="http://thisamericanlife.us2.list-manage.com/subscribe?u=231d7e24815c65f94bf421633&id=b22b938c5e" target="_blank">Let us know</a> if you'd like to follow or help support the open source road map.
+                  Shortcut is open source! You can view the source code, file bugs, and contribute code and documentation <a href="https://github.com/FeelTrainCoop/shortcut">at our Github repo</a>.
                 </li></ul>
 
               <footer>
-                <a href="http://www.thisamericanlife.org/page/terms-of-use" target="_blank">Terms of Use</a> | <a href="http://www.thisamericanlife.org/page/privacy-policy" target="_blank">Privacy Policy</a>
+                <p>Feel free to put a footer here.</p>
               </footer>
             </div>
           </div>
