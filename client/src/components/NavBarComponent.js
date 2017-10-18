@@ -74,30 +74,39 @@ class NavBarComponent extends React.PureComponent {
           <Typography type="title" color="inherit" className="title-bar">
             <img src={shortcutLogo} className="shortcut-logo" alt="Shortcut"/>
           </Typography>
-          <Button
-            color="contrast"
-            onClick={this.handleTouchTap.bind(this)}
-          >
-            Connect
-          </Button>
-          <Menu
-            open={this.state.open}
-            anchorEl={this.state.anchorEl}
-            onRequestClose={this.handleRequestClose.bind(this)}
-          >
-            <MenuItem className="login-row-menu">
-              <LoginTwitterComponent
-                twName={this.props.twName}
-                twLogout={this.props.twLogout}
-              />
-            </MenuItem>
-            <MenuItem className="login-row-menu">
-              <LoginFacebookComponent
-                fbName={this.props.fbName}
-                fbLogout={this.props.fbLogout}
-              />
-            </MenuItem>
-          </Menu>
+          <div className="nav-buttons">
+            <Button
+              color="contrast"
+              href="/#/about"
+            >
+              About
+            </Button>
+            <Button
+              color="contrast"
+              onClick={this.handleTouchTap.bind(this)}
+            >
+              Connect
+            </Button>
+            <Menu
+              open={this.state.open}
+              anchorEl={this.state.anchorEl}
+              onRequestClose={this.handleRequestClose.bind(this)}
+            >
+              <MenuItem className="login-row-menu">
+                <LoginTwitterComponent
+                  twName={this.props.twName}
+                  twLogout={this.props.twLogout}
+                />
+              </MenuItem>
+              <MenuItem className="login-row-menu">
+                <LoginFacebookComponent
+                  fbName={this.props.fbName}
+                  fbLogout={this.props.fbLogout}
+                />
+              </MenuItem>
+            </Menu>
+          </div>
+          <a href="http://thisamericanlife.org"><img src={talLogo} className="tal-logo" alt="This American Life"/></a>
         </Toolbar>
       </AppBar>
     </div>
