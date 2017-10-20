@@ -14,7 +14,7 @@ const SubheadComponent = (props) => {
     <IconButton
       href={props.prev}
     >
-      <KeyboardArrowLeft/>
+      <KeyboardArrowLeft className="key-left-icon"/>
     </IconButton>
     <h2 className="">{props.heading}</h2>
 

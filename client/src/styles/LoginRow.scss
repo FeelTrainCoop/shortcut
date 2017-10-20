@@ -1,2 +1,31 @@
 @import '_variables';
 
+.login-row-menu {
+  -webkit-appearance: none !important;
+  width: 280px !important;
+  padding: 0px !important;
+  color: white !important;
+}
+.loginrow-component {
+  cursor: pointer;
+  h3 {
+    padding: 0px;
+    padding-left: 0px;
+    color: $secondary-color-text;
+  }
+
+  a {
+    text-decoration: none;
+    display: block;
+  }
+  svg {
+    fill: white !important;
+  }
+  .logout {
+    display: inline-block;
+    margin-left: 10px;
+    position: absolute;
+    top: 11px;
+    right: 20px;
+  }
+}

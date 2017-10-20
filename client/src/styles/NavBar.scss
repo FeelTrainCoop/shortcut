@@ -20,3 +20,13 @@
     margin-right: 60px;
   }
 }
+
+.nav-drawer > div {
+  background-color: $secondary-color;
+  width: 280px;
+
+  hr {
+    background-color: $secondary-color-light;
+  }
+
+}

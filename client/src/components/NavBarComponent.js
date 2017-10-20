@@ -3,12 +3,18 @@
 import React from 'react';
 import { hashHistory } from 'react-router'
 
-import {AppBar, Button, Drawer, IconButton, Menu, MenuItem, Toolbar, Typography} from 'material-ui';
+import {AppBar, Button, Drawer, Divider, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar, Typography} from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 import MenuIcon from 'material-ui-icons/Menu';
+import HomeIcon from 'material-ui-icons/Home';
+import InfoIcon from 'material-ui-icons/Info';
+import LinkIcon from 'material-ui-icons/Link';
+
 import { Link } from 'react-router'
 import LoginTwitterComponent from './LoginTwitterComponent';
 import LoginFacebookComponent from './LoginFacebookComponent';
+const parentSiteName = require('config').default.parentSiteName;
+const parentSiteUrl = require('config').default.parentSiteUrl;
 
 require('styles//NavBar.scss');
 
@@ -54,11 +60,23 @@ class NavBarComponent extends React.PureComponent {
   }
 
   toggleAbout(e) {
+    this.setState({
+      drawerOpen: false
+    });
     if (this.props.view !== 'about') {
       hashHistory.push('/about/');
     } else {
       hashHistory.goBack();
     }
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  handleHome(e) {
+    this.setState({
+      drawerOpen: false
+    });
+    hashHistory.push('/');
     e.preventDefault();
     e.stopPropagation();
   }
@@ -71,44 +89,121 @@ class NavBarComponent extends React.PureComponent {
         position="static"
       >
         <Toolbar>
-          <Typography type="title" color="inherit" className="title-bar">
-            <img src={shortcutLogo} className="shortcut-logo" alt="Shortcut"/>
-          </Typography>
-          <div className="nav-buttons">
-            <Button
+          <Hidden mdUp>
+            <IconButton
               color="contrast"
-              href="/#/about"
+              aria-label="open drawer"
+              onClick={this.handleToggleDrawer.bind(this)}
+              className="menu-toggle"
             >
-              About
-            </Button>
-            <Button
-              color="contrast"
-              onClick={this.handleTouchTap.bind(this)}
-            >
-              Connect
-            </Button>
-            <Menu
-              open={this.state.open}
-              anchorEl={this.state.anchorEl}
-              onRequestClose={this.handleRequestClose.bind(this)}
-            >
-              <MenuItem className="login-row-menu">
-                <LoginTwitterComponent
-                  twName={this.props.twName}
-                  twLogout={this.props.twLogout}
-                />
-              </MenuItem>
-              <MenuItem className="login-row-menu">
-                <LoginFacebookComponent
-                  fbName={this.props.fbName}
-                  fbLogout={this.props.fbLogout}
-                />
-              </MenuItem>
-            </Menu>
-          </div>
-          <a href="http://thisamericanlife.org"><img src={talLogo} className="tal-logo" alt="This American Life"/></a>
+              <MenuIcon />
+            </IconButton>
+          </Hidden>
+          <Hidden smDown>
+            <Typography type="title" color="inherit" className="title-bar">
+              <img src={shortcutLogo} className="shortcut-logo" alt="Shortcut"/>
+            </Typography>
+          </Hidden>
+          <Hidden smDown>
+            <div className="nav-buttons">
+              <Button
+                color="contrast"
+                href="/#/about"
+                onClick={this.toggleAbout.bind(this)}
+              >
+                About
+              </Button>
+              <Button
+                color="contrast"
+                onClick={this.handleTouchTap.bind(this)}
+              >
+                Connect
+              </Button>
+              <Menu
+                open={this.state.open}
+                anchorEl={this.state.anchorEl}
+                onRequestClose={this.handleRequestClose.bind(this)}
+              >
+                <MenuItem className="login-row-menu">
+                  <LoginTwitterComponent
+                    twName={this.props.twName}
+                    twLogout={this.props.twLogout}
+                  />
+                </MenuItem>
+                <MenuItem className="login-row-menu">
+                  <LoginFacebookComponent
+                    fbName={this.props.fbName}
+                    fbLogout={this.props.fbLogout}
+                  />
+                </MenuItem>
+              </Menu>
+            </div>
+          </Hidden>
         </Toolbar>
       </AppBar>
+      <Drawer
+        className="nav-drawer"
+        open={this.state.drawerOpen}
+        onRequestClose={(drawerOpen) => this.setState({drawerOpen})}
+      >
+        <div className="navbar-component">
+          <AppBar
+            classes={{ colorPrimary: this.props.classes.colorPrimary }}
+            position="static"
+          >
+            <Toolbar>
+              <IconButton
+                color="contrast"
+                aria-label="open drawer"
+                onClick={this.handleToggleDrawer.bind(this)}
+                className="menu-toggle"
+              >
+                <MenuIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+        </div>
+        <List>
+          <LoginTwitterComponent
+            twName={this.props.twName}
+            twLogout={this.props.twLogout}
+            />
+          <Divider/>
+          <LoginFacebookComponent
+            fbName={this.props.fbName}
+            fbLogout={this.props.fbLogout}
+            />
+          <Divider/>
+          <ListItem className="loginrow-component"
+            href="/#/"
+            onClick={this.handleHome.bind(this)}
+          >
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+          <Divider/>
+          <ListItem className="loginrow-component"
+            onClick={this.toggleAbout.bind(this)}
+          >
+            <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon>
+            <ListItemText primary="About" />
+          </ListItem>
+          <Divider/>
+          <a href={parentSiteUrl}>
+            <ListItem className="loginrow-component"
+            >
+              <ListItemIcon>
+                <LinkIcon />
+              </ListItemIcon>
+              <ListItemText primary={parentSiteName} />
+            </ListItem>
+          </a>
+        </List>
+      </Drawer>
     </div>
     );
   }

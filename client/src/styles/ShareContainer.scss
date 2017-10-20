@@ -123,7 +123,7 @@
 
     @media screen and (max-width:$break-s) {
       position: absolute;
-      top: 120px;
+      top: 155px;
       z-index: 100;
       width: 100%;
       text-align: center;
@@ -140,7 +140,6 @@
       right: 0;
       left: 0;
       margin: auto;
-      border: 1px rgba(0,0,0,0.5) solid;
       background-color: white;
 
       & .suggested-item {
@@ -184,31 +183,33 @@
   }
 
   .social-textarea {
-    display: block !important;
-    margin: -14px auto 0px !important;
-    width: 90% !important;
-    > div {
-      width: 100%;
+    font-size: 16px;
+    border: 1px solid black;
+    width: 90%;
+    margin: 0 auto;
+    display: block;
+
+    > label {
+      top: -20px;
+      left: 5px;
+      color: $secondary-color !important;
     }
-    label {
-      display: inline-block;
-      font-size: 18px;
-      color: darken($body-background, 20%) !important;
-      padding-left: 5px !important;
-      // margin-top: -5px !important;
+
+    > div {
+      margin: 5px;
+      width: 90%;
+      &:before {
+        display: none;
+      }
+      &:after {
+        display: none;
+      }
     }
   }
+
   .social-textarea > div > textarea {
-    background-color: #eee !important;
-    padding: 10px !important;
-    margin: 0 auto;
-    height: 100px !important;
-
     @media screen and (max-width: $break-s) {
-      border: 1px rgba(0,0,0,0.5) solid !important;
-      background: white !important;
     }
-
   }
   .social-toggle-container {
     width: 100%;

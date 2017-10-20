@@ -112,6 +112,10 @@ class ShareContainerComponent extends React.Component {
               <TextField
                 className="social-textarea"
                 // defaultValue={this.state.defaultSocialMessage}
+                label={this.state
+                  ? (this.state.charsUsed + 140 - tweetMaxChars) + '/' + 140
+                  : 0
+                }
                 placeholder={this.state
                   ? (this.state.charsUsed + 140 - tweetMaxChars) + '/' + 140
                   : 0
