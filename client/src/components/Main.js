@@ -13,6 +13,7 @@ const minClipSeconds = require('config').default.minClipSeconds;
 const env = require('config').default.appEnv;
 const s3Region = require('config').default.s3Region;
 const s3Bucket = require('config').default.s3Bucket;
+const cloudFrontDomain = require('config').default.cloudFrontDomain;
 
 let tapMsg = {
   start: 'Tap a word to begin selection',
@@ -269,7 +270,12 @@ class AppComponent extends React.Component {
   }
   _loadEpisodeChunk(showNumber, signedURL, shouldCache) {
     let path = `https://s3-${s3Region}.amazonaws.com/${s3Bucket}/episodes/${showNumber}-data.json`;
-    if (signedURL) path = signedURL;
+    if (cloudFrontDomain) {
+      path = `https://${cloudFrontDomain}/episodes/${showNumber}-data.json`;
+    }
+    if (signedURL) {
+      path = signedURL;
+    }
 
     // check to see if episode is available
     if (this.state.episodesWithProblems.indexOf(Number(showNumber)) > -1) {
