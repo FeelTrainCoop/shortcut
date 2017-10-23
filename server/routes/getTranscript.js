@@ -8,26 +8,37 @@ module.exports = {
 
   go: function(episodeNumber, startTime, endTime, cb) {
     const episodeDataURL = `${dataBucket}${episodeNumber}/${episodeNumber}.json`;
+    const episodesURL = `${dataBucket}episodes.json`;
 
     request.get({
       url: episodeDataURL,
       rejectUnauthorized: false
       }, function(err, response, body) {
-      episodeDataCallback(err, body, startTime, endTime, episodeNumber, cb);
+      request.get({
+        url: episodesURL,
+        rejectUnauthorized: false
+        }, function(err, response, episodesBody) {
+        episodeDataCallback(err, body, startTime, endTime, episodeNumber, episodesBody, cb);
+      });
     });
   }
 
 };
 
-function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, cb) {
+function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, episodesBody, cb) {
   if (err) console.log('error', err);
   const showData = JSON.parse(body);
+  const episodesData = JSON.parse(episodesBody);
+  const episodeData = episodesData.filter(episode => episode.number === episodeNumber)[0];
 
   if (!showData.duration) {
     showData.duration = Math.round(showData.words[showData.words.length-1].end);
   }
   showData.number = episodeNumber;
   showData.hls = `${dataBucket}${episodeNumber}/${episodeNumber}.m3u8`;
+  showData.description = episodeData.description;
+  showData.title = episodeData.title;
+  showData.original_air_date = episodeData.original_air_date;
 
   // not currently in use but may be useful in the future
   const startTime = _startTime || 0;
@@ -94,25 +105,3 @@ function decodeHTMLEntities(text) {
 
     return text;
 }
-
-// getEpisodeData: function(episodePath, cb) {
-//   request(episodePath, function(error, response, body) {
-//     var data = JSON.parse(body);
-
-//     var showData = {
-//       title: data.body,
-//       url: data.url,
-//       photo: data.photo,
-//       thumbnail: data.thumbnail,
-//       description: data.description,
-//       number: data.number,
-//       hls: data.hls,
-//       duration: data.duration,
-//       id: data.id,
-//     };
-
-//     console.log('got episode data');
-
-//     cb(error, showData);
-//   });
-// }
