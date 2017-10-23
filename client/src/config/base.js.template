@@ -1,0 +1,16 @@
+'use strict';
+
+// Settings configured here will be merged into the final config object.
+export default {
+  parentSiteName: 'YOUR WEBSITE',
+  parentSiteUrl: 'https://example.com',
+  maxClipSeconds: 30,
+  minClipSeconds: 0.51,
+  analyticsPropertyId: '', // your gAnalytics ID
+  s3Region: 'us-west-2',
+  s3Bucket: 'shortcut-getting-started',
+  // Uncomment this and add your cloudFront domain to enable Amazon Cloudfront CDN,
+  // make sure to have CORS headers whitelisted!
+  // cloudFrontDomain: 'dxxxxxxxxxx.cloudfront.net',
+  episodesWithProblems: []
+}
