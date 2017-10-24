@@ -34,10 +34,6 @@ node_modules
 
 # env variables
 .env
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
 
 *marko.js
 
