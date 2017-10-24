@@ -371,7 +371,6 @@ class ClippingContainer extends React.PureComponent {
 
 
   scrubberChange(isVertical, value) {
-    console.log("ARG",arguments);
     if (isVertical !== 'vertical') {
       value = isVertical;
     }
