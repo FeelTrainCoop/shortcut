@@ -21,6 +21,10 @@ function getDefaultModules() {
         exclude: /flexboxgrid/
       },
       {
+        test: /\.template$/,
+        loader: 'ignore-loader'
+      },
+      {
         test: /\.sass/,
         loader: 'style-loader!css-loader!postcss-loader!sass-loader?outputStyle=expanded&indentedSyntax'
       },

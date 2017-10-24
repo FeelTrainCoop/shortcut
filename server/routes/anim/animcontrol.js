@@ -16,7 +16,7 @@ const path = require('path');
 const data = fs.readFileSync(__dirname+'/../../../client/src/images/animation-footer.png', 'binary');
 const buf = new Buffer(data, 'binary');
 const string = buf.toString('base64');
-const footerImgBase64 = 'data:image/png;base64'+string;
+const footerImgBase64 = 'data:image/png;base64,'+string;
 
 const tempDir = process.env['TEMP'] || '/tmp';
 
