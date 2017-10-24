@@ -711,12 +711,12 @@ class AppComponent extends React.Component {
       let heading;
       let text = curVal[1];
 
-      // split heading (i.e. "ACT 1: ..."or "IRA GLASS: This" )
-      if (curVal[1].indexOf(':') > -1 && !jQuery.isNumeric(curVal[1].split(':')[0]) ) {
-        let textSplit = curVal[1].split(':');
-        heading = textSplit[0];
-        text = textSplit[1];
-      }
+      //// split heading (i.e. "ACT 1: ..."or "IRA GLASS: This" )
+      //if (curVal[1].indexOf(':') > -1 && !jQuery.isNumeric(curVal[1].split(':')[0]) ) {
+      //  let textSplit = curVal[1].split(':');
+      //  heading = textSplit[0];
+      //  text = textSplit[1];
+      //}
 
       return reducedWords[curVal[0]] = {
         start: startTime,
@@ -731,10 +731,11 @@ class AppComponent extends React.Component {
 
     var reducedParagraphs = {};
 
+    paragraphMillis.unshift(0);
     paragraphMillis.reduce( (prevVal, curVal, curIndex) => {
       let endTime = parseInt( paragraphMillis[curIndex + 1] || curVal + 10000 );
       let startTime = parseInt(curVal);
-      let wordsInRange = this.findWordsInRange(startTime, endTime, reducedWords, wordStartTimeArray);
+      let wordsInRange = this.findWordsInRange(startTime, endTime, reducedWords, wordStartTimeArray, true);
       if (wordsInRange.length === 0) return false;
       return reducedParagraphs[curVal] = {
         start: startTime,
@@ -749,7 +750,8 @@ class AppComponent extends React.Component {
       this.state.regionStart * 1000,
       this.state.regionEnd * 1000,
       reducedWords,
-      wordStartTimeArray
+      wordStartTimeArray,
+      true
     );
 
     console.log(reducedWords, reducedParagraphs);
@@ -772,14 +774,21 @@ class AppComponent extends React.Component {
   * @param {Array} _words A `wordMillis` array of strings of numerical values, each corresponding to the offset in milliseconds of a word in the transcript.
   * @returns {Object[]} Array of {@link AppComponent#word|words} that occur between two points in time.
   */
-  findWordsInRange(startTime, endTime, _reducedWords, _words) {
+  findWordsInRange(startTime, endTime, _reducedWords, _words, paragraphSplitting) {
     if (startTime === endTime) return [];
     const reducedWords = _reducedWords || this.state.wordDictionary;
     const wordStartTimeArray = _words || Object.keys(reducedWords) || this.state.wordMillis;
 
     return wordStartTimeArray.filter(function(wordStart) {
       let testWord = reducedWords[wordStart];
-      return startTime < testWord.end && endTime > testWord.start;
+      // we handle this function differently if we're looking to split paragraphs up than
+      // if we're looking to find words to render for animation
+      if (paragraphSplitting) {
+        return startTime < testWord.start && endTime >= testWord.start;
+      }
+      else {
+        return startTime < testWord.end && endTime > testWord.start;
+      }
     }).map(function(start) {
       return reducedWords[start];
     });
