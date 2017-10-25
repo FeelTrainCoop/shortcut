@@ -820,7 +820,7 @@ class AppComponent extends React.Component {
 
     jQuery.ajax({
       method: 'GET',
-      url: '/recent?page=' + page,
+      url: apiEndpoint_default+'/recent?page=' + page,
       cache: true,
       crossDomain : false,
       headers: {'X-Requested-With': 'XMLHttpRequest'},

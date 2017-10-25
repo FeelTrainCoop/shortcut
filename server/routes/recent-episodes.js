@@ -10,6 +10,8 @@ module.exports = function(req, res) {
   } else {
     const page = Number(req.query.page) || 0;
     const startIndex = page * perPage;
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.status(200);
     res.send(recentEpisodes.slice(startIndex, startIndex + perPage));
   }

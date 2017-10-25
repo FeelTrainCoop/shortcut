@@ -44,7 +44,8 @@ app.use(session({
 }));
 
 // get recent episodes to display on main page
-app.get('/recent', routes.recentEpisodes);
+app.options('/recent', cors());
+app.get('/recent', cors(), routes.recentEpisodes);
 
 // seach episode data (not currently used)
 app.get('/search', routes.search);
