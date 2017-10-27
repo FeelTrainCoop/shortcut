@@ -5,8 +5,9 @@ require('styles/App.scss');
 const jQuery = require('jquery');
 const Store = require('store'); // localStorage
 
-const apiEndpoint_default = require('config').default.apiEndpoint;
-const apiEndpoint_backup = require('config').default.apiEndpointBackup;
+const isSecure =  window.location.protocol == 'https:';
+const apiEndpoint_default = isSecure ? require('config').default.apiEndpointSsl : require('config').default.apiEndpoint;
+console.log(isSecure, apiEndpoint_default);
 const dataBucket = require('config').default.dataBucket;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
@@ -27,9 +28,6 @@ let tapMsg = {
 };
 
 let colorOption = undefined;
-
-// use backup API in case Lambda goes down in our default region
-let useBackupAPI = false;
 
 import React from 'react';
 import { hashHistory } from 'react-router'
@@ -545,13 +543,7 @@ class AppComponent extends React.Component {
         });
       },
       error: (err) => {
-        if (!useBackupAPI) {
-          console.log('use backup');
-          useBackupAPI = true;
-          this.createVideo(data);
-        } else {
-          handleError(err.responseText ? JSON.parse(err.responseText) : err);
-        }
+        handleError(err.responseText ? JSON.parse(err.responseText) : err);
       }
     });
   }
@@ -559,7 +551,7 @@ class AppComponent extends React.Component {
   /** POST request to post to social media on Lambda, triggered when user clicks the "Preview" button in {@link ShareContainerComponent|ShareContainer}.*/
   createSocialMedia(data) {
     var that = this;
-    let apiEndpoint = useBackupAPI ? apiEndpoint_backup : apiEndpoint_default;
+    let apiEndpoint = apiEndpoint_default;
 
     this.setState({
       view: 'creatingSocialMedia'
@@ -623,13 +615,7 @@ class AppComponent extends React.Component {
         });
       },
       error: (err) => {
-        if (!useBackupAPI) {
-          console.log('use backup');
-          useBackupAPI = true;
-          this.createSocialMedia(data);
-        } else {
-          handleError(err.responseText ? JSON.parse(err.responseText) : err);
-        }
+        handleError(err.responseText ? JSON.parse(err.responseText) : err);
       }
     });
   }

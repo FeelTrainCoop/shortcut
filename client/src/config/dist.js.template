@@ -5,7 +5,9 @@ import baseConfig from './base';
 let config = {
   appEnv: 'dist',
   authServer: 'http://localhost:3000',
+  authServerSsl: 'https://localhost:8443',
   apiEndpoint: 'http://localhost:3000',
+  apiEndpointSsl: 'https://localhost:8443',
   dataBucket: 'http://localhost:8080/',
   analyticsPropertyId: '' // your gAnalytics ID
 };

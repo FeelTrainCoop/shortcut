@@ -12,7 +12,8 @@ const leftIconStyles = {
 
 require('styles//LoginRow.scss');
 
-const authRoute = require('config').default.authServer + '/auth/facebook';
+const isSecure =  window.location.protocol == 'https:';
+const authRoute = isSecure ? require('config').default.authServerSsl + '/auth/facebook' : require('config').default.authServer + '/auth/facebook';
 
 const LoginFacebookComponent = (props) => {
   if (props.fbName) {

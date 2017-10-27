@@ -4,6 +4,7 @@
 require('dotenv').config();
 
 const express = require('express'),
+  fs = require('fs'),
   http = require('http'),
   https = require('https'),
   compression = require('compression'),
@@ -153,6 +154,6 @@ app.use(function(req, res, next) {
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-https.createServer(app).listen(sslOptions, app.get('port-https'), function(){
-  console.log('Express https server listening on port ' + app.get('port'));
+https.createServer(sslOptions, app).listen(app.get('port-https'), function(){
+  console.log('Express https server listening on port ' + app.get('port-https'));
 });
