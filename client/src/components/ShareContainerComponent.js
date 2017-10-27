@@ -21,6 +21,7 @@ import Config from '../../cfg/master';
 const moment = require('moment');
 const Store = require('store'); // localStorage
 const tweetMaxChars = 115;
+const isSecure =  window.location.protocol == 'https:';
 
 const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
 // Style override for toggle switch
@@ -260,7 +261,7 @@ class ShareContainerComponent extends React.Component {
     const disabled = !this.props.twAuth ? true : false;
 
     if (disabled) {
-      window.open(require('config').default.authServer + '/auth/twitter', '_blank');
+      isSecure ? window.open(require('config').default.authServerSsl + '/auth/twitter', '_blank') : window.open(require('config').default.authServer + '/auth/twitter', '_blank');
       e.preventDefault();
       e.stopPropagation();
       return;
@@ -275,7 +276,7 @@ class ShareContainerComponent extends React.Component {
     const disabled = !this.props.fbAuth ? true : false;
 
     if (disabled) {
-      window.open(require('config').default.authServer + '/auth/facebook', '_blank');
+      isSecure ? window.open(require('config').default.authServerSsl + '/auth/facebook', '_blank') : window.open(require('config').default.authServer + '/auth/facebook', '_blank');
       e.preventDefault();
       e.stopPropagation();
       return;

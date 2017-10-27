@@ -7,7 +7,8 @@ import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 
 require('styles//LoginRow.scss');
 
-const authRoute = require('config').default.authServer + '/auth/twitter';
+const isSecure =  window.location.protocol == 'https:';
+const authRoute = isSecure ? require('config').default.authServerSsl + '/auth/twitter' : require('config').default.authServer + '/auth/twitter';
 
 const LoginTwitterComponent = (props) => {
   if (props.twName) {

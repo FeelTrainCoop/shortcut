@@ -1,10 +1,12 @@
 'use strict';
 
-// load env variables (for development)
+// load .env variables (for development)
 require('dotenv').config();
 
 const express = require('express'),
+  fs = require('fs'),
   http = require('http'),
+  https = require('https'),
   compression = require('compression'),
   cookieParser = require('cookie-parser'),
   errorHandler = require('errorhandler'),
@@ -12,6 +14,11 @@ const express = require('express'),
   helmet = require('helmet'),
   bodyParser = require('body-parser'),
   cors = require('cors');
+
+const sslOptions = {
+  key: fs.readFileSync(process.env.SSL_KEY),
+  cert: fs.readFileSync(process.env.SSL_CERT)
+};
 
 // template with marko https://github.com/marko-js/marko
 require('marko/express');
@@ -25,6 +32,7 @@ const passportMiddleware = require('./auth/passport-middleware.js');
 
 // all environments
 app.set('port', process.env.PORT || 3000);
+app.set('port-https', process.env.PORT_HTTPS || 8443);
 app.use(compression());
 app.disable('x-powered-by');
 app.use(bodyParser.json()); // support json encoded bodies
@@ -145,4 +153,7 @@ app.use(function(req, res, next) {
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
+});
+https.createServer(sslOptions, app).listen(app.get('port-https'), function(){
+  console.log('Express https server listening on port ' + app.get('port-https'));
 });
