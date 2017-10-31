@@ -120,22 +120,19 @@ class NavBarComponent extends React.PureComponent {
                 Connect
               </Button>
               <Menu
+                className="xl-menu"
                 open={this.state.open}
                 anchorEl={this.state.anchorEl}
                 onRequestClose={this.handleRequestClose.bind(this)}
               >
-                <MenuItem className="login-row-menu">
-                  <LoginTwitterComponent
-                    twName={this.props.twName}
-                    twLogout={this.props.twLogout}
-                  />
-                </MenuItem>
-                <MenuItem className="login-row-menu">
-                  <LoginFacebookComponent
-                    fbName={this.props.fbName}
-                    fbLogout={this.props.fbLogout}
-                  />
-                </MenuItem>
+                <LoginTwitterComponent
+                  twName={this.props.twName}
+                  twLogout={this.props.twLogout}
+                />
+                <LoginFacebookComponent
+                  fbName={this.props.fbName}
+                  fbLogout={this.props.fbLogout}
+                />
               </Menu>
             </div>
           </Hidden>

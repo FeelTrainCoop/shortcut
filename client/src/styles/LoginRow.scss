@@ -1,17 +1,14 @@
 @import '_variables';
 
-.login-row-menu {
-  -webkit-appearance: none !important;
-  width: 280px !important;
-  padding: 0px !important;
-  color: white !important;
-}
 .loginrow-component {
+  > li:hover {
+    background-color: rgba(0,0,0,0);
+  }
   cursor: pointer;
   h3 {
     padding: 0px;
     padding-left: 0px;
-    color: $secondary-color-text;
+    color: $secondary-color-text !important;
   }
 
   a {
@@ -19,7 +16,7 @@
     display: block;
   }
   svg {
-    fill: white !important;
+    fill: $secondary-color-text !important;
   }
   .logout {
     display: inline-block;

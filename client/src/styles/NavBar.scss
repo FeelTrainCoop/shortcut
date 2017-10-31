@@ -1,5 +1,9 @@
 @import '_variables';
 
+.xl-menu {
+  background-color: $secondary-color !important;
+}
+
 .navbar-component {
   .title-bar {
     flex: 1;
@@ -23,6 +27,7 @@
 
 .nav-drawer > div {
   background-color: $secondary-color;
+  color: $secondary-color-text;
   width: 280px;
 
   hr {
