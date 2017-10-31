@@ -15,10 +15,20 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   cors = require('cors');
 
-const sslOptions = {
-  key: fs.readFileSync(process.env.SSL_KEY),
-  cert: fs.readFileSync(process.env.SSL_CERT)
-};
+let sslOptions = undefined;
+try {
+  sslOptions = {
+    key: fs.readFileSync(process.env.SSL_KEY),
+    cert: fs.readFileSync(process.env.SSL_CERT)
+  };
+} catch(err) {
+  if (err.errno === -2) {
+    console.log('No SSL key and/or cert found, not enabling https server');
+  }
+  else {
+    console.log(err);
+  }
+}
 
 // template with marko https://github.com/marko-js/marko
 require('marko/express');
@@ -154,6 +164,8 @@ app.use(function(req, res, next) {
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-https.createServer(sslOptions, app).listen(app.get('port-https'), function(){
-  console.log('Express https server listening on port ' + app.get('port-https'));
-});
+if (sslOptions) {
+  https.createServer(sslOptions, app).listen(app.get('port-https'), function(){
+    console.log('Express https server listening on port ' + app.get('port-https'));
+  });
+}
