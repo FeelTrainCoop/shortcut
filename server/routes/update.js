@@ -53,7 +53,11 @@ router.get('/:episodeNumber', function(req, res) {
 
 function addEpisode(episodeNum, callback) {
   const targetWidth = 30000;
-  const mp3Path = `${process.env.DATA_BUCKET}${episodeNum}/${episodeNum}.mp3`;
+  let mp3Path = `${process.env.DATA_BUCKET}${episodeNum}/${episodeNum}.mp3`;
+  if (process.env.API_URL) {
+    mp3Path = process.env.STREAM_URL + episodeNum + '/' + episodeNum + '.mp3';
+  }
+
 
   async.parallel({
     waveform: function(callback) {
