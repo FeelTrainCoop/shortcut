@@ -696,12 +696,12 @@ class AppComponent extends React.Component {
       let heading;
       let text = curVal[1];
 
-      //// split heading (i.e. "ACT 1: ..."or "IRA GLASS: This" )
-      //if (curVal[1].indexOf(':') > -1 && !jQuery.isNumeric(curVal[1].split(':')[0]) ) {
-      //  let textSplit = curVal[1].split(':');
-      //  heading = textSplit[0];
-      //  text = textSplit[1];
-      //}
+      // split heading (i.e. "ACT 1: ..."or "IRA GLASS: This" )
+      if (curVal[1].indexOf(':') > -1 && !jQuery.isNumeric(curVal[1].split(':')[0]) ) {
+        let textSplit = curVal[1].split(':');
+        heading = textSplit[0];
+        text = textSplit[1];
+      }
 
       return reducedWords[curVal[0]] = {
         start: startTime,
