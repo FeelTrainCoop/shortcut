@@ -14,6 +14,7 @@ const env = require('config').default.appEnv;
 const s3Region = require('config').default.s3Region;
 const s3Bucket = require('config').default.s3Bucket;
 const cloudFrontDomain = require('config').default.cloudFrontDomain;
+const speakerNamesInTranscript = require('config').default.speakerNamesInTranscript;
 
 let tapMsg = {
   start: 'Tap a word to begin selection',
@@ -768,7 +769,7 @@ class AppComponent extends React.Component {
       let testWord = reducedWords[wordStart];
       // we handle this function differently if we're looking to split paragraphs up than
       // if we're looking to find words to render for animation
-      if (paragraphSplitting) {
+      if (paragraphSplitting && !speakerNamesInTranscript) {
         return startTime < testWord.start && endTime >= testWord.start;
       }
       else {

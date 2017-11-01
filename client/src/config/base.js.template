@@ -4,6 +4,7 @@
 export default {
   parentSiteName: 'YOUR WEBSITE',
   parentSiteUrl: 'https://example.com',
+  speakerNamesInTranscript: false,
   maxClipSeconds: 30,
   minClipSeconds: 0.51,
   analyticsPropertyId: '', // your gAnalytics ID
