@@ -18,7 +18,7 @@ const parentSiteUrl = require('config').default.parentSiteUrl;
 
 require('styles//NavBar.scss');
 
-const shortcutLogo = require('../images/shortcut-logo.svg');
+const logo = require('../images/logo.svg');
 
 const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
 // Style override for AppBar
@@ -134,6 +134,7 @@ class NavBarComponent extends React.PureComponent {
                   fbLogout={this.props.fbLogout}
                 />
               </Menu>
+              <a href={parentSiteUrl}><img src={logo} className="logo" alt={parentSiteName}/></a>
             </div>
           </Hidden>
         </Toolbar>
