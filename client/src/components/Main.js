@@ -1,5 +1,4 @@
 require('normalize.css/normalize.css');
-require('styles/flama.scss');
 require('styles/App.scss');
 
 const jQuery = require('jquery');
