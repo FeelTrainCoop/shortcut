@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import Wave from './waveform/WaveComponent';
 import WaveRegion from './waveform/WaveRegionComponent';
 import WavePlayhead from './waveform/WavePlayheadComponent';
@@ -453,18 +454,18 @@ ClippingContainer.displayName = 'ClippingContainer';
 
 // Uncomment properties you need
 ClippingContainer.propTypes = {
-  drewPeaks: React.PropTypes.bool,
-  playing: React.PropTypes.bool,
-  pos: React.PropTypes.number,
-  posDisplay: React.PropTypes.string,
-  peaks: React.PropTypes.array,
-  mediaElt: React.PropTypes.string,
-  waveformSelectionChanged: React.PropTypes.func,
-  regionStart: React.PropTypes.number,
-  totalDuration: React.PropTypes.number,
-  clipTooLong: React.PropTypes.bool,
-  onDrewPeaks: React.PropTypes.func,
-  airDate: React.PropTypes.string
+  drewPeaks: PropTypes.bool,
+  playing: PropTypes.bool,
+  pos: PropTypes.number,
+  posDisplay: PropTypes.string,
+  peaks: PropTypes.array,
+  mediaElt: PropTypes.string,
+  waveformSelectionChanged: PropTypes.func,
+  regionStart: PropTypes.number,
+  totalDuration: PropTypes.number,
+  clipTooLong: PropTypes.bool,
+  onDrewPeaks: PropTypes.func,
+  airDate: PropTypes.string
 };
 
 ClippingContainer.defaultProps = {

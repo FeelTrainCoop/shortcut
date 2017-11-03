@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 require('styles/transcript/Word.scss');
 
@@ -34,7 +35,7 @@ WordComponent.displayName = 'TranscriptWordComponent';
 
 // Uncomment properties you need
 WordComponent.propTypes = {
-  tapped: React.PropTypes.bool
+  tapped: PropTypes.bool
 };
 WordComponent.defaultProps = {
   tapped: false

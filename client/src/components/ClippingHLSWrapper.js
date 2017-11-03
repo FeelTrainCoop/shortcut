@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import ClippingContainer from './ClippingContainerComponent';
 
 require('styles/ClippingHLSWrapper.scss');
@@ -174,16 +175,16 @@ class ClippingHLSWrapper extends React.PureComponent {
 ClippingHLSWrapper.displayName = 'ClippingHLSWrapper';
 
 ClippingHLSWrapper.propTypes = {
-  hls: React.PropTypes.string,
-  mediaElt: React.PropTypes.string,
-  peaks: React.PropTypes.array,
-  regionStart: React.PropTypes.number,
-  regionEnd: React.PropTypes.number,
-  totalDuration: React.PropTypes.number,
-  clippingOffset: React.PropTypes.number,
-  clippingDuration: React.PropTypes.number,
-  onDrewPeaks: React.PropTypes.func,
-  drewPeaks: React.PropTypes.bool
+  hls: PropTypes.string,
+  mediaElt: PropTypes.string,
+  peaks: PropTypes.array,
+  regionStart: PropTypes.number,
+  regionEnd: PropTypes.number,
+  totalDuration: PropTypes.number,
+  clippingOffset: PropTypes.number,
+  clippingDuration: PropTypes.number,
+  onDrewPeaks: PropTypes.func,
+  drewPeaks: PropTypes.bool
 };
 
 ClippingHLSWrapper.defaultProps = {

@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import Loader from 'react-loader-advanced';
 import { CircularProgress } from 'material-ui/Progress';
 
@@ -37,8 +38,8 @@ class LoadingAnimationComponent extends React.Component {
 LoadingAnimationComponent.displayName = 'LoadingAnimationComponent';
 
 LoadingAnimationComponent.propTypes = {
-  msg: React.PropTypes.string,
-  show: React.PropTypes.bool
+  msg: PropTypes.string,
+  show: PropTypes.bool
 };
 LoadingAnimationComponent.defaultProps = {
   msg: 'Loading',

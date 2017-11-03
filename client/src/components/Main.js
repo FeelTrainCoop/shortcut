@@ -30,6 +30,7 @@ let tapMsg = {
 let colorOption = undefined;
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { hashHistory } from 'react-router'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
@@ -1003,29 +1004,29 @@ class AppComponent extends React.Component {
 }
 
 AppComponent.propTypes = {
-  wordMillis: React.PropTypes.array,
-  paragraphMillis: React.PropTypes.array,
-  showNumber: React.PropTypes.string,
-  showDuration: React.PropTypes.number,
-  selectedWords: React.PropTypes.array,
-  hls: React.PropTypes.string,
-  peaks: React.PropTypes.array,
-  regionStart: React.PropTypes.number,
-  regionEnd: React.PropTypes.number,
-  pos: React.PropTypes.number,
-  view: React.PropTypes.string,
-  loading: React.PropTypes.bool,
-  videoData: React.PropTypes.object,
-  paragraphDictionary: React.PropTypes.object,
-  wordDictionary: React.PropTypes.object,
-  clipTooLong: React.PropTypes.bool,
-  drewPeaks: React.PropTypes.bool,
-  eps: React.PropTypes.array,
-  episodesWithProblems: React.PropTypes.array,
-  tappedWord: React.PropTypes.string,
-  h: React.PropTypes.string,
-  params: React.PropTypes.shape({
-    showNumber: React.PropTypes.string
+  wordMillis: PropTypes.array,
+  paragraphMillis: PropTypes.array,
+  showNumber: PropTypes.string,
+  showDuration: PropTypes.number,
+  selectedWords: PropTypes.array,
+  hls: PropTypes.string,
+  peaks: PropTypes.array,
+  regionStart: PropTypes.number,
+  regionEnd: PropTypes.number,
+  pos: PropTypes.number,
+  view: PropTypes.string,
+  loading: PropTypes.bool,
+  videoData: PropTypes.object,
+  paragraphDictionary: PropTypes.object,
+  wordDictionary: PropTypes.object,
+  clipTooLong: PropTypes.bool,
+  drewPeaks: PropTypes.bool,
+  eps: PropTypes.array,
+  episodesWithProblems: PropTypes.array,
+  tappedWord: PropTypes.string,
+  h: PropTypes.string,
+  params: PropTypes.shape({
+    showNumber: PropTypes.string
   })
 };
 

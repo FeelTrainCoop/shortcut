@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import PlayCircleFilled from 'material-ui-icons/PlayCircleFilled';
 
 import paper from 'paper';
@@ -266,7 +267,7 @@ PreviewContainerComponent.displayName = 'PreviewContainerComponent';
 
 // Uncomment properties you need
 PreviewContainerComponent.propTypes = {
-  clipTooLong: React.PropTypes.bool
+  clipTooLong: PropTypes.bool
 };
 PreviewContainerComponent.defaultProps = {
   selectedWords: [],

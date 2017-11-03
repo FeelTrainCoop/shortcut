@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import ParagraphComponent from './transcript/ParagraphComponent';
 import Waypoint from 'react-waypoint';
 import Tappable from 'react-tappable/lib/Tappable';
@@ -405,13 +406,13 @@ class TranscriptComponent extends React.Component {
 TranscriptComponent.displayName = 'TranscriptComponent';
 
 TranscriptComponent.propTypes = {
-  paragraphMillis: React.PropTypes.array,
-  paragraphDictionary: React.PropTypes.object,
-  regionStart: React.PropTypes.number,
-  regionEnd: React.PropTypes.number,
-  offset: React.PropTypes.number,
-  loading: React.PropTypes.bool,
-  canScroll: React.PropTypes.bool
+  paragraphMillis: PropTypes.array,
+  paragraphDictionary: PropTypes.object,
+  regionStart: PropTypes.number,
+  regionEnd: PropTypes.number,
+  offset: PropTypes.number,
+  loading: PropTypes.bool,
+  canScroll: PropTypes.bool
 };
 TranscriptComponent.defaultProps = {
   paragraphMillis: [],
