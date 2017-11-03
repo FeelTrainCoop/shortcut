@@ -1,10 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600');
 @import url('https://fonts.googleapis.com/css?family=Oswald:300');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
 
 $body-font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !important;
-$header-font-family: 'Flama-semicondensed-book', Arial, sans-serif;
-$episode-header-font: 'Flama-semicondensed-book', Arial, sans-serif;
-$episode-air-date-font: 'Flama-semicondensed', Arial, sans-serif;
+$header-font-family: 'Open Sans Condensed', Arial, sans-serif;
+$episode-header-font: 'Open Sans Condensed', Arial, sans-serif;
+$episode-air-date-font: 'Open Sans Condensed', Arial, sans-serif;
 $open-sans: 'Open Sans', sans-serif;
 
 // background color of most text areas
