@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { hashHistory } from 'react-router'
 
 import {AppBar, Button, Drawer, Divider, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar, Typography} from 'material-ui';
@@ -18,7 +19,7 @@ const parentSiteUrl = require('config').default.parentSiteUrl;
 
 require('styles//NavBar.scss');
 
-const logo = require('../images/logo.svg');
+const shortcutLogo = require('../images/shortcut-logo.svg');
 
 const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
 // Style override for AppBar
@@ -134,7 +135,6 @@ class NavBarComponent extends React.PureComponent {
                   fbLogout={this.props.fbLogout}
                 />
               </Menu>
-              <a href={parentSiteUrl}><img src={logo} className="logo" alt={parentSiteName}/></a>
             </div>
           </Hidden>
         </Toolbar>
@@ -211,9 +211,9 @@ NavBarComponent.displayName = 'NavBarComponent';
 
 // Uncomment properties you need
 NavBarComponent.propTypes = {
-  muiTheme: React.PropTypes.shape({
-    palette: React.PropTypes.shape({
-      primary1Color: React.PropTypes.string
+  muiTheme: PropTypes.shape({
+    palette: PropTypes.shape({
+      primary1Color: PropTypes.string
     })
   })
 };

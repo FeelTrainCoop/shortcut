@@ -1,0 +1,20 @@
+@import '_variables';
+
+// Custom SCSS goes here!
+
+.hero-space {
+  background-color: $secondary-color;
+  color: $secondary-color-text;
+  height: 180px;
+  .hero-content {
+    margin: 0 auto;
+    padding-top: 15px;
+    text-align: center;
+    color: white;
+
+    .logo {
+      display: inline;
+      width: 300px;
+    }
+  }
+}

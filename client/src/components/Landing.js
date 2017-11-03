@@ -6,7 +6,9 @@ import { Paper } from 'material-ui';
 const Infinite = require('react-infinite');
 const moment = require('moment');
 const Helpers = require('../helpers');
-const shortcutLogo = require('../images/shortcut-logo.svg');
+const tagline = require('config').default.tagline;
+const parentSiteName = require('config').default.parentSiteName;
+const logo = require('../images/logo.png');
 
 require('styles/Landing.scss');
 
@@ -81,21 +83,9 @@ function Landing(props) {
       <Paper>
         <div className="hero-space">
           <div className="hero-content">
-            <img src={shortcutLogo} className="shortcut-logo-big" alt="Shortcut"/>
-            <h3 className="for-tal">From This American Life</h3>
-            <h2 className="tagline">Cut and share your favorite podcast on social media</h2>
+            <img src={logo} className="logo" alt={parentSiteName}/>
+            <h2 className="tagline">{tagline}</h2>
           </div>
-        </div>
-        <div className="content episodes">
-          <h3 className="recent-episodes">Recent episodes</h3>
-          <Infinite
-            elementHeight={50}
-            useWindowAsScrollContainer={true}
-            infiniteLoadBeginEdgeOffset={100}
-            onInfiniteLoad={props.loadMoreEpisodes}
-          >
-            {links}
-          </Infinite>
         </div>
         <div className="content episodes">
           <h3 className="recent-episodes">Recent episodes</h3>

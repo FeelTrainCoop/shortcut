@@ -16,6 +16,13 @@ for f in *.png.template; do
     cp "$f" "${f/.png.template/.png}";
   fi
 done
+cd ../styles/
+for f in *.scss.template; do
+  if [ ! -f "${f/.scss.template/.scss}" ]; then
+    echo "File ${f/.scss.template/.scss} not found, creating."
+    cp "$f" "${f/.scss.template/.scss}";
+  fi
+done
 cd ../../../server/
 if [ ! -f ".env" ]; then
   echo "File .env not found, creating."
