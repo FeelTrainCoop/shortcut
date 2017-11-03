@@ -4,6 +4,7 @@
 export default {
   parentSiteName: 'YOUR WEBSITE',
   parentSiteUrl: 'https://example.com',
+  tagline: `Here's a tagline you can modify.`,
   speakerNamesInTranscript: false,
   maxClipSeconds: 30,
   minClipSeconds: 0.51,
