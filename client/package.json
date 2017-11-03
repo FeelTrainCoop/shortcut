@@ -8,7 +8,7 @@
     "clean": "rimraf dist/*",
     "copy": "copyfiles -f ./src/index.html ./src/favicon.ico ./dist",
     "docs": "jsdoc -c jsdoc.json",
-    "dist": "npm run copy & webpack --env=dist && cp -R ./dist/* ../server/public",
+    "dist": "npm run copy & webpack --env=dist && mkdir -p ../server/public && cp -R ./dist/* ../server/public",
     "lint": "eslint ./src",
     "posttest": "npm run lint",
     "release:major": "npm version major && npm publish && git push --follow-tags",
