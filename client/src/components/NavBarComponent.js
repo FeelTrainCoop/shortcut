@@ -4,14 +4,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory } from 'react-router'
 
-import {AppBar, Button, Drawer, Divider, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar, Typography} from 'material-ui';
+import {AppBar, Button, Drawer, Divider, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, Toolbar, Typography} from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 import MenuIcon from 'material-ui-icons/Menu';
 import HomeIcon from 'material-ui-icons/Home';
 import InfoIcon from 'material-ui-icons/Info';
 import LinkIcon from 'material-ui-icons/Link';
 
-import { Link } from 'react-router'
 import LoginTwitterComponent from './LoginTwitterComponent';
 import LoginFacebookComponent from './LoginFacebookComponent';
 const parentSiteName = require('config').default.parentSiteName;
