@@ -39,7 +39,7 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
   let startTime, endTime, startTimeMillis, endTimeMillis, wordsInRange, paragraphsInRange;
 
   // Parse as TAL transcript if correct JSON format present
-  if (showData.transcript) {
+  if (showData.transcript && showData.transcript.words) {
     startTime = _startTime || 0;
     endTime = _endTime || showData.duration;
     startTimeMillis = startTime * 1000;
