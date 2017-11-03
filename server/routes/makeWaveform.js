@@ -36,12 +36,14 @@ module.exports = {
         console.log('ERROR');
         callback(err);
       }
-      else waveform.generate_peaks(filePath,
+      else {
+        waveform.generate_peaks(filePath,
           targetWidth,
           fileData.duration,
           fileData.bit_rate,
           fileData.channels,
           waveformDone);
+      }
     });
   }
 

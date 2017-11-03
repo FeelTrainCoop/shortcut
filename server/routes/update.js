@@ -18,7 +18,7 @@ const async = require('async');
 const makeWaveform = require('./makeWaveform');
 const getTranscript = require('./getTranscript');
 const helpers = require('./helpers');
-const tempDir = process.env['TEMP'] || '/tmp';
+const tempDir = process.env.TEMP || '/tmp';
 
 // update show data (list of all episodes and their show data version numbers)
 router.get('/', function(req, res) {
@@ -80,7 +80,10 @@ function addEpisode(episodeNum, callback) {
 
   function allDone(err, msg) {
     // console.log(msg.waveform, msg.showData);
-    if (err && !msg) return cb(err);
+    if (err && !msg) {
+      console.log(err);
+      return;
+    }
 
     const showData = msg.showData.showData;
     let regionData = msg.showData.range;
@@ -96,7 +99,9 @@ function addEpisode(episodeNum, callback) {
     };
 
     uploadWaveformAndTranscriptData(episodeNum, dataToSave, function(err, success) {
-      if (err) return {message: err};
+      if (err) {
+        return {message: err};
+      }
       const newKey = success.Key;
       console.log('uploaded', newKey);
       // clean up temp directory and mp3
@@ -135,7 +140,7 @@ function uploadWaveformAndTranscriptData(episodeNumber, showData, cb) {
     CacheControl: 'max-age=31536000' // 1 year (60 * 60 * 24 * 365)
   };
 
-  s3upload(params, cb)
+  s3upload(params, cb);
 }
 
 function s3upload(params, cb) {

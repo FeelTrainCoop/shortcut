@@ -30,7 +30,9 @@ module.exports = {
 };
 
 function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, episodesBody, cb) {
-  if (err) console.log('error', err);
+  if (err) {
+    console.log('error', err);
+  }
   const showData = JSON.parse(body);
   const episodesData = JSON.parse(episodesBody);
   const episodeData = episodesData.filter(episode => episode.number === episodeNumber)[0];
@@ -129,16 +131,17 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
 }
 
 function decodeHTMLEntities(text) {
-    var entities = [
-        ['apos', '\''],
-        ['amp', '&'],
-        ['lt', '<'],
-        ['gt', '>'],
-        ['quot', '"']
-    ];
+  var entities = [
+    ['apos', '\''],
+    ['amp', '&'],
+    ['lt', '<'],
+    ['gt', '>'],
+    ['quot', '"']
+  ];
 
-    for (var i = 0, max = entities.length; i < max; ++i) 
-        text = text.replace(new RegExp('&'+entities[i][0]+';', 'g'), entities[i][1]);
+  for (var i = 0, max = entities.length; i < max; ++i) {
+    text = text.replace(new RegExp('&'+entities[i][0]+';', 'g'), entities[i][1]);
+  }
 
-    return text;
+  return text;
 }

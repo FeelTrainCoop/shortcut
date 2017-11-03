@@ -14,7 +14,7 @@ let episodeDataVersions = {};
 
 // update `allEpisodes` and `episodeDataVersions`
 const update = function(cb) {
-  cb = cb || function(err, success) {console.log('update show data', err || success)};
+  cb = cb || function(err, success) {console.log('update show data', err || success);};
 
   // get show data from TAL's API
   request.get({url: dataUrl, rejectUnauthorized: false}, function(err, res, body) {
@@ -48,4 +48,4 @@ module.exports = {
   update: function(cb) {
     update(cb);
   }
-}
+};

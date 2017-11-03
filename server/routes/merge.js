@@ -5,7 +5,7 @@
 'use strict';
 
 const child_process = require('child_process');
-const tempDir = process.env['TEMP'] || '/tmp';
+const tempDir = process.env.TEMP || '/tmp';
 
 module.exports = {
 

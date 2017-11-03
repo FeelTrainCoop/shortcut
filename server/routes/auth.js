@@ -2,7 +2,7 @@
   Routes handling Passport authentication with Twitter and Facebook
  */
 
-`use strict`;
+'use strict';
 
 const passport = require('passport');
 const express = require('express');
@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get('/facebook', function(req, res, next){
   // set callback url
-  req.app.locals.fbCallback = (req.headers['x-forwarded-proto'] || req.protocol)  + '://' + req.get('host') + process.env.FACEBOOK_CALLBACK + '?redirect_uri=shortcut.thisamericanlife.org'
+  req.app.locals.fbCallback = (req.headers['x-forwarded-proto'] || req.protocol)  + '://' + req.get('host') + process.env.FACEBOOK_CALLBACK + '?redirect_uri=shortcut.thisamericanlife.org';
   passport.authenticate('facebook', {
     scope: ['publish_actions'],
     callbackURL: req.app.locals.fbCallback,
@@ -42,7 +42,7 @@ router.get('/twitter/callback',
   }),
   function(req, res) {
     // Successful authentication, redirect home.
-    if ('development' == req.app.get('env')) {
+    if ('development' === req.app.get('env')) {
       res.redirect(`http://localhost:8000/#/login/twitter/${req.user.twitter.userName}/${req.user.twitter.info}`);
     }
     else {
@@ -51,4 +51,4 @@ router.get('/twitter/callback',
   }
 );
 
-module.exports = router
+module.exports = router;

@@ -121,7 +121,7 @@ module.exports = function(req, res) {
               Key: results.s3.Key,
               message: 'Successfully uploaded to S3.',
               url: results.s3.Location
-            }
+            };
 
             res.json(videoData);
 

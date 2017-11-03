@@ -14,7 +14,9 @@ module.exports = function(req, res) {
   // get latest version of the S3 / CloudFront object key for this episode
   const epNumber = req.params.show.split('-')[0];
   let epVersion = allEpisodeData.getEpisodeVersion(epNumber);
-  if (!epVersion) epVersion = req.params.show; // backup
+  if (!epVersion) {
+    epVersion = req.params.show; // backup
+  }
 
   // generate signed url
   const protectedUrl = `${process.env.CLOUDFRONT_URL}${epVersion}`;
