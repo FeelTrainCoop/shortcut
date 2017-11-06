@@ -184,15 +184,24 @@
 
   .social-textarea {
     font-size: 16px;
-    border: 1px solid black;
+    height: 120px;
+    border: none;
+    background-color: $bg-color;
     width: 90%;
     margin: 0 auto;
+    margin-top: 24px;
+    margin-bottom: 14px;
     display: block;
 
     > label {
       top: -20px;
       left: 5px;
-      color: $secondary-color !important;
+      color: $primary-color !important;
+    }
+
+    [data-shrink="true"] {
+      color: $secondary-color-text !important;
+      left: 0;
     }
 
     > div {
@@ -264,9 +273,7 @@
       }
 
       & .loginrow-component {
-        margin: 15px 0 15px 0;
         float: left;
-        height: 24px !important;
         position: relative;
         display: inline;
         margin-left: 10px;
@@ -327,9 +334,10 @@
     font-size: 14px;
     font-weight: 600;
     color: white;
-    margin: 24px 0px 12px;
+    margin: 6px 0px 12px;
   }
   .social-pad {
+    overflow: auto;
     width: 90%;
     margin: auto;
 
