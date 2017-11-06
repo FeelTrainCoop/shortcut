@@ -46,7 +46,7 @@ router.get('/twitter/callback',
       res.redirect(`http://localhost:8000/#/login/twitter/${req.user.twitter.userName}/${req.user.twitter.info}`);
     }
     else {
-      res.redirect(`${(req.headers['x-forwarded-proto'] || req.protocol) + '://' + req.get('host')}/#/login/twitter/${req.user.twitter.userName}/${req.user.twitter.info}`);
+      res.redirect(`${(req.headers['x-forwarded-proto'] || req.protocol) + '://' + req.get('host').replace(/:\d*/,'')}/#/login/twitter/${req.user.twitter.userName}/${req.user.twitter.info}`);
     }
   }
 );
