@@ -154,7 +154,14 @@ function parseFilesToDownload(showID, startTime, duration) {
   var filesToDownload;
 
   // figure out start and end .ts files to download (assuming .ts files are 10 second chunks)
-  var streamBase = dataBucket + showID + '/' + showID;
+  var streamBase;
+  if (process.env.STREAM_URL) {
+    streamBase = process.env.STREAM_URL + showID + '/stream/' + showID + '_64k_';
+  }
+  else {
+    streamBase = dataBucket + showID + '/' + showID;
+  }
+
   var startStreamID = timeToSegmentID(startTime);
   var endStreamID = timeToSegmentID(startTime + duration);
 
