@@ -65,6 +65,25 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
     if (index && index !== true) {
       paragraphsInRange.unshift(showData.transcript.paragraphs[index]);
     }
+
+    cb(err, {
+      showData: {
+        number: showData.number, // episode number (Number)
+        duration: showData.duration, // in seconds
+        hls: showData.hls,
+        original_air_date: showData.original_air_date,
+        description: showData.description,
+        url: showData.url,
+        acts: showData.acts,
+        title: showData.title
+      },
+      range:{
+        start: startTime,
+        end: endTime || showData.duration,
+        words: wordsInRange, // times in ms
+        paragraphs: paragraphsInRange // start times in ms
+      }
+    });
   }
   else {
     if (!showData.duration) {
@@ -107,27 +126,26 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
                             .map(word => +word[0]);
     // Add the first paragraph
     paragraphsInRange.unshift(0);
+
+    cb(err, {
+      showData: {
+        number: showData.number, // episode number (Number)
+        duration: showData.duration, // in seconds
+        hls: showData.hls,
+        original_air_date: showData.original_air_date,
+        description: showData.description,
+        url: showData.url,
+        acts: showData.acts,
+        title: showData.title
+      },
+      range:{
+        start: startTime,
+        end: endTime || showData.duration,
+        words: wordsInRange, // times in ms
+        paragraphs: paragraphsInRange // start times in ms
+      }
+    });
   }
-
-  cb(err, {
-    showData: {
-      number: showData.number, // episode number (Number)
-      duration: showData.duration, // in seconds
-      hls: showData.hls,
-      original_air_date: showData.original_air_date,
-      description: showData.description,
-      url: showData.url,
-      acts: showData.acts,
-      title: showData.title
-    },
-    range:{
-      start: startTime,
-      end: endTime || showData.duration,
-      words: wordsInRange, // times in ms
-      paragraphs: paragraphsInRange // start times in ms
-    }
-  });
-
 }
 
 function decodeHTMLEntities(text) {
