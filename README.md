@@ -29,7 +29,9 @@ Authors and Sponsors
 
 Shortcut is maintained by [Feel Train](https://feeltrain.com), and was created with [This American Life](https://thisamericanlife.org) with support from the John S. and James L. Knight Foundation, and the Tow Center for Digital Journalism at the Columbia University Graduate School of Journalism. It was conceived at This American Life's Audio Hackathon 2015.
 
-License
+License & Copyright
 -------
 
-License forthcoming once we work it out with our lawyers. We are currently eyeing MIT or GPLv3. Let us know in the support chat if you have any strong opinions, especially if either license would prevent you from using Shortcut! If you want updates on this task, feel free to track [the associated issue](https://github.com/FeelTrainCoop/shortcut/issues/4) in our issue tracker.
+Shortcut is licensed under the GNU General Public License, v3. A copy of this license is included in the file `LICENSE.txt`.
+
+Copyright 2017, Feel Train, LLC and contributors.

@@ -1,0 +1,21 @@
+{
+  "name": "shortcut",
+  "version": "1.0.0",
+  "description": "The Shortcut open source podcast sharing software.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FeelTrainCoop/shortcut.git"
+  },
+  "keywords": [
+    "podcast"
+  ],
+  "author": {
+    "name": "Darius Kazemi",
+    "email": "darius@feeltrain.com"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/FeelTrainCoop/shortcut/issues"
+  },
+  "homepage": "https://github.com/FeelTrainCoop/shortcut#readme"
+}
