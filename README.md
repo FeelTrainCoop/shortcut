@@ -29,6 +29,31 @@ Authors and Sponsors
 
 Shortcut is maintained by [Feel Train](https://feeltrain.com), and was created with [This American Life](https://thisamericanlife.org) with support from the John S. and James L. Knight Foundation, and the Tow Center for Digital Journalism at the Columbia University Graduate School of Journalism. It was conceived at This American Life's Audio Hackathon 2015.
 
+The team that developed the first iteration of Shortcut was:
+
+* Stephanie Foo - Project Lead
+* Courtney Stanton - Project Manager
+* Darius Kazemi - Developer
+* Jason Sigal - Developer
+* Jane Friedhoff - UX Designer
+* Dalit Shalom - UI Designer
+* Eve Weinberg - Motion Graphics
+
+Shortcut was developed with open source libraries and we would like to extend special thanks to the following:
+
+* SiriWave.js © Caffeina, (MIT License)
+* FFmpeg, a trademark of Fabrice Bellard, and libraries from the FFmpeg project (GPL)
+* Node-Canvas © LearnBoost Automattic, Inc and contributors (MIT License)
+* Hls.js © DailyMotion (Apache License)
+* Paper.js © Juerg Lehni & Jonathan Puckey (MIT License)
+* Material-ui © Call-Em-All (MIT License)
+* Passport © Jared Hanson (MIT License)
+* React © Facebook, Inc (BSD License)
+* React Tappable © Jed Watson (MIT License)
+* React Infinite © SeatGeek, Inc. (BSD-3 License)
+* Serverless © 2016 Serverless, Inc. (MIT License)
+* Cairo Graphics © Cairo contributors, Mozilla Public License
+
 License & Copyright
 -------
 
