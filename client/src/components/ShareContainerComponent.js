@@ -20,7 +20,7 @@ import Config from '../../cfg/master';
 
 const moment = require('moment');
 const Store = require('store'); // localStorage
-const tweetMaxChars = 115;
+const tweetMaxChars = 280;
 const isSecure =  window.location.protocol == 'https:';
 
 const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
@@ -80,6 +80,7 @@ class ShareContainerComponent extends React.Component {
   }
 
   render() {
+    const charsUsed = this.state ? `${this.state.charsUsed}/${tweetMaxChars}` : 0;
     return (
       <div className="sharecontainer-component content">
         <div className="row hide-s">
@@ -113,14 +114,8 @@ class ShareContainerComponent extends React.Component {
               <TextField
                 className="social-textarea"
                 // defaultValue={this.state.defaultSocialMessage}
-                label={this.state
-                  ? (this.state.charsUsed + 140 - tweetMaxChars) + '/' + 140
-                  : 0
-                }
-                placeholder={this.state
-                  ? (this.state.charsUsed + 140 - tweetMaxChars) + '/' + 140
-                  : 0
-                }
+                label={charsUsed}
+                placeholder={charsUsed}
                 fullWidth={true}
                 rows={4}
                 multiline={true}
