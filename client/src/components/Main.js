@@ -7,6 +7,7 @@ const Store = require('store'); // localStorage
 const isSecure =  window.location.protocol == 'https:';
 const apiEndpoint_default = isSecure ? require('config').default.apiEndpointSsl : require('config').default.apiEndpoint;
 const dataBucket = require('config').default.dataBucket;
+const useRSS = require('config').default.useRSS;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
 const env = require('config').default.appEnv;
@@ -52,6 +53,7 @@ class AppComponent extends React.Component {
   constructor(props) {
     super(props);
     let localState, defaultState, userState;
+    let apiEndpoint = apiEndpoint_default;
 
     // Required for the Material UI theme
     injectTapEventPlugin();
@@ -105,11 +107,12 @@ class AppComponent extends React.Component {
 
     // get episode data rendered by server
     this.state.eps = window.__latestEpisodes || props.eps;
-    // BUT, if we're in a development environment, just grab the JSON file of all episodes and overwrite
+    // BUT, if we're in a development environment, just grab the JSON/RSS file of all episodes and overwrite
     if (env === 'dev') {
+      let devUrl = useRSS ? apiEndpoint + '/rss' : dataBucket + 'episodes.json';
       jQuery.ajax({
         method: 'GET',
-        url:  dataBucket + 'episodes.json',
+        url: devUrl,
         crossDomain : true,
         headers: {'X-Requested-With': 'XMLHttpRequest'},
         success: (data) => {

@@ -13,5 +13,8 @@ export default {
   // Uncomment this and add your cloudFront domain to enable Amazon Cloudfront CDN,
   // make sure to have CORS headers whitelisted!
   // cloudFrontDomain: 'dxxxxxxxxxx.cloudfront.net',
-  episodesWithProblems: []
+  episodesWithProblems: [],
+  // set `useRSS` to `true` if you plan to use the RSS_FEED defined in server/.env as your
+  // source for episode metadata (recommended)
+  useRSS: true
 }

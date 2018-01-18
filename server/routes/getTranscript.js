@@ -3,6 +3,7 @@
 const request = require('request');
 const striptags = require('striptags');
 const dataBucket = process.env.DATA_BUCKET;
+const getAllEpisodes = require('./all-episode-data').getAllEpisodes;
 
 module.exports = {
 
@@ -17,14 +18,10 @@ module.exports = {
     request.get({
       url: episodeDataURL,
       rejectUnauthorized: false
-      }, function(err, response, body) {
-      request.get({
-        url: episodesURL,
-        rejectUnauthorized: false
-        }, function(err, response, episodesBody) {
-        episodeDataCallback(err, body, startTime, endTime, episodeNumber, episodesBody, cb);
+      },
+      function(err, response, body) {
+        episodeDataCallback(err, body, startTime, endTime, episodeNumber, getAllEpisodes(), cb);
       });
-    });
   }
 
 };
