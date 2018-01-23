@@ -86,7 +86,7 @@
     "express-session": "~1.13.0",
     "fbgraph": "~1.1.0",
     "hls.js": "~0.6.2-3",
-    "jquery": "~2.2.3",
+    "jquery": "^3.3.1",
     "material-ui": "^1.0.0-beta.13",
     "material-ui-icons": "^1.0.0-alpha.19",
     "moment": "~2.14.1",
