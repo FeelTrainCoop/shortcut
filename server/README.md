@@ -2,9 +2,9 @@
 
 Please refer to [the wiki](https://github.com/FeelTrainCoop/shortcut/wiki) instead. This README will soon be updated to reflect the current state of the project.
 
-# tal-server
+# shortcut-server
 A node/express server that
-- serves a single page application ("tal-client")
+- serves a single page application ("shortcut-client")
 - provides an API for handling social authentication for the client. Currently Twitter and Facebook are supported.
 - provides web hooks for updating individual episodes and the list of available episodes
 - ensures that only authorized requests can access episode data
@@ -28,8 +28,8 @@ Copy `.env-template` to `.env` and fill in environment variables.
 
 ### Build & run with Docker:
 - Mac only: eval "$(docker-machine env default)"
-- `docker build -t tal-server .`
-- `docker run -p 3000:3000 -d tal-server`
+- `docker build -t shortcut-server .`
+- `docker run -p 3000:3000 -d shortcut-server`
 - server will be running at docker-machine ip, i.e. `http://192.168.99.100:3000/`
 
 ### Run with Node:
