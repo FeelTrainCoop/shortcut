@@ -1,4 +1,4 @@
-# tal-client
+# shortcut-client
 
 This is the client-side React app. Most of these commands should work, but please refer to [the wiki](https://github.com/FeelTrainCoop/shortcut/wiki) for up-to-date documentation instead. This README will soon be updated to reflect the current state of the project.
 
