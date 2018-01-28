@@ -8,6 +8,10 @@
     "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FeelTrainCoop/shortcut.git"
+  },
   "author": {
     "name": "Darius Kazemi",
     "email": "darius@feeltrain.com"
