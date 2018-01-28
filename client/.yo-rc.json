@@ -1,8 +1,0 @@
-{
-  "generator-react-webpack": {
-    "appName": "talClient",
-    "style": "scss",
-    "postcss": true,
-    "generatedWithVersion": 3
-  }
-}
