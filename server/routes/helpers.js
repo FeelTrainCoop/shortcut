@@ -13,14 +13,15 @@ module.exports = {
             return Date.parse(b.pubDate) - Date.parse(a.pubDate);
           })
           .map((episode, index, array) => {
-            // infer an ID number from the chronological order of episodes
-            let number = (array.length - index).toString();
-            // unless there's an explicit "itunes:episode" tag, in which case we use that
-            // according to the spec this should be a non-zero integer
+            let guid = episode.guid || episode.link;
+            // set the ID number to the guid
+            let number = guid;
+            // overwrite the number if there's an explicit "itunes:episode" tag, in which
+            // case we use that. according to the spec this should be a non-zero integer
             // http://podcasts.apple.com/resources/spec/ApplePodcastsSpecUpdatesiOS11.pdf
             let season = '';
             if (episode.itunes.episode !== undefined) {
-              // prepend the "itunes:season" id if that exists, also should be nonzero int
+              // prepend the "itunes:season" id if that exists, should also be nonzero int
               if (episode.itunes.season !== undefined) {
                 season = 's' + episode.itunes.season;
               }
@@ -31,6 +32,7 @@ module.exports = {
               title: episode.title,
               description: episode.contentSnippet,
               original_air_date: episode.pubDate,
+              guid,
               number
             };
           })

@@ -42,6 +42,7 @@ import NavBar from 'components/NavBarComponent';
 import Loader from 'components/LoadingAnimationComponent';
 import ShareContainer from 'components/ShareContainerComponent';
 import Landing from 'components/Landing';
+import Admin from 'components/Admin';
 import Helpers from '../helpers';
 
 /** The root React component */
@@ -126,7 +127,7 @@ class AppComponent extends React.Component {
           });
           window.console.error(this.props.url, status, err.toString());
         }.bind(this)
-      })
+      });
     }
 
     this.state.episodesWithProblems = window.__inactiveEpisodes || require('config').default.episodesWithProblems;
@@ -835,6 +836,13 @@ class AppComponent extends React.Component {
     let content;
 
     switch(this.state.view) {
+      case 'admin':
+        content =
+          <Admin
+            eps={this.state.eps}
+            apiEndpoint={apiEndpoint_default}
+          />;
+        break;
       case 'about':
         content =
           <div className="content">

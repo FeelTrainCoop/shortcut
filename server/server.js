@@ -13,7 +13,10 @@ const express = require('express'),
   session = require('cookie-session'),
   helmet = require('helmet'),
   bodyParser = require('body-parser'),
-  cors = require('cors');
+  cors = require('cors'),
+  basicAuth = require('express-basic-auth'),
+  flatCache = require('flat-cache'),
+  path = require('path');
 
 let sslOptions = undefined;
 try {
@@ -39,8 +42,10 @@ const errorTemplate = require('./views/error.marko');
 const app = express();
 const routes = require('./routes');
 const passportMiddleware = require('./auth/passport-middleware.js');
+const cache = flatCache.load('adminData.json', path.resolve(__dirname));
 
 // all environments
+app.set('cache', cache);
 app.set('port', process.env.PORT || 3000);
 app.set('port-https', process.env.PORT_HTTPS || 8443);
 app.use(compression());
@@ -60,6 +65,16 @@ app.use(session({
   saveUninitialized: true,
   maxAge: 128000
 }));
+
+var staticUserAuth = basicAuth({
+  users: {
+    'admin': '1234'
+  },
+  challenge: true
+});
+
+// admin page
+app.use('/admin', cors({ credentials: true, origin: true }), staticUserAuth, routes.admin);
 
 // get recent episodes to display on main page
 app.options('/recent', cors());

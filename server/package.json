@@ -27,6 +27,8 @@
     "dotenv": "^2.0.0",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
+    "express-basic-auth": "^1.1.3",
+    "flat-cache": "^1.3.0",
     "helmet": "^2.2.0",
     "marko": "^3.11.3",
     "paper-jsdom-canvas": "^0.11.4",

@@ -1,5 +1,5 @@
 /**
- *  serve the rss feed of the podcast to get around any CORS issues
+ *  serve the rss feed of the podcast (as JSON) to get around any CORS issues
  */
 'use strict';
 
