@@ -16,7 +16,6 @@ A node/express server that
 ##### Install dependencies
 ```
 npm install
-npm install -g nodemon
 ```
 
 ##### Env Variables
