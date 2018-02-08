@@ -4,6 +4,11 @@ node_js:
   - "6"
   - "8"
 
+cache:
+  directories:
+    - client/node_modules
+    - server/node_modules
+
 addons:
   apt:
     packages:
