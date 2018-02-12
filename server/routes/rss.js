@@ -8,6 +8,10 @@ const helpers = require('./helpers');
 const rssUrl = process.env.RSS_FEED;
 
 module.exports = function(req, res) {
+  if (!rssUrl) {
+    res.status(404).send(`Error 404: no RSS feed specified.`);
+    return;
+  }
   request.get({url: rssUrl}, function(err, resp, body) {
     if (!err) {
       var result = helpers.parseRSS(body, function(result) {
