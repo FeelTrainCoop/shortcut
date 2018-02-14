@@ -6,10 +6,20 @@ const Parser = require('rss-parser');
 const parser = new Parser();
 
 module.exports = {
-  parseRSS: function(body, cb) {
+  // body: the RSS XML
+  // episodes: array of JSON-formatted episodes as stored in the cache object,
+  //           or `true` to return all episodes
+  parseRSS: function(body, episodes, cb) {
+    // create an array of guid values of only active episodes
+    let rssActiveEpisodes = [];
+    if (Array.isArray(episodes)) {
+      rssActiveEpisodes = episodes
+                                  .filter(episode => episode.enabled === true)
+                                  .map(episode => episode.value);
+    }
     parser.parseString(body, function(error, feed) {
       if (!error) {
-        let episodes = feed.items.sort((a,b) => {
+        let unfilteredEpisodes = feed.items.sort((a,b) => {
             return Date.parse(b.pubDate) - Date.parse(a.pubDate);
           })
           .map((episode, index, array) => {
@@ -35,10 +45,14 @@ module.exports = {
               guid,
               number
             };
-          })
-          // filter out inactive episodes
-          .filter((episode) => !inactiveEpisodes.includes(episode.number));
-        cb({err: null, episodes});
+          });
+        let filteredEpisodes = unfilteredEpisodes
+          // filter out inactive episodes specified in the .env file
+          .filter((episode) => !inactiveEpisodes.includes(episode.number))
+          // filter out inactive episodes (only include explicitly active episodes in the admin panel)
+          // unless we passed `true` to `episodes` in which case, include all episodes
+          .filter((episode) => episodes === true || rssActiveEpisodes.includes(episode.guid));
+        cb({err: null, episodes: filteredEpisodes, episodesUnfiltered: unfilteredEpisodes});
       }
       else {
         cb({err: `This error occurred: ${error}`, episodes: null});

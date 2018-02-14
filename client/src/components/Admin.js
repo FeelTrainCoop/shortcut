@@ -20,21 +20,27 @@ class AdminComponent extends React.PureComponent {
   }
 
   componentDidMount() {
-    jQuery.ajax({
-      url: `${this.apiEndpoint}/admin/getEpisodes`,
-      xhrFields: { withCredentials: true },
-      success: function(data) {
-        let tempSwitches = this.state.eps.map(episode => {
-          let foundElement = data.find(el => el.value === episode.guid);
-          episode.checked = foundElement ? foundElement.enabled : false;
-          episode.value = episode.guid;
-          return episode;
-        });
-        this.setState({
-          switches: tempSwitches
-        });
-      }.bind(this)
-    });
+    jQuery.when(
+      // get our stored list of what episodes are enabled/disabled
+      jQuery.ajax({
+        url: `${this.apiEndpoint}/admin/getEpisodes`,
+        xhrFields: { withCredentials: true },
+      }),
+      // get our list of all episodes, unfiltered since this is the admin pane
+      jQuery.ajax({
+        url: `${this.apiEndpoint}/recent?filter=0`,
+      })
+    ).done(function (episodeStateData, allEpisodeData) {
+      let tempSwitches = allEpisodeData[0].map(episode => {
+        let foundElement = episodeStateData[0].find(el => el.value === episode.guid);
+        episode.checked = foundElement ? foundElement.enabled : false;
+        episode.value = episode.guid;
+        return episode;
+      });
+      this.setState({
+        switches: tempSwitches
+      });
+    }.bind(this));
   }
 
   renderSwitches() {
@@ -59,7 +65,6 @@ class AdminComponent extends React.PureComponent {
     switches[index].checked = !switches[index].checked;
     this.setState({
       switches,
-      foo: 'bazzz'
     }, () => {
       jQuery.ajax({
         type: 'POST',

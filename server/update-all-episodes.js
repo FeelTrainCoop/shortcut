@@ -3,9 +3,13 @@
 require('dotenv').config();
 const request = require('request');
 const async = require('async');
-const allEpisodeData = require('./all-episode-data');
+const allEpisodeData = require('./all-episode-data'),
+      flatCache = require('flat-cache'),
+      path = require('path');
 
-allEpisodeData.update(function(err, success) {
+const cache = flatCache.load('adminData.json', path.resolve(__dirname));
+
+allEpisodeData.update(cache, function(err) {
   if (!err) {
     let episodes = allEpisodeData.getAllEpisodes();
     episodes = episodes.map(episode => `http://localhost:3000/api/${process.env.API_HASH}/update/${episode.number}`);

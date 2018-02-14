@@ -18,7 +18,7 @@ const express = require('express'),
   flatCache = require('flat-cache'),
   path = require('path');
 
-let sslOptions = undefined;
+let sslOptions;
 try {
   sslOptions = {
     key: fs.readFileSync(process.env.SSL_KEY),
@@ -42,7 +42,11 @@ const errorTemplate = require('./views/error.marko');
 const app = express();
 const routes = require('./routes');
 const passportMiddleware = require('./auth/passport-middleware.js');
+// synchronous read, but it only happens on server init
 const cache = flatCache.load('adminData.json', path.resolve(__dirname));
+
+// update all episodes on server init
+routes.allEpisodeData.update(cache);
 
 // all environments
 app.set('cache', cache);
@@ -125,7 +129,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/*', function (req, res, next) {
-  if (req.url.indexOf("/assets") === 0 || req.url.indexOf(".js") > -1 || req.url.indexOf(".html") > -1 || req.url.indexOf(".ico") > -1) {
+  if (req.url.indexOf('/assets') === 0 || req.url.indexOf('.js') > -1 || req.url.indexOf('.html') > -1 || req.url.indexOf('.ico') > -1) {
     if (req.url.indexOf('auth') > -1) {
       return next();
     }
@@ -143,7 +147,7 @@ app.use(express.static('../client/dist', {
 
 // error handling
 
-if ('development' == app.get('env')) {
+if ('development' === app.get('env')) {
   app.use(errorHandler());
 }
 

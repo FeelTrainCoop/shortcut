@@ -14,7 +14,9 @@ module.exports = function(req, res) {
   }
   request.get({url: rssUrl}, function(err, resp, body) {
     if (!err) {
-      var result = helpers.parseRSS(body, function(result) {
+      let cache = req.app.get('cache');
+      let episodes = cache.getKey('episodes') || [];
+      var result = helpers.parseRSS(body, episodes, function(result) {
         if (result.err) {
           res.status(500).send(result.err);
         }

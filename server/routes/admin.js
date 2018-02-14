@@ -1,6 +1,7 @@
 'use strict';
 const express = require('express'),
-      router = express.Router();
+      router = express.Router(),
+      allEpisodeData = require('./all-episode-data');
 
 // return the state of enabled/disabled episodes
 // any episode not in this list is considered disabled by default
@@ -28,7 +29,8 @@ router.post('/setEpisode', function (req, res) {
     episodes.push(newObject);
   }
   cache.setKey('episodes', episodes);
-  cache.save();
+  cache.save(true);
+  allEpisodeData.update(cache);
   return res.json(cache.getKey('episodes'));
 });
 

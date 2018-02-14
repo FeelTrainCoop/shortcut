@@ -3,32 +3,33 @@
  */
 'use strict';
 
-const request = require('request');
-const helpers = require('./helpers');
-const dataUrl = process.env.DATA_BUCKET + 'episodes.json';
-const rssFeed = process.env.RSS_FEED;
-const rss = require('./rss');
+const request = require('request'),
+      helpers = require('./helpers'),
+      dataUrl = process.env.DATA_BUCKET + 'episodes.json',
+      rssFeed = process.env.RSS_FEED;
 
 // in memory cache of all available episodes as displayed on the home page (title, air date, description, number)
-let allEpisodes = [];
-
-// in memory cache of s3/cloudfront versions for each episode JSON file (waveform + transcript)
-let episodeDataVersions = {};
+let cache;
 
 // update `allEpisodes` and `episodeDataVersions`
-const update = function(cb) {
+const update = function(globalCache, cb) {
   cb = cb || function(err, success) {console.log('update show data', err || success);};
+  cache = globalCache;
 
   // get show data
   if (rssFeed) {
     request.get({url: rssFeed}, function(err, resp, body) {
       if (!err) {
-        var result = helpers.parseRSS(body, function(result) {
+        let episodes = cache.getKey('episodes') || [];
+        console.log('AAAA',episodes);
+        helpers.parseRSS(body, episodes, function(result) {
           if (result.err) {
             return cb(result.err);
           }
           else {
-            allEpisodes = result.episodes;
+            cache.setKey('allEpisodes', result.episodes);
+            cache.setKey('allEpisodesUnfiltered', result.episodesUnfiltered);
+            cache.save(true);
             return cb(null, 'success');
           }
         });
@@ -43,14 +44,15 @@ const update = function(cb) {
       if (!err) {
         try {
           // update the value of allEpisodes
-          allEpisodes = JSON.parse(body).map((item) => {
+          cache.setKey('allEpisodes', JSON.parse(body).map((item) => {
             return {
               'number': item.number,
               'description': item.description,
               'original_air_date': item.original_air_date,
               'title': item.title
             };
-          });
+          }));
+          cache.save(true);
           return cb(null, 'success');
         } catch(e) {
           console.error('unable to parse full latest episodes', e);
@@ -61,14 +63,17 @@ const update = function(cb) {
   }
 };
 
-// update allEpisodes when server launches
-update();
-
 module.exports = {
   getAllEpisodes: function() {
-    return allEpisodes;
+    return cache.getKey('allEpisodes');
   },
-  update: function(cb) {
-    update(cb);
+  getAllEpisodesUnfiltered: function() {
+    return cache.getKey('allEpisodesUnfiltered');
+  },
+  update: function(globalCache, cb) {
+    if (!globalCache) {
+      throw 'Must specify a cache object in all-episode-data.js\' `update` function';
+    }
+    update(globalCache, cb);
   }
 };
