@@ -55,7 +55,7 @@ class AdminComponent extends React.PureComponent {
               />
             }
             key={el.value}
-            label={el.value}
+            label={el.title}
           />
       );
   }
