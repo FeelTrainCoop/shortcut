@@ -110,7 +110,7 @@ class AppComponent extends React.Component {
     this.state.eps = window.__latestEpisodes || props.eps;
     // BUT, if we're in a development environment, just grab the JSON/RSS file of all episodes and overwrite
     if (env === 'dev') {
-      let devUrl = useRSS ? apiEndpoint + '/rss' : dataBucket + 'episodes.json';
+      let devUrl = useRSS ? apiEndpoint + '/rss' : apiEndpoint + '/recent';
       jQuery.ajax({
         method: 'GET',
         url: devUrl,

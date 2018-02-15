@@ -6,7 +6,8 @@
 const request = require('request'),
       helpers = require('./helpers'),
       dataUrl = process.env.DATA_BUCKET + 'episodes.json',
-      rssFeed = process.env.RSS_FEED;
+      rssFeed = process.env.RSS_FEED,
+      inactiveEpisodes = process.env.BAD_EPISODES.split(',');
 
 // in memory cache of all available episodes as displayed on the home page (title, air date, description, number)
 let cache;
@@ -43,15 +44,31 @@ const update = function(globalCache, cb) {
     request.get({url: dataUrl, rejectUnauthorized: false}, function(err, res, body) {
       if (!err) {
         try {
+          let activeEpisodes = [];
+          let episodes = cache.getKey('episodes');
+          if (Array.isArray(episodes)) {
+            activeEpisodes = episodes
+                              .filter(episode => episode.enabled === true)
+                              .map(episode => episode.value);
+          }
           // update the value of allEpisodes
-          cache.setKey('allEpisodes', JSON.parse(body).map((item) => {
+          let unfilteredEpisodes = JSON.parse(body).map((item) => {
             return {
               'number': item.number,
               'description': item.description,
               'original_air_date': item.original_air_date,
-              'title': item.title
+              'title': item.title,
+              'guid': item.number
             };
-          }));
+          });
+          cache.setKey('allEpisodesUnfiltered', unfilteredEpisodes);
+          let filteredEpisodes = unfilteredEpisodes
+            // filter out inactive episodes specified in the .env file
+            .filter((episode) => !inactiveEpisodes.includes(episode.number))
+            // filter out inactive episodes (only include explicitly active episodes in the admin panel)
+            // unless we passed `true` to `episodes` in which case, include all episodes
+            .filter((episode) => activeEpisodes.includes(episode.guid));
+          cache.setKey('allEpisodes', filteredEpisodes);
           cache.save(true);
           return cb(null, 'success');
         } catch(e) {
