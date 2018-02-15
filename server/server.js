@@ -77,7 +77,7 @@ app.use(session({
 
 var staticUserAuth = basicAuth({
   users: {
-    'admin': '1234'
+    'admin': process.env.ADMIN_PASSWORD
   },
   challenge: true
 });
