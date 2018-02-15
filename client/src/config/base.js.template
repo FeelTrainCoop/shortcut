@@ -16,5 +16,5 @@ export default {
   episodesWithProblems: [],
   // set `useRSS` to `true` if you plan to use the RSS_FEED defined in server/.env as your
   // source for episode metadata (recommended)
-  useRSS: true
+  useRSS: false
 }
