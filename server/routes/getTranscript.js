@@ -31,7 +31,7 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
     console.log('error', err);
   }
   const showData = JSON.parse(body);
-  const episodesData = JSON.parse(episodesBody);
+  const episodesData = episodesBody.length ? episodesBody : JSON.parse(episodesBody);
   const episodeData = episodesData.filter(episode => episode.number === episodeNumber)[0];
   let startTime, endTime, startTimeMillis, endTimeMillis, wordsInRange, paragraphsInRange;
 
