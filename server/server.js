@@ -45,6 +45,11 @@ const passportMiddleware = require('./auth/passport-middleware.js');
 // synchronous read, but it only happens on server init
 const cache = flatCache.load('adminData.json', path.resolve(__dirname));
 
+// if there is no `episodes` key on the cache, init with an empty array
+if (cache.getKey('episodes') === undefined) {
+  cache.setKey('episodes',[]);
+}
+
 // update all episodes on server init
 routes.allEpisodeData.update(cache);
 
