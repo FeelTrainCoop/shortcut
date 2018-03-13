@@ -14,6 +14,7 @@ class AdminComponent extends React.PureComponent {
     super(props);
     this.state = {
       eps: props.eps,
+      authenticated: false,
       switches: []
     };
     this.apiEndpoint = props.apiEndpoint;
@@ -38,7 +39,8 @@ class AdminComponent extends React.PureComponent {
         return episode;
       });
       this.setState({
-        switches: tempSwitches
+        switches: tempSwitches,
+        authenticated: true
       });
     }.bind(this));
   }
@@ -80,24 +82,38 @@ class AdminComponent extends React.PureComponent {
   }
 
   render() {
-    return(
-    <div>
-      <Paper>
-        <div className="hero-space">
-          <div className="hero-content">
-            <img src={logo} className="logo" alt={parentSiteName}/>
-            <h2 className="tagline">Admin Panel</h2>
+    const isAuthenticated = this.state.authenticated;
+    
+    if (isAuthenticated) {
+      return(
+      <div>
+        <Paper>
+          <div className="hero-space">
+            <div className="hero-content">
+              <img src={logo} className="logo" alt={parentSiteName}/>
+              <h2 className="tagline">Admin Panel</h2>
+            </div>
           </div>
-        </div>
-        <div className="content episodes">
-          <h3 className="recent-episodes">Enable/Disable Episodes</h3>
-            <FormGroup>
-            {this.renderSwitches.call(this)}
-            </FormGroup>
-        </div>
-      </Paper>
-    </div>
-    );
+          <div className="content episodes">
+            <h3 className="recent-episodes">Enable/Disable Episodes</h3>
+              <FormGroup>
+              {this.renderSwitches.call(this)}
+              </FormGroup>
+          </div>
+        </Paper>
+      </div>
+      );
+    }
+    else {
+      return (
+      <div>
+        <Paper>
+          <div class="content">
+          </div>
+        </Paper>
+      </div>
+      );
+    }
   }
 }
 
