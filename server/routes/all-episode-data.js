@@ -14,7 +14,11 @@ let cache;
 
 // update `allEpisodes` and `episodeDataVersions`
 const update = function(globalCache, cb) {
-  cb = cb || function(err, success) {console.log('update show data', err || success);};
+  cb = cb || function(err, success) {
+    if (err) {
+      throw new Error('Unable to update episode data: ' + err);
+    }
+  };
   cache = globalCache;
 
   // get show data
@@ -22,7 +26,6 @@ const update = function(globalCache, cb) {
     request.get({url: rssFeed}, function(err, resp, body) {
       if (!err) {
         let episodes = cache.getKey('episodes') || [];
-        console.log('AAAA',episodes);
         helpers.parseRSS(body, episodes, function(result) {
           if (result.err) {
             return cb(result.err);

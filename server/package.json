@@ -20,6 +20,9 @@
   "devDependencies": {
     "nodemon": "^1.10.0"
   },
+  "engines" : {
+    "node" : ">=6"
+  },
   "dependencies": {
     "async": "^2.5.0",
     "aws-cloudfront-sign": "^2.1.2",

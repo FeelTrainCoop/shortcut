@@ -30,7 +30,7 @@ module.exports = {
             // case we use that. according to the spec this should be a non-zero integer
             // http://podcasts.apple.com/resources/spec/ApplePodcastsSpecUpdatesiOS11.pdf
             let season = '';
-            if (episode.itunes.episode !== undefined) {
+            if (episode.itunes && episode.itunes.episode !== undefined) {
               // prepend the "itunes:season" id if that exists, should also be nonzero int
               if (episode.itunes.season !== undefined) {
                 season = 's' + episode.itunes.season;
