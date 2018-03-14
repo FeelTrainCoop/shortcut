@@ -31,6 +31,8 @@ docs
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+# not checking in the lockfile, this is causing more trouble than it's worth
+package-lock.json
 
 # Bower
 bower_components/
