@@ -21,8 +21,8 @@ module.exports = function(req, res) {
   // generate signed url
   const protectedUrl = `${process.env.CLOUDFRONT_URL}${epVersion}`;
   const signedUrl = cfSign.getSignedUrl(protectedUrl, req);
-  res.setHeader("Cache-Control", "public, max-age=2592000");
-  res.setHeader("Expires", new Date(Date.now() + 2592000000).toUTCString());
+  res.setHeader('Cache-Control', 'public, max-age=2592000');
+  res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString());
 
   // redirect to signedURL if url contains 'api'
   if (req.baseUrl.indexOf('api') > -1) {

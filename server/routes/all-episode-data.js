@@ -14,7 +14,7 @@ let cache;
 
 // update `allEpisodes` and `episodeDataVersions`
 const update = function(globalCache, cb) {
-  cb = cb || function(err, success) {
+  cb = cb || function(err) {
     if (err) {
       throw new Error('Unable to update episode data: ' + err);
     }

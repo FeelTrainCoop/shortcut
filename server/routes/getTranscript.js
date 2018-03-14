@@ -113,10 +113,10 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
         timestamp = lastValidTimestamp+1;
       }
       lastValidTimestamp = timestamp;
-      return [Math.round(timestamp)+"", striptags(decodeHTMLEntities(showData.transcript.substr(word.startOffset, nextWord.startOffset-word.startOffset)).trim(), ['&'])];
+      return [Math.round(timestamp)+'', striptags(decodeHTMLEntities(showData.transcript.substr(word.startOffset, nextWord.startOffset-word.startOffset)).trim(), ['&'])];
     });
     // add a placeholder empty string at time 0 (necessary for the reduce function that the client does)
-    wordsInRange.unshift(["0",""]);
+    wordsInRange.unshift(['0','']);
 
     // Fake paragraph breaks on every word that contains a terminal punctuation.
     paragraphsInRange = wordsInRange.filter(word => (word[1].match(/(\?$|\.$|\!$|(\.|\?|\!)\"$)$/) && word[1].length > 3))

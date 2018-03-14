@@ -6,7 +6,6 @@ const Store = require('store'); // localStorage
 
 const isSecure =  window.location.protocol == 'https:';
 const apiEndpoint_default = isSecure ? require('config').default.apiEndpointSsl : require('config').default.apiEndpoint;
-const dataBucket = require('config').default.dataBucket;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
 const env = require('config').default.appEnv;

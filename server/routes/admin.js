@@ -21,7 +21,7 @@ router.post('/setEpisode', function (req, res) {
   const newObject = {
     value: guid,
     enabled: enabled === 'true'
-  }
+  };
   if (episodeIndex > -1) {
     episodes[episodeIndex] = newObject;
   }

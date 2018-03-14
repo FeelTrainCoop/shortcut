@@ -28,7 +28,7 @@ module.exports = function(req, res) {
   // event variables
   const params = req.query;
   let showID, startTime, duration, type, bgColor, wordArray, opts;
-  let tweetData = false, bucketName;
+  let tweetData = false;
   let event = req.body;
 
   // destination file name / key
@@ -114,8 +114,8 @@ module.exports = function(req, res) {
 
             localFilePaths.push(tempOutName);
 
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            res.header('Access-Control-Allow-Origin', '*');
+            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
             let videoData = {
               Bucket: results.s3.Bucket,
               Key: results.s3.Key,
@@ -191,7 +191,7 @@ function timeToSegmentID(timeInSeconds) {
   return zeroPad( Math.floor(timeInSeconds / segmentLength) );
 }
 
-// segment IDs need to be formatted like this "001"
+// segment IDs need to be formatted like this '001'
 function zeroPad(number) {
   var str = String(number);
 

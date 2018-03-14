@@ -1,6 +1,5 @@
 const fs = require('fs');
 const request = require('request');
-const path = require('path');
 const inactiveEpisodes = process.env.BAD_EPISODES.split(',');
 const Parser = require('rss-parser');
 const parser = new Parser();
@@ -22,7 +21,7 @@ module.exports = {
         let unfilteredEpisodes = feed.items.sort((a,b) => {
             return Date.parse(b.pubDate) - Date.parse(a.pubDate);
           })
-          .map((episode, index, array) => {
+          .map((episode) => {
             let guid = episode.guid || episode.link;
             // set the ID number to the guid
             let number = guid;
@@ -65,10 +64,13 @@ module.exports = {
 
     var tempName = tempDir + '/' + origPath.split('/').pop();
     var dlStream = fs.createWriteStream(tempName);
-    dlStream.on('finish', function(err, msg) {
-      dlStream.close(function(err, msg) {
+    dlStream.on('finish', function(err) {
+      if (err) {
+        throw new Error(err);
+      }
+      dlStream.close(function(err) {
         if (err) {
-          console.log(err);
+          throw new Error(err);
         }
         console.log('finish');
         setTimeout(function() {
@@ -82,7 +84,7 @@ module.exports = {
     .on('response', function(response) {
       response.pipe(dlStream);
     })
-    .on('end', function(resp) {
+    .on('end', function() {
       console.log('downloaded');
       dlStream.end();
     });

@@ -108,7 +108,7 @@ class AdminComponent extends React.PureComponent {
       return (
       <div>
         <Paper>
-          <div class="content">
+          <div className="content">
           </div>
         </Paper>
       </div>
