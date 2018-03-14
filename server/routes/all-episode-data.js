@@ -69,7 +69,6 @@ const update = function(globalCache, cb) {
             // filter out inactive episodes specified in the .env file
             .filter((episode) => !inactiveEpisodes.includes(episode.number))
             // filter out inactive episodes (only include explicitly active episodes in the admin panel)
-            // unless we passed `true` to `episodes` in which case, include all episodes
             .filter((episode) => activeEpisodes.includes(episode.guid));
           cache.setKey('allEpisodes', filteredEpisodes);
           cache.save(true);

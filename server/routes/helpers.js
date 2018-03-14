@@ -49,8 +49,7 @@ module.exports = {
           // filter out inactive episodes specified in the .env file
           .filter((episode) => !inactiveEpisodes.includes(episode.number))
           // filter out inactive episodes (only include explicitly active episodes in the admin panel)
-          // unless we passed `true` to `episodes` in which case, include all episodes
-          .filter((episode) => episodes === true || rssActiveEpisodes.includes(episode.guid));
+          .filter((episode) => rssActiveEpisodes.includes(episode.guid));
         cb({err: null, episodes: filteredEpisodes, episodesUnfiltered: unfilteredEpisodes});
       }
       else {
