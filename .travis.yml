@@ -20,7 +20,7 @@ addons:
 env:
   # Run each sub-folder separately in the build matrix
   - TEST_DIR=client
-  - TEST_DIR=server
+  # - TEST_DIR=server
 
 install:
   - ./setup.sh

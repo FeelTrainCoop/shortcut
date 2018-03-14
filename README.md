@@ -7,6 +7,8 @@ Please [check out our wiki](https://github.com/FeelTrainCoop/shortcut/wiki) for 
 
 By participating in our community you agree to abide by the [Shortcut Code of Conduct](https://github.com/FeelTrainCoop/shortcut/wiki/Shortcut-Code-of-Conduct).
 
+[![Build Status](https://travis-ci.org/FeelTrainCoop/shortcut.svg?branch=master)](https://travis-ci.org/FeelTrainCoop/shortcut)
+
 Contribute
 ----------
 
