@@ -3,7 +3,6 @@ import { Link } from 'react-router'
 import ArrowRight from 'material-ui-icons/KeyboardArrowRight';
 import { Paper } from 'material-ui';
 
-const Infinite = require('react-infinite');
 const moment = require('moment');
 const Helpers = require('../helpers');
 const tagline = require('config').default.tagline;
@@ -89,14 +88,7 @@ function Landing(props) {
         </div>
         <div className="content episodes">
           <h3 className="recent-episodes">Recent episodes</h3>
-          <Infinite
-            elementHeight={50}
-            useWindowAsScrollContainer={true}
-            infiniteLoadBeginEdgeOffset={100}
-            onInfiniteLoad={props.loadMoreEpisodes}
-          >
             {links}
-          </Infinite>
         </div>
       </Paper>
     </div>

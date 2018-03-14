@@ -13,9 +13,12 @@ const express = require('express'),
   session = require('cookie-session'),
   helmet = require('helmet'),
   bodyParser = require('body-parser'),
-  cors = require('cors');
+  cors = require('cors'),
+  basicAuth = require('express-basic-auth'),
+  flatCache = require('flat-cache'),
+  path = require('path');
 
-let sslOptions = undefined;
+let sslOptions;
 try {
   sslOptions = {
     key: fs.readFileSync(process.env.SSL_KEY),
@@ -39,8 +42,19 @@ const errorTemplate = require('./views/error.marko');
 const app = express();
 const routes = require('./routes');
 const passportMiddleware = require('./auth/passport-middleware.js');
+// synchronous read, but it only happens on server init
+const cache = flatCache.load('adminData.json', path.resolve(__dirname));
+
+// if there is no `episodes` key on the cache, init with an empty array
+if (cache.getKey('episodes') === undefined) {
+  cache.setKey('episodes',[]);
+}
+
+// update all episodes on server init
+routes.allEpisodeData.update(cache);
 
 // all environments
+app.set('cache', cache);
 app.set('port', process.env.PORT || 3000);
 app.set('port-https', process.env.PORT_HTTPS || 8443);
 app.use(compression());
@@ -60,6 +74,16 @@ app.use(session({
   saveUninitialized: true,
   maxAge: 128000
 }));
+
+var staticUserAuth = basicAuth({
+  users: {
+    'admin': process.env.ADMIN_PASSWORD
+  },
+  challenge: true
+});
+
+// admin page
+app.use('/admin', cors({ credentials: true, origin: true }), staticUserAuth, routes.admin);
 
 // get recent episodes to display on main page
 app.options('/recent', cors());
@@ -106,7 +130,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/*', function (req, res, next) {
-  if (req.url.indexOf("/assets") === 0 || req.url.indexOf(".js") > -1 || req.url.indexOf(".html") > -1 || req.url.indexOf(".ico") > -1) {
+  if (req.url.indexOf('/assets') === 0 || req.url.indexOf('.js') > -1 || req.url.indexOf('.html') > -1 || req.url.indexOf('.ico') > -1) {
     if (req.url.indexOf('auth') > -1) {
       return next();
     }
@@ -124,7 +148,7 @@ app.use(express.static('../client/dist', {
 
 // error handling
 
-if ('development' == app.get('env')) {
+if ('development' === app.get('env')) {
   app.use(errorHandler());
 }
 

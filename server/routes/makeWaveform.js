@@ -1,4 +1,4 @@
-waveform = require('waveform-util');
+const waveform = require('waveform-util');
 
 // ... via waveform-util module documentation:
 // 
@@ -48,6 +48,3 @@ module.exports = {
   }
 
 };
-
-
-

@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+  admin: require('./admin'),
   recentEpisodes: require('./recent-episodes'),
   search: require('./search'),
   getEpisode: require('./get-episode'),

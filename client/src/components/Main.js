@@ -6,7 +6,6 @@ const Store = require('store'); // localStorage
 
 const isSecure =  window.location.protocol == 'https:';
 const apiEndpoint_default = isSecure ? require('config').default.apiEndpointSsl : require('config').default.apiEndpoint;
-const dataBucket = require('config').default.dataBucket;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
 const env = require('config').default.appEnv;
@@ -41,6 +40,7 @@ import NavBar from 'components/NavBarComponent';
 import Loader from 'components/LoadingAnimationComponent';
 import ShareContainer from 'components/ShareContainerComponent';
 import Landing from 'components/Landing';
+import Admin from 'components/Admin';
 import Helpers from '../helpers';
 
 /** The root React component */
@@ -52,6 +52,7 @@ class AppComponent extends React.Component {
   constructor(props) {
     super(props);
     let localState, defaultState, userState;
+    let apiEndpoint = apiEndpoint_default;
 
     // Required for the Material UI theme
     injectTapEventPlugin();
@@ -105,11 +106,12 @@ class AppComponent extends React.Component {
 
     // get episode data rendered by server
     this.state.eps = window.__latestEpisodes || props.eps;
-    // BUT, if we're in a development environment, just grab the JSON file of all episodes and overwrite
+    // BUT, if we're in a development environment, just grab the JSON/RSS file of all episodes and overwrite
     if (env === 'dev') {
+      let devUrl = apiEndpoint + '/recent';
       jQuery.ajax({
         method: 'GET',
-        url:  dataBucket + 'episodes.json',
+        url: devUrl,
         crossDomain : true,
         headers: {'X-Requested-With': 'XMLHttpRequest'},
         success: (data) => {
@@ -123,7 +125,7 @@ class AppComponent extends React.Component {
           });
           window.console.error(this.props.url, status, err.toString());
         }.bind(this)
-      })
+      });
     }
 
     this.state.episodesWithProblems = window.__inactiveEpisodes || require('config').default.episodesWithProblems;
@@ -832,6 +834,13 @@ class AppComponent extends React.Component {
     let content;
 
     switch(this.state.view) {
+      case 'admin':
+        content =
+          <Admin
+            eps={this.state.eps}
+            apiEndpoint={apiEndpoint_default}
+          />;
+        break;
       case 'about':
         content =
           <div className="content">

@@ -13,5 +13,5 @@ export default {
   // Uncomment this and add your cloudFront domain to enable Amazon Cloudfront CDN,
   // make sure to have CORS headers whitelisted!
   // cloudFrontDomain: 'dxxxxxxxxxx.cloudfront.net',
-  episodesWithProblems: []
+  episodesWithProblems: [],
 }

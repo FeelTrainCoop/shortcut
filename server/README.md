@@ -46,4 +46,3 @@ Runs on `localhost:3000`
 		- `bash deploy.sh` --> deploy to production
 		- `bash deploy-staging.sh` --> deploy to staging
 - set environment variables from .env file by running `bash setenv.sh`, or via AWS website: All Applications --> <app> --> <app environment> --> configuration --> Environment Properties
-- Tested with Node.js v 4.4.3

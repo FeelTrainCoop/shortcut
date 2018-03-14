@@ -3,6 +3,7 @@
 const request = require('request');
 const striptags = require('striptags');
 const dataBucket = process.env.DATA_BUCKET;
+const getAllEpisodes = require('./all-episode-data').getAllEpisodes;
 
 module.exports = {
 
@@ -17,14 +18,10 @@ module.exports = {
     request.get({
       url: episodeDataURL,
       rejectUnauthorized: false
-      }, function(err, response, body) {
-      request.get({
-        url: episodesURL,
-        rejectUnauthorized: false
-        }, function(err, response, episodesBody) {
-        episodeDataCallback(err, body, startTime, endTime, episodeNumber, episodesBody, cb);
+      },
+      function(err, response, body) {
+        episodeDataCallback(err, body, startTime, endTime, episodeNumber, getAllEpisodes(), cb);
       });
-    });
   }
 
 };
@@ -34,7 +31,7 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
     console.log('error', err);
   }
   const showData = JSON.parse(body);
-  const episodesData = JSON.parse(episodesBody);
+  const episodesData = episodesBody.length ? episodesBody : JSON.parse(episodesBody);
   const episodeData = episodesData.filter(episode => episode.number === episodeNumber)[0];
   let startTime, endTime, startTimeMillis, endTimeMillis, wordsInRange, paragraphsInRange;
 
@@ -116,10 +113,10 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
         timestamp = lastValidTimestamp+1;
       }
       lastValidTimestamp = timestamp;
-      return [Math.round(timestamp)+"", striptags(decodeHTMLEntities(showData.transcript.substr(word.startOffset, nextWord.startOffset-word.startOffset)).trim(), ['&'])];
+      return [Math.round(timestamp)+'', striptags(decodeHTMLEntities(showData.transcript.substr(word.startOffset, nextWord.startOffset-word.startOffset)).trim(), ['&'])];
     });
     // add a placeholder empty string at time 0 (necessary for the reduce function that the client does)
-    wordsInRange.unshift(["0",""]);
+    wordsInRange.unshift(['0','']);
 
     // Fake paragraph breaks on every word that contains a terminal punctuation.
     paragraphsInRange = wordsInRange.filter(word => (word[1].match(/(\?$|\.$|\!$|(\.|\?|\!)\"$)$/) && word[1].length > 3))
