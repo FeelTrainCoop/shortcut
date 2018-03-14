@@ -3,10 +3,14 @@ const express = require('express'),
       router = express.Router(),
       allEpisodeData = require('./all-episode-data');
 
+// update the episode cache and then
 // return the state of enabled/disabled episodes
 // any episode not in this list is considered disabled by default
 router.get('/getEpisodes', function (req, res) {
-  return res.json(req.app.get('cache').getKey('episodes'));
+  let cache = req.app.get('cache');
+  allEpisodeData.update(cache, function() {
+    return res.json(req.app.get('cache').getKey('episodes'));
+  });
 });
 
 router.post('/setEpisode', function (req, res) {
