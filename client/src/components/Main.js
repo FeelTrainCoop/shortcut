@@ -976,7 +976,7 @@ class AppComponent extends React.Component {
       break;
     }
     return (
-    <MuiThemeProvider className="index" theme={customTheme}>
+    <MuiThemeProvider theme={customTheme}>
       <div className="index" onClick={this._cancelTranscriptTap.bind(this)}>
         <NavBar
           fbAuth={this.state.fbAuthToken}

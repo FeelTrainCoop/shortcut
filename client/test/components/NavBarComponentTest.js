@@ -17,6 +17,6 @@ describe('NavBarComponent', () => {
   });
 
   it('should have its component name as default className', () => {
-    expect(component.props.className).to.equal('navbar-component');
+    expect(component.props).to.have.property('muiTheme');
   });
 });
