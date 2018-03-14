@@ -14,7 +14,4 @@ export default {
   // make sure to have CORS headers whitelisted!
   // cloudFrontDomain: 'dxxxxxxxxxx.cloudfront.net',
   episodesWithProblems: [],
-  // set `useRSS` to `true` if you plan to use the RSS_FEED defined in server/.env as your
-  // source for episode metadata (recommended)
-  useRSS: false
 }

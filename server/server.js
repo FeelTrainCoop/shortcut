@@ -111,10 +111,6 @@ app.post('/create-video', cors(), routes.createVideo);
 app.options('/social-post', cors());
 app.post('/social-post', cors(), routes.socialPost);
 
-// retrieve rss feed
-app.options('/rss', cors());
-app.get('/rss', cors(), routes.rss);
-
 app.use(helmet());
 
 // index route

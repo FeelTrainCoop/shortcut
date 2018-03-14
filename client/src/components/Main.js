@@ -7,7 +7,6 @@ const Store = require('store'); // localStorage
 const isSecure =  window.location.protocol == 'https:';
 const apiEndpoint_default = isSecure ? require('config').default.apiEndpointSsl : require('config').default.apiEndpoint;
 const dataBucket = require('config').default.dataBucket;
-const useRSS = require('config').default.useRSS;
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
 const env = require('config').default.appEnv;
@@ -110,7 +109,7 @@ class AppComponent extends React.Component {
     this.state.eps = window.__latestEpisodes || props.eps;
     // BUT, if we're in a development environment, just grab the JSON/RSS file of all episodes and overwrite
     if (env === 'dev') {
-      let devUrl = useRSS ? apiEndpoint + '/rss' : apiEndpoint + '/recent';
+      let devUrl = apiEndpoint + '/recent';
       jQuery.ajax({
         method: 'GET',
         url: devUrl,
