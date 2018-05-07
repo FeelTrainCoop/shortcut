@@ -9,6 +9,7 @@ const apiEndpoint_default = isSecure ? require('config').default.apiEndpointSsl 
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
 const env = require('config').default.appEnv;
+const s3Region = require('config').default.s3Region;
 const s3Bucket = require('config').default.s3Bucket;
 const cloudFrontDomain = require('config').default.cloudFrontDomain;
 const speakerNamesInTranscript = require('config').default.speakerNamesInTranscript;
@@ -268,7 +269,7 @@ class AppComponent extends React.Component {
     });
   }
   _loadEpisodeChunk(showNumber, signedURL, shouldCache) {
-    let path = `https://${s3Bucket}.s3.amazonaws.com/episodes/${showNumber}-data.json`;
+    let path = `https://s3-${s3Region}.amazonaws.com/${s3Bucket}/episodes/${showNumber}-data.json`;
     if (cloudFrontDomain) {
       path = `https://${cloudFrontDomain}/episodes/${showNumber}-data.json`;
     }
