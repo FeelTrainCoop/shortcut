@@ -42,6 +42,7 @@ import Loader from 'components/LoadingAnimationComponent';
 import ShareContainer from 'components/ShareContainerComponent';
 import Landing from 'components/Landing';
 import Admin from 'components/Admin';
+import Setup from 'components/Setup';
 import Helpers from '../helpers';
 
 /** The root React component */
@@ -839,6 +840,12 @@ class AppComponent extends React.Component {
         content =
           <Admin
             eps={this.state.eps}
+            apiEndpoint={apiEndpoint_default}
+          />;
+        break;
+      case 'setup':
+        content =
+          <Setup
             apiEndpoint={apiEndpoint_default}
           />;
         break;
