@@ -22,7 +22,7 @@ const tempDir = process.env.TEMP || '/tmp';
 
 // update show data (list of all episodes and their show data version numbers)
 router.get('/', function(req, res) {
-  allEpisodeData.update( req.app.get('cache'), function(err) {
+  allEpisodeData.update( req.app.get('db'), function(err) {
     if (err) {
       return res.status(500).json({
         'status': 'error',
@@ -45,7 +45,7 @@ router.get('/:episodeNumber', function(req, res) {
     if (err) {
       return res.status(500).json(err);
     } else {
-      allEpisodeData.update(req.app.get('cache'));
+      allEpisodeData.update(req.app.get('db'));
       return res.json(success);
     }
   });

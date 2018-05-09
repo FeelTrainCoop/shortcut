@@ -15,7 +15,6 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
   basicAuth = require('express-basic-auth'),
-  flatCache = require('flat-cache'),
   path = require('path');
 
 let sslOptions;
@@ -43,18 +42,32 @@ const app = express();
 const routes = require('./routes');
 const passportMiddleware = require('./auth/passport-middleware.js');
 // synchronous read, but it only happens on server init
-const cache = flatCache.load('adminData.json', path.resolve(__dirname));
-
-// if there is no `episodes` key on the cache, init with an empty array
-if (cache.getKey('episodes') === undefined) {
-  cache.setKey('episodes',[]);
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('shortcut.db');
+// helper functions to get and set key/value pairs stored in `kvs`
+db.getKey = function(key, cb) {
+  this.get('select * from kvs where key = $key', {$key: key}, cb);
+}
+db.setKey = function(key, value, cb) {
+  if (typeof value !== 'string') {
+    value = JSON.stringify(value);
+  }
+  this.run("insert or replace into kvs values($key, $value)", {
+    $key: key,
+    $value: value
+  }, cb);
 }
 
-// update all episodes on server init
-routes.allEpisodeData.update(cache);
+// if there is no `episodes` table in the DB, create an empty table
+db.run("CREATE TABLE IF NOT EXISTS episodes (guid TEXT PRIMARY KEY, isEnabled INTEGER)");
+// if there is no `kvs` (key/value store) table, create it
+db.run("CREATE TABLE IF NOT EXISTS kvs (key TEXT PRIMARY KEY, value TEXT)", () => {
+  // update `allEpisodes` in our key/value store
+  routes.allEpisodeData.update(db);
+});
 
 // all environments
-app.set('cache', cache);
+app.set('db', db);
 app.set('port', process.env.PORT || 3000);
 app.set('port-https', process.env.PORT_HTTPS || 8443);
 app.use(compression());

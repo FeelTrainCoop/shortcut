@@ -33,8 +33,8 @@ class AdminComponent extends React.PureComponent {
       })
     ).done(function (episodeStateData, allEpisodeData) {
       let tempSwitches = allEpisodeData[0].map(episode => {
-        let foundElement = episodeStateData[0].find(el => el.value === episode.guid);
-        episode.checked = foundElement ? foundElement.enabled : false;
+        let foundElement = episodeStateData[0].find(el => el.guid === episode.guid);
+        episode.checked = foundElement ? foundElement.isEnabled : false;
         episode.value = episode.guid;
         return episode;
       });

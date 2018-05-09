@@ -3,13 +3,15 @@ const express = require('express'),
       router = express.Router(),
       allEpisodeData = require('./all-episode-data');
 
-// update the episode cache and then
+// update the episodes db table and then
 // return the state of enabled/disabled episodes
 // any episode not in this list is considered disabled by default
 router.get('/getEpisodes', function (req, res) {
-  let cache = req.app.get('cache');
-  allEpisodeData.update(cache, function() {
-    return res.json(req.app.get('cache').getKey('episodes'));
+  let db = req.app.get('db');
+  allEpisodeData.update(db, function() {
+    db.all('select * from episodes', (err, episodes) => {
+      return res.json(episodes);
+    });
   });
 });
 
@@ -19,23 +21,14 @@ router.post('/setEpisode', function (req, res) {
   if (guid === undefined || enabled === undefined) {
     return res.status(400).send('Bad request. Please make sure "guid" and "enabled" are properties in the POST body.');
   }
-  let cache = req.app.get('cache');
-  let episodes = cache.getKey('episodes') || [];
-  let episodeIndex = episodes.findIndex(episode => episode.value === guid);
-  const newObject = {
-    value: guid,
-    enabled: enabled === 'true'
-  };
-  if (episodeIndex > -1) {
-    episodes[episodeIndex] = newObject;
-  }
-  else {
-    episodes.push(newObject);
-  }
-  cache.setKey('episodes', episodes);
-  cache.save(true);
-  allEpisodeData.update(cache);
-  return res.json(cache.getKey('episodes'));
+  let db = req.app.get('db');
+  db.run('insert or replace into episodes values($guid, $enabled)', {
+    $guid: guid,
+    $enabled: enabled
+  }, (err, episodes) => {
+    allEpisodeData.update(db);
+    return res.json(episodes);
+  });
 });
 
 module.exports = router;

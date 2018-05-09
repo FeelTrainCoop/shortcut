@@ -6,15 +6,15 @@ const parser = new Parser();
 
 module.exports = {
   // body: the RSS XML
-  // episodes: array of JSON-formatted episodes as stored in the cache object,
+  // episodes: array of JSON-formatted episodes as stored in the database,
   //           or `true` to return all episodes
   parseRSS: function(body, episodes, cb) {
     // create an array of guid values of only active episodes
     let rssActiveEpisodes = [];
     if (Array.isArray(episodes)) {
       rssActiveEpisodes = episodes
-                                  .filter(episode => episode.enabled === true)
-                                  .map(episode => episode.value);
+                                  .filter(episode => !!episode.isEnabled === true)
+                                  .map(episode => episode.guid);
     }
     parser.parseString(body, function(error, feed) {
       if (!error) {
