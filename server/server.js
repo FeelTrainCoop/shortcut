@@ -98,6 +98,10 @@ var staticUserAuth = basicAuth({
 // admin page
 app.use('/admin', cors({ credentials: true, origin: true }), staticUserAuth, routes.admin);
 
+// setup page
+app.options('/setup', cors());
+app.use('/setup', cors(), routes.setup);
+
 // get recent episodes to display on main page
 app.options('/recent', cors());
 app.get('/recent', cors(), routes.recentEpisodes);

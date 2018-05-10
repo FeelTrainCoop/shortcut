@@ -6,8 +6,9 @@
 const request = require('request'),
       helpers = require('./helpers'),
       dataUrl = process.env.DATA_BUCKET + 'episodes.json',
-      rssFeed = process.env.RSS_FEED,
       inactiveEpisodes = process.env.BAD_EPISODES.split(',');
+
+let rssFeed = process.env.RSS_FEED;
 
 let db;
 let cache = {
@@ -24,6 +25,16 @@ const update = function(globalDb, cb) {
   };
 
   db = globalDb;
+
+  // if 'episodeSource' is set on the DB use this for `rssFeed`
+  db.getKey('episodeSource', function(err, res) {
+    if (res !== undefined) {
+      let episodeSource = JSON.parse(res.value);
+      rssFeed = episodeSource.rss;
+    }
+  });
+
+  console.log(rssFeed);
 
   // get show data
   if (rssFeed) {
