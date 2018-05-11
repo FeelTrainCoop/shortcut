@@ -9,33 +9,41 @@ const request = require('request'),
       rssFeed = process.env.RSS_FEED,
       inactiveEpisodes = process.env.BAD_EPISODES.split(',');
 
-// in memory cache of all available episodes as displayed on the home page (title, air date, description, number)
-let cache;
+let db;
+let cache = {
+  allEpisodes: [],
+  allEpisodesUnfiltered: []
+};
 
 // update `allEpisodes` and `episodeDataVersions`
-const update = function(globalCache, cb) {
+const update = function(globalDb, cb) {
   cb = cb || function(err) {
     if (err) {
       throw new Error('Unable to update episode data: ' + err);
     }
   };
-  cache = globalCache;
+
+  db = globalDb;
 
   // get show data
   if (rssFeed) {
     request.get({url: rssFeed}, function(err, resp, body) {
       if (!err) {
-        let episodes = cache.getKey('episodes') || [];
-        helpers.parseRSS(body, episodes, function(result) {
-          if (result.err) {
-            return cb(result.err);
-          }
-          else {
-            cache.setKey('allEpisodes', result.episodes);
-            cache.setKey('allEpisodesUnfiltered', result.episodesUnfiltered);
-            cache.save(true);
-            return cb(null, 'success');
-          }
+        // get the episode enabled list from our db
+        db.all('select * from episodes', (err, episodes) => {
+          console.log('episodes:', episodes);
+          helpers.parseRSS(body, episodes, function(result) {
+            if (result.err) {
+              return cb(result.err);
+            }
+            else {
+              db.setKey('allEpisodes', result.episodes);
+              cache.allEpisodes = result.episodes;
+              db.setKey('allEpisodesUnfiltered', result.episodesUnfiltered);
+              cache.allEpisodesUnfiltered = result.episodesUnfiltered;
+              return cb(null, 'success');
+            }
+          });
         });
       }
       else {
@@ -48,31 +56,33 @@ const update = function(globalCache, cb) {
       if (!err) {
         try {
           let activeEpisodes = [];
-          let episodes = cache.getKey('episodes');
-          if (Array.isArray(episodes)) {
-            activeEpisodes = episodes
-                              .filter(episode => episode.enabled === true)
-                              .map(episode => episode.value);
-          }
-          // update the value of allEpisodes
-          let unfilteredEpisodes = JSON.parse(body).map((item) => {
-            return {
-              'number': item.number,
-              'description': item.description,
-              'original_air_date': item.original_air_date,
-              'title': item.title,
-              'guid': item.number
-            };
+          db.all('select * from episodes', (err, episodes) => {
+            if (Array.isArray(episodes)) {
+              activeEpisodes = episodes
+                                .filter(episode => !!episode.isEnabled === true)
+                                .map(episode => episode.guid);
+            }
+            // update the value of allEpisodes
+            let unfilteredEpisodes = JSON.parse(body).map((item) => {
+              return {
+                'number': item.number,
+                'description': item.description,
+                'original_air_date': item.original_air_date,
+                'title': item.title,
+                'guid': item.number
+              };
+            });
+            db.setKey('allEpisodesUnfiltered', unfilteredEpisodes);
+            cache.allEpisodesUnfiltered = unfilteredEpisodes;
+            let filteredEpisodes = unfilteredEpisodes
+              // filter out inactive episodes specified in the .env file
+              .filter((episode) => !inactiveEpisodes.includes(episode.number))
+              // filter out inactive episodes (only include explicitly active episodes in the admin panel)
+              .filter((episode) => activeEpisodes.includes(episode.guid));
+            db.setKey('allEpisodes', filteredEpisodes);
+            cache.allEpisodes = filteredEpisodes;
+            return cb(null, 'success');
           });
-          cache.setKey('allEpisodesUnfiltered', unfilteredEpisodes);
-          let filteredEpisodes = unfilteredEpisodes
-            // filter out inactive episodes specified in the .env file
-            .filter((episode) => !inactiveEpisodes.includes(episode.number))
-            // filter out inactive episodes (only include explicitly active episodes in the admin panel)
-            .filter((episode) => activeEpisodes.includes(episode.guid));
-          cache.setKey('allEpisodes', filteredEpisodes);
-          cache.save(true);
-          return cb(null, 'success');
         } catch(e) {
           console.error('unable to parse full latest episodes', e);
         }
@@ -84,15 +94,15 @@ const update = function(globalCache, cb) {
 
 module.exports = {
   getAllEpisodes: function() {
-    return cache.getKey('allEpisodes');
+    return cache.allEpisodes;
   },
   getAllEpisodesUnfiltered: function() {
-    return cache.getKey('allEpisodesUnfiltered');
+    return cache.allEpisodesUnfiltered;
   },
-  update: function(globalCache, cb) {
-    if (!globalCache) {
-      throw 'Must specify a cache object in all-episode-data.js\' `update` function';
+  update: function(db, cb) {
+    if (!db) {
+      throw new Error('Must provide a sqlite database object in all-episode-data.js\' `update` function');
     }
-    update(globalCache, cb);
+    update(db, cb);
   }
 };

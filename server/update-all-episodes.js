@@ -4,12 +4,13 @@ require('dotenv').config();
 const request = require('request');
 const async = require('async');
 const allEpisodeData = require('./all-episode-data'),
-      flatCache = require('flat-cache'),
       path = require('path');
 
-const cache = flatCache.load('adminData.json', path.resolve(__dirname));
+// synchronous read, but it only happens on server init
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('shortcut.db');
 
-allEpisodeData.update(cache, function(err) {
+allEpisodeData.update(db, function(err) {
   if (!err) {
     let episodes = allEpisodeData.getAllEpisodes();
     episodes = episodes.map(episode => `http://localhost:3000/api/${process.env.API_HASH}/update/${episode.number}`);
