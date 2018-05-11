@@ -22,7 +22,9 @@ class SetupComponent extends React.PureComponent {
         link: '',
         author: '',
         episodes: 0
-      }
+      },
+      isPasswordValid: false,
+      isUsernameValid: true
     };
     this.apiEndpoint = props.apiEndpoint;
   }
@@ -42,7 +44,45 @@ class SetupComponent extends React.PureComponent {
         this.setState({ loading: false, step: 1, showData: data.showData });
       }.bind(this)
     });
+  }
 
+  validatePassword(e) {
+    let val = e.target.value;
+    if (val.length > 16) {
+      this.setState({isPasswordValid: true});
+    }
+    else {
+      this.setState({isPasswordValid: false});
+    }
+  }
+
+  validateUsername(e) {
+    let val = e.target.value;
+    if (val.length > 0) {
+      this.setState({isUsernameValid: true});
+    }
+    else {
+      this.setState({isUsernameValid: false});
+    }
+  }
+
+  makeSite() {
+    this.setState({ loading: true });
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    jQuery.ajax({
+      type: 'POST',
+      url: `${this.apiEndpoint}/setup/setAdmin`,
+      data: {
+        username,
+        password
+      },
+      success: function(data) {
+        console.log('DONE', data);
+        this.setState({ loading: false });
+        location.hash = 'admin';
+      }.bind(this)
+    });
   }
 
   render() {
@@ -78,6 +118,32 @@ class SetupComponent extends React.PureComponent {
             <p><strong>Website:</strong> {this.state.showData.link}</p>
             <p><strong>Number of Episodes:</strong> {this.state.showData.episodes}</p>
             <p><strong>Description:</strong> {this.state.showData.description}</p>
+            <p>Please set the username and password for the administrator panel.</p>
+            <TextField
+              id="username"
+              label="Set Admin Username"
+              margin="normal"
+              defaultValue="admin"
+              error={!this.state.isUsernameValid}
+              onChange={this.validateUsername.bind(this)}
+            />
+            <br/>
+            <TextField
+              helperText="Must be at least 16 characters."
+              error={!this.state.isPasswordValid}
+              onChange={this.validatePassword.bind(this)}
+              id="password"
+              label="Set Admin Password"
+              margin="normal"
+            />
+            <br/>
+            <RaisedButton
+              className="get-podcast-data"
+              onClick={this.makeSite.bind(this)}
+              disabled={!this.state.isUsernameValid || !this.state.isPasswordValid}
+            >
+              Make the Shortcut Site
+            </RaisedButton>
           </div>
         </div>
       </Paper>

@@ -12,10 +12,10 @@ const express = require('express'),
   errorHandler = require('errorhandler'),
   session = require('cookie-session'),
   helmet = require('helmet'),
+  bcrypt = require('bcrypt-nodejs'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
-  basicAuth = require('express-basic-auth'),
-  path = require('path');
+  basicAuth = require('express-basic-auth');
 
 let sslOptions;
 try {
@@ -47,21 +47,21 @@ const db = new sqlite3.Database('shortcut.db');
 // helper functions to get and set key/value pairs stored in `kvs`
 db.getKey = function(key, cb) {
   this.get('select * from kvs where key = $key', {$key: key}, cb);
-}
+};
 db.setKey = function(key, value, cb) {
   if (typeof value !== 'string') {
     value = JSON.stringify(value);
   }
-  this.run("insert or replace into kvs values($key, $value)", {
+  this.run('insert or replace into kvs values($key, $value)', {
     $key: key,
     $value: value
   }, cb);
-}
+};
 
 // if there is no `episodes` table in the DB, create an empty table
-db.run("CREATE TABLE IF NOT EXISTS episodes (guid TEXT PRIMARY KEY, isEnabled INTEGER)");
+db.run('CREATE TABLE IF NOT EXISTS episodes (guid TEXT PRIMARY KEY, isEnabled INTEGER)');
 // if there is no `kvs` (key/value store) table, create it
-db.run("CREATE TABLE IF NOT EXISTS kvs (key TEXT PRIMARY KEY, value TEXT)", () => {
+db.run('CREATE TABLE IF NOT EXISTS kvs (key TEXT PRIMARY KEY, value TEXT)', () => {
   // update `allEpisodes` in our key/value store
   routes.allEpisodeData.update(db);
 });
@@ -88,15 +88,38 @@ app.use(session({
   maxAge: 128000
 }));
 
-var staticUserAuth = basicAuth({
-  users: {
-    'admin': process.env.ADMIN_PASSWORD
-  },
+// if the admin password is set as an environment variable and there isn't one already in the DB, set the admin user/password in the DB
+db.getKey('admin', function(err, res) {
+  if (res === undefined && process.env.ADMIN_PASSWORD) {
+    db.setKey('admin', {username: bcrypt.hashSync('admin'), password: bcrypt.hashSync(process.env.ADMIN_PASSWORD)});
+  }
+});
+
+let basicUserAuth = basicAuth({
+  authorizer: asyncAuthorizer,
+  authorizeAsync: true,
   challenge: true
 });
 
+function asyncAuthorizer(username, password, cb) {
+  let isAuthorized = false;
+  db.getKey('admin', function(err, res) {
+    res = JSON.parse(res.value);
+    console.log(res, typeof res);
+    const isPasswordAuthorized = bcrypt.compareSync(password, res.password);
+    const isUsernameAuthorized = bcrypt.compareSync(username, res.username);
+    isAuthorized = isPasswordAuthorized && isUsernameAuthorized;
+    if (isAuthorized) {
+      return cb(null, true);
+    }
+    else {
+      return cb(null, false);
+    }
+  });
+}
+
 // admin page
-app.use('/admin', cors({ credentials: true, origin: true }), staticUserAuth, routes.admin);
+app.use('/admin', cors({ credentials: true, origin: true }), basicUserAuth, routes.admin);
 
 // setup page
 app.options('/setup', cors());

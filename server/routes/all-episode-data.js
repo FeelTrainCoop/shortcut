@@ -32,10 +32,12 @@ const update = function(globalDb, cb) {
       let episodeSource = JSON.parse(res.value);
       rssFeed = episodeSource.rss;
     }
+    getShowData(db, cb);
   });
 
-  console.log(rssFeed);
+};
 
+function getShowData(db, cb) {
   // get show data
   if (rssFeed) {
     request.get({url: rssFeed}, function(err, resp, body) {
@@ -101,7 +103,7 @@ const update = function(globalDb, cb) {
       return cb('no body');
     });
   }
-};
+}
 
 module.exports = {
   getAllEpisodes: function() {
