@@ -28,6 +28,7 @@
     "aws-cloudfront-sign": "^2.1.2",
     "aws-sdk": "^2.3.16",
     "basic-auth": "^1.0.4",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "canvas": "^1.6.6",
     "compression": "^1.6.2",

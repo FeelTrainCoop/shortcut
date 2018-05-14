@@ -74,7 +74,7 @@ class AdminComponent extends React.PureComponent {
         xhrFields: { withCredentials: true },
         data: {
           guid: switches[index].guid,
-          enabled: switches[index].checked
+          enabled: +switches[index].checked
         }
       });
       this.forceUpdate()

@@ -2,6 +2,8 @@
 
 module.exports = {
   admin: require('./admin'),
+  api: require('./api'),
+  setup: require('./setup'),
   recentEpisodes: require('./recent-episodes'),
   search: require('./search'),
   getEpisode: require('./get-episode'),

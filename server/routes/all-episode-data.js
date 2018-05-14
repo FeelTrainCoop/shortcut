@@ -6,8 +6,9 @@
 const request = require('request'),
       helpers = require('./helpers'),
       dataUrl = process.env.DATA_BUCKET + 'episodes.json',
-      rssFeed = process.env.RSS_FEED,
       inactiveEpisodes = process.env.BAD_EPISODES.split(',');
+
+let rssFeed = process.env.RSS_FEED;
 
 let db;
 let cache = {
@@ -15,7 +16,7 @@ let cache = {
   allEpisodesUnfiltered: []
 };
 
-// update `allEpisodes` and `episodeDataVersions`
+// update `allEpisodes`
 const update = function(globalDb, cb) {
   cb = cb || function(err) {
     if (err) {
@@ -25,13 +26,24 @@ const update = function(globalDb, cb) {
 
   db = globalDb;
 
+  // if 'episodeSource' is set on the DB use this for `rssFeed`
+  db.getKey('episodeSource', function(err, res) {
+    if (res !== undefined) {
+      let episodeSource = JSON.parse(res.value);
+      rssFeed = episodeSource.rss;
+    }
+    getShowData(db, cb);
+  });
+
+};
+
+function getShowData(db, cb) {
   // get show data
   if (rssFeed) {
     request.get({url: rssFeed}, function(err, resp, body) {
       if (!err) {
         // get the episode enabled list from our db
         db.all('select * from episodes', (err, episodes) => {
-          console.log('episodes:', episodes);
           helpers.parseRSS(body, episodes, function(result) {
             if (result.err) {
               return cb(result.err);
@@ -90,7 +102,7 @@ const update = function(globalDb, cb) {
       return cb('no body');
     });
   }
-};
+}
 
 module.exports = {
   getAllEpisodes: function() {

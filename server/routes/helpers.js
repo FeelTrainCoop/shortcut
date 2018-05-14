@@ -58,6 +58,25 @@ module.exports = {
     });
   },
 
+  // get the show metadata from RSS
+  parseRSSMeta: function(body, cb) {
+    parser.parseString(body, function(error, feed) {
+      if (!error) {
+        let showData = {
+          title: feed.title,
+          description: feed.description,
+          link: feed.link,
+          author: feed.itunes.author,
+          episodes: feed.items.length
+        }
+        cb({err: null, showData});
+      }
+      else {
+        cb({err: `This error occurred: ${error}`, showData: null});
+      }
+    });
+  },
+
   downloadFile: function(origPath, callback) {
     const tempDir = process.env.TEMP || '/tmp';
 
