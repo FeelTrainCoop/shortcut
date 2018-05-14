@@ -23,7 +23,10 @@ class SetupComponent extends React.PureComponent {
         author: '',
         episodes: 0
       },
+      password: '',
+      confirmPassword: '',
       isPasswordValid: false,
+      doPasswordsMatch: true,
       isUsernameValid: true,
       warnUserOverride: false,
     };
@@ -65,10 +68,26 @@ class SetupComponent extends React.PureComponent {
   validatePassword(e) {
     let val = e.target.value;
     if (val.length > 16) {
-      this.setState({isPasswordValid: true});
+      this.setState({isPasswordValid: true, password: val});
     }
     else {
-      this.setState({isPasswordValid: false});
+      this.setState({isPasswordValid: false, password: val});
+    }
+    if (val === this.state.confirmPassword) {
+      this.setState({doPasswordsMatch: true});
+    }
+    else {
+      this.setState({doPasswordsMatch: false});
+    }
+  }
+
+  matchPasswords(e) {
+    let val = e.target.value;
+    if (val === this.state.password) {
+      this.setState({doPasswordsMatch: true, confirmPassword: val});
+    }
+    else {
+      this.setState({doPasswordsMatch: false, confirmPassword: val});
     }
   }
 
@@ -157,10 +176,18 @@ class SetupComponent extends React.PureComponent {
               margin="normal"
             />
             <br/>
+            <TextField
+              error={!this.state.doPasswordsMatch}
+              onChange={this.matchPasswords.bind(this)}
+              id="password"
+              label="Confirm Admin Password"
+              margin="normal"
+            />
+            <br/>
             <RaisedButton
               className="get-podcast-data"
               onClick={this.makeSite.bind(this)}
-              disabled={!this.state.isUsernameValid || !this.state.isPasswordValid}
+              disabled={!this.state.isUsernameValid || !this.state.isPasswordValid || !this.state.doPasswordsMatch}
             >
               Make the Shortcut Site
             </RaisedButton>
