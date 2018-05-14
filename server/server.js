@@ -101,11 +101,16 @@ let basicUserAuth = basicAuth({
   challenge: true
 });
 
+let skipFirstAuth = basicAuth({
+  authorizer: firstTimeAuthorizer,
+  authorizeAsync: true,
+  challenge: true
+});
+
 function asyncAuthorizer(username, password, cb) {
   let isAuthorized = false;
   db.getKey('admin', function(err, res) {
     res = JSON.parse(res.value);
-    console.log(res, typeof res);
     const isPasswordAuthorized = bcrypt.compareSync(password, res.password);
     const isUsernameAuthorized = bcrypt.compareSync(username, res.username);
     isAuthorized = isPasswordAuthorized && isUsernameAuthorized;
@@ -118,12 +123,24 @@ function asyncAuthorizer(username, password, cb) {
   });
 }
 
+function firstTimeAuthorizer(username, password, cb) {
+  // if no admin password is set, we authorize without any credentials because this is first-time setup
+  db.getKey('admin', function(err, res) {
+    if (res === undefined) {
+      return cb(null, true);
+    }
+    else {
+      return asyncAuthorizer(username, password, cb);
+    }
+  });
+}
+
 // admin page
 app.use('/admin', cors({ credentials: true, origin: true }), basicUserAuth, routes.admin);
 
 // setup page
 app.options('/setup', cors());
-app.use('/setup', cors(), routes.setup);
+app.use('/setup', cors({credentials: true, origin: true}), skipFirstAuth, routes.setup);
 
 // get recent episodes to display on main page
 app.options('/recent', cors());
@@ -146,6 +163,9 @@ app.use('/auth', routes.auth);
 // create snippet video
 app.options('/create-video', cors());
 app.post('/create-video', cors(), routes.createVideo);
+
+app.options('/api', cors());
+app.use('/api', cors(), routes.api);
 
 // post to social media
 app.options('/social-post', cors());

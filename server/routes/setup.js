@@ -14,6 +14,10 @@ router.post('/setSource', function (req, res) {
   }
   let db = req.app.get('db');
   const episodeSource = { type, rss };
+  db.serialize(() => {
+    db.run('drop table if exists episodes');
+    db.run('create table if not exists episodes (guid text primary key, isEnabled integer)');
+  });
   db.setKey('episodeSource', episodeSource, () => {
     allEpisodeData.update(db, function() {
       request.get({url: rss}, function(err, resp, body) {

@@ -16,7 +16,7 @@ let cache = {
   allEpisodesUnfiltered: []
 };
 
-// update `allEpisodes` and `episodeDataVersions`
+// update `allEpisodes`
 const update = function(globalDb, cb) {
   cb = cb || function(err) {
     if (err) {
@@ -44,7 +44,6 @@ function getShowData(db, cb) {
       if (!err) {
         // get the episode enabled list from our db
         db.all('select * from episodes', (err, episodes) => {
-          console.log('episodes:', episodes);
           helpers.parseRSS(body, episodes, function(result) {
             if (result.err) {
               return cb(result.err);

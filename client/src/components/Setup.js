@@ -24,9 +24,24 @@ class SetupComponent extends React.PureComponent {
         episodes: 0
       },
       isPasswordValid: false,
-      isUsernameValid: true
+      isUsernameValid: true,
+      warnUserOverride: false,
     };
     this.apiEndpoint = props.apiEndpoint;
+  }
+
+  componentWillMount() {
+    jQuery.ajax({
+      method: 'GET',
+      url: `${this.apiEndpoint}/api/isSourceSet`,
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+      success: function(data) {
+        console.log('DATA',data);
+        this.setState({
+          warnUserOverride: data.isSourceSet
+        });
+      }.bind(this),
+    });
   }
 
   getPodcastData() {
@@ -39,6 +54,7 @@ class SetupComponent extends React.PureComponent {
         type: 'libsyn',
         url: libsynUrl
       },
+      xhrFields: { withCredentials: true },
       success: function(data) {
         console.log('DONE', data);
         this.setState({ loading: false, step: 1, showData: data.showData });
@@ -72,6 +88,7 @@ class SetupComponent extends React.PureComponent {
     const password = document.getElementById('password').value;
     jQuery.ajax({
       type: 'POST',
+      xhrFields: { withCredentials: true },
       url: `${this.apiEndpoint}/setup/setAdmin`,
       data: {
         username,
@@ -96,6 +113,9 @@ class SetupComponent extends React.PureComponent {
           </div>
         </div>
         <div className="content episodes">
+          <div>
+            {this.state.warnUserOverride && <h2><strong className="red">Warning: it looks like you've already set up Shortcut on this server. You can continue but you will overwrite all of your previous settings.</strong></h2>}
+          </div>
           <p>Welcome to Shortcut's configuration wizard. To get started, enter the URL of your Libsyn site, like "mypodcast.libsyn.com".</p>
           <TextField
             id="url"
