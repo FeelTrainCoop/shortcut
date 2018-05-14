@@ -17,7 +17,7 @@ router.get('/getEpisodes', function (req, res) {
 
 router.post('/setEpisode', function (req, res) {
   const guid = req.body.guid;
-  const enabled = req.body.enabled;
+  const enabled = +(req.body.enabled === '1'); // convert "1" string to 1, everything else to 0
   if (guid === undefined || enabled === undefined) {
     return res.status(400).send('Bad request. Please make sure "guid" and "enabled" are properties in the POST body.');
   }
