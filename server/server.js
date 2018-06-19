@@ -59,7 +59,7 @@ db.setKey = function(key, value, cb) {
 };
 
 // if there is no `episodes` table in the DB, create an empty table
-db.run('CREATE TABLE IF NOT EXISTS episodes (guid TEXT PRIMARY KEY, isEnabled INTEGER)');
+db.run('CREATE TABLE IF NOT EXISTS episodes (guid TEXT PRIMARY KEY, isEnabled INTEGER, hasTranscript INTEGER DEFAULT 0, transcript TEXT)');
 // if there is no `kvs` (key/value store) table, create it
 db.run('CREATE TABLE IF NOT EXISTS kvs (key TEXT PRIMARY KEY, value TEXT)', () => {
   // update `allEpisodes` in our key/value store

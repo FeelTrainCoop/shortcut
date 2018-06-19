@@ -22,7 +22,7 @@ router.post('/setEpisode', function (req, res) {
     return res.status(400).send('Bad request. Please make sure "guid" and "enabled" are properties in the POST body.');
   }
   let db = req.app.get('db');
-  db.run('insert or replace into episodes values($guid, $enabled)', {
+  db.run('insert or replace into episodes(guid, isEnabled) values($guid, $enabled)', {
     $guid: guid,
     $enabled: enabled
   }, (err, episodes) => {

@@ -15,7 +15,8 @@ class AdminComponent extends React.PureComponent {
     this.state = {
       eps: props.eps,
       authenticated: false,
-      switches: []
+      switches: [],
+
     };
     this.apiEndpoint = props.apiEndpoint;
   }
@@ -35,6 +36,7 @@ class AdminComponent extends React.PureComponent {
       let tempSwitches = allEpisodeData[0].map(episode => {
         let foundElement = episodeStateData[0].find(el => el.guid === episode.guid);
         episode.checked = foundElement ? foundElement.isEnabled : false;
+        episode.hasTranscript = foundElement ? foundElement.hasTranscript : false;
         episode.value = episode.guid;
         return episode;
       });
@@ -48,17 +50,24 @@ class AdminComponent extends React.PureComponent {
   renderSwitches() {
     return this.state.switches
       .map((el, index) =>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={el.checked}
-                value={el.value}
-                onChange={this.handleClick.bind(this,index)}
-              />
+          <div>
+            <FormControlLabel
+              control={
+                <Switch
+                  disabled={!el.hasTranscript}
+                  checked={el.checked}
+                  value={el.value}
+                  onChange={this.handleClick.bind(this,index)}
+                />
+              }
+              key={el.value}
+              label={el.title}
+            />
+            {
+              el.hasTranscript ? ( <p className="edit-transcript">Edit Transcript</p> ) :
+                ( <p className="edit-transcript">Add Transcript</p> )
             }
-            key={el.value}
-            label={el.title}
-          />
+          </div>
       );
   }
 
