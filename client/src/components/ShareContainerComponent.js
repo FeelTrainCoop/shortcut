@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { hashHistory } from 'react-router'
+import { hashHistory } from 'react-router-dom'
 import { withStyles } from 'material-ui/styles';
 import FlatButton from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
