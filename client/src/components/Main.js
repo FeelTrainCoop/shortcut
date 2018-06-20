@@ -29,7 +29,8 @@ let colorOption = undefined;
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { hashHistory } from 'react-router'
+import {Route, Switch, hashHistory } from 'react-router-dom'
+
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import Snackbar from 'material-ui/Snackbar';
@@ -836,19 +837,6 @@ class AppComponent extends React.Component {
     let content;
 
     switch(this.state.view) {
-      case 'admin':
-        content =
-          <Admin
-            eps={this.state.eps}
-            apiEndpoint={apiEndpoint_default}
-          />;
-        break;
-      case 'setup':
-        content =
-          <Setup
-            apiEndpoint={apiEndpoint_default}
-          />;
-        break;
       case 'about':
         content =
           <div className="content">
@@ -997,7 +985,11 @@ class AppComponent extends React.Component {
           episode={this.state.episode}
           view={this.state.view}
         />
-        {content}
+
+        <Route exact path="/" render={()=><Landing clickLink={this.clickLink.bind(this)} eps={this.state.eps} badEps={this.state.episodesWithProblems} loadMoreEpisodes={this.loadMoreEpisodes.bind(this)}/>}/>
+        <Route exact path="/setup" render={()=><Setup apiEndpoint={apiEndpoint_default}/>}/>
+        <Route exact path="/admin" render={()=><Admin apiEndpoint={apiEndpoint_default} eps={this.state.eps}/>}/>
+        <Route exact path="/admin/funk" render={()=><Setup apiEndpoint={apiEndpoint_default}/>}/>
 
         {/* Tell user to rotate from landscape */}
         <div className="no-mobile landscape">

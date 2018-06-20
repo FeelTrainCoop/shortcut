@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { hashHistory } from 'react-router'
+import { hashHistory } from 'react-router-dom'
 
 import {AppBar, Button, Drawer, Divider, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, Toolbar, Typography} from 'material-ui';
 import { withStyles } from 'material-ui/styles';
