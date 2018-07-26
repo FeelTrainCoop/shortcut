@@ -99,7 +99,9 @@ function getShowData(db, cb) {
           console.error('unable to parse full latest episodes', e);
         }
       }
-      return cb('no body');
+      else {
+        return cb('no body');
+      }
     });
   }
 }

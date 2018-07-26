@@ -30,7 +30,6 @@ function Landing(props) {
       links.push(
         <Link
           key={ep.number}
-          onClick={props.clickLink}
           to={to}
           className="no-underline episode-link-container"
           activeClassName="active"

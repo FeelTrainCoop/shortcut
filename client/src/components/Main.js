@@ -29,7 +29,7 @@ let colorOption = undefined;
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Route, Switch, hashHistory } from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
@@ -68,7 +68,7 @@ class AppComponent extends React.Component {
     }
 
     defaultState = {
-      showNumber: props.params.showNumber || props.showNumber,
+      showNumber: props.match.params.showNumber || props.showNumber,
       airDate: '',
       episode: '',
       wordMillis: props.wordMillis,
@@ -88,7 +88,7 @@ class AppComponent extends React.Component {
     }
     // If there is an episode number, we must be coming back to a page, so use localState if we have it. Otherwise this is a "clean" entry so use the default state instead.
     else {
-      this.state = props.params.showNumber && localState.showNumber === props.params.showNumber ? localState : defaultState;
+      this.state = props.match.params.showNumber && localState.showNumber === props.match.params.showNumber ? localState : defaultState;
       this.state.episode = localState.episode;
       this.state.airDate = localState.airDate;
     }
@@ -100,8 +100,8 @@ class AppComponent extends React.Component {
     }
 
 
-    this.state.view = props.params.view || props.view;
-    this.state.showNumber = props.params.showNumber || props.showNumber;
+    this.state.view = props.match.params.view || props.view;
+    this.state.showNumber = props.match.params.showNumber || props.showNumber;
     this.state.loading = props.loading;
     this.state.snackbarOpen = false;
     this.state.snackbarMessage = 'default message';
@@ -193,8 +193,8 @@ class AppComponent extends React.Component {
   * Before we update any properties from our routes, we check to see if we're on the home page. If we are, then we reset the application state to defaults. If we're on a clipping page and it's the same show as before, then don't reload our waveform data, just use what we already have. If we're clipping a different episode, do reload the waveform data.
   */
   componentWillReceiveProps(props, prevProps) {
-    let view = props.params.view || this.props.view;
-    let show = props.params.showNumber || this.props.showNumber || this.state.showNumber;
+    let view = props.match.params.view || this.props.view;
+    let show = props.match.params.showNumber || this.props.showNumber || this.state.showNumber;
     let newState = {};
 
     // analytics: log page view
@@ -287,7 +287,7 @@ class AppComponent extends React.Component {
         snackbarMessage: tapMsg.unavail(showNumber),
         showNumber: undefined
       }, function() {
-        hashHistory.push('/');
+        this.props.history.push('/');
       });
       return;
     }
@@ -323,7 +323,7 @@ class AppComponent extends React.Component {
           view: 'default'
         });
 
-        hashHistory.replace('/');
+        this.props.history.replace('/');
         // window.location.reload();
 
       }
@@ -477,14 +477,8 @@ class AppComponent extends React.Component {
       snackbarOpen: false
     });
   }
-  /** Sets the `view` to `'goingToClip'` when the user clicks an episode link on the front page. This causes the loading spinner to render immediately. */
-  clickLink() {
-    this.setState({
-      view: 'goingToClip'
-    });
-  }
 
-  /** POST request to create video on Lambda (triggered when user clicks the "Preview" button in {@link PreviewContainerComponent|PreviewContainer}). */
+  /** POST request to create video */
   createVideo(data) {
     let apiEndpoint = apiEndpoint_default;
     var that = this;
@@ -510,8 +504,9 @@ class AppComponent extends React.Component {
       });
     }
 
+    // start the loading animation
     this.setState({
-      view: 'creatingVideo'
+      loading: true
     });
     
     jQuery.ajax({
@@ -541,9 +536,10 @@ class AppComponent extends React.Component {
 
         this.setState({
           view: 'share',
+          loading: false,
           videoData: res
         }, function() {
-          hashHistory.push('/share/' + this.state.showNumber );
+          this.props.history.push('/share/' + this.state.showNumber );
         });
       },
       error: (err) => {
@@ -557,8 +553,9 @@ class AppComponent extends React.Component {
     var that = this;
     let apiEndpoint = apiEndpoint_default;
 
+    // start the loading animation
     this.setState({
-      view: 'creatingSocialMedia'
+      loading: true
     });
 
     function handleError(err) {
@@ -612,10 +609,11 @@ class AppComponent extends React.Component {
 
         that.setState({
           view: undefined,
+          loading: false,
           snackbarOpen: true,
           snackbarMessage: 'Shared successfully!'
         }, function() {
-          hashHistory.push('/');
+          this.props.history.push('/');
         });
       },
       error: (err) => {
@@ -834,147 +832,11 @@ class AppComponent extends React.Component {
   /** Render the application. This also loads our custom React theme, and renders different views based on the state of `view`. */
   render() {
     const customTheme = createMuiTheme(this.customTheme);
-    let content;
-
-    switch(this.state.view) {
-      case 'about':
-        content =
-          <div className="content">
-            <div className="about-page">
-              <h1>About Shortcut</h1>
-              <p>You can put your About text here!</p>
-              <h3>Open Source</h3>
-                <ul><li>
-                  Shortcut is open source! You can view the source code, file bugs, and contribute code and documentation <a href="https://github.com/FeelTrainCoop/shortcut">at our Github repo</a>.
-                </li></ul>
-
-              <footer>
-                <p>Feel free to put a footer here.</p>
-              </footer>
-            </div>
-          </div>
-        break;
-      case 'share':
-        content =
-          <ShareContainer
-            muiTheme={customTheme}
-            videoData={this.state.videoData}
-            episode={this.state.episode}
-            airDate={this.state.airDate}
-            twAuth={this.state.twAuthToken}
-            twName={this.state.twUserName}
-            fbAuth={this.state.fbAuthToken}
-            fbName={this.state.fbUserName}
-            createSocialMedia={this.createSocialMedia.bind(this)}
-          />;
-        break;
-      case 'creatingVideo':
-        content=
-          <Loader
-            show={true}
-            msg='making your video'
-          >
-          </Loader>
-          break;
-      case 'creatingSocialMedia':
-        content=
-          <Loader
-            show={true}
-            msg='posting...'
-          >
-          </Loader>
-          break;
-      case 'goingToClip':
-        content=
-          <Loader
-            show={true}
-            msg='loading episode'
-          >
-          </Loader>
-          break;
-      case 'clipping':
-        content =
-          <Loader
-            show={this.state.loading}
-            msg='loading episode'
-          >
-            <ClippingHLSWrapper
-              hls={this.state.hls}
-              peaks={this.state.peaks}
-              regionStart={this.state.regionStart}
-              regionEnd={this.state.regionEnd}
-              selectedWords={this.state.selectedWords}
-              showNumber={this.state.showNumber}
-              totalDuration={this.state.showDuration}
-              clippingDuration={this.state.clippingDuration} //////////////////////////////////////
-              clippingOffset={this.state.clippingOffset}
-              wordDictionary={this.state.wordDictionary}
-              paragraphMillis={this.state.paragraphMillis}
-              wordMillis={this.state.wordMillis}
-              paragraphDictionary={this.state.paragraphDictionary}
-              episode={this.state.episode}
-              airDate={this.state.airDate}
-              textSelectionChanged={this.textSelectionChanged.bind(this)}
-              muiTheme={customTheme}
-              createVideo={this.createVideo.bind(this)}
-              clipTooLong={this.state.clipTooLong}
-              onDrewPeaks={this.onDrewPeaks.bind(this)}
-              drewPeaks={this.state.drewPeaks}
-              handleWordTap={this._handleWordTap.bind(this)}
-              tappedWord={this.state.tappedWord}
-              view={this.state.view}
-              onColorChange={this.onColorChange.bind(this)}
-            />
-          </Loader>
-        break;
-      case 'preview':
-        content =
-          <Loader
-            show={this.state.loading}
-            msg='loading episode'
-          >
-            <ClippingHLSWrapper
-              hls={this.state.hls}
-              peaks={this.state.peaks}
-              regionStart={this.state.regionStart}
-              regionEnd={this.state.regionEnd}
-              selectedWords={this.state.selectedWords}
-              showNumber={this.state.showNumber}
-              totalDuration={this.state.showDuration}
-              clippingDuration={this.state.clippingDuration} //////////////////////////////////////
-              clippingOffset={this.state.clippingOffset}
-              wordDictionary={this.state.wordDictionary}
-              paragraphMillis={this.state.paragraphMillis}
-              wordMillis={this.state.wordMillis}
-              paragraphDictionary={this.state.paragraphDictionary}
-              episode={this.state.episode}
-              airDate={this.state.airDate}
-              textSelectionChanged={this.textSelectionChanged.bind(this)}
-              muiTheme={customTheme}
-              createVideo={this.createVideo.bind(this)}
-              clipTooLong={this.state.clipTooLong}
-              onDrewPeaks={this.onDrewPeaks.bind(this)}
-              drewPeaks={this.state.drewPeaks}
-              handleWordTap={this._handleWordTap.bind(this)}
-              tappedWord={this.state.tappedWord}
-              view={this.state.view}
-              onColorChange={this.onColorChange.bind(this)}
-            />
-          </Loader>
-        break;
-      default:
-        content = <Landing
-          clickLink={this.clickLink.bind(this)}
-          eps={this.state.eps}
-          badEps={this.state.episodesWithProblems}
-          loadMoreEpisodes={this.loadMoreEpisodes.bind(this)}
-        />
-      break;
-    }
     return (
     <MuiThemeProvider theme={customTheme}>
       <div className="index" onClick={this._cancelTranscriptTap.bind(this)}>
         <NavBar
+          history={this.props.history}
           fbAuth={this.state.fbAuthToken}
           fbName={this.state.fbUserName}
           fbLogout={this.fbLogout.bind(this)}
@@ -986,11 +848,113 @@ class AppComponent extends React.Component {
           view={this.state.view}
         />
 
-        <Route exact path="/" render={()=><Landing clickLink={this.clickLink.bind(this)} eps={this.state.eps} badEps={this.state.episodesWithProblems} loadMoreEpisodes={this.loadMoreEpisodes.bind(this)}/>}/>
-        <Route exact path="/setup" render={()=><Setup apiEndpoint={apiEndpoint_default}/>}/>
-        <Route exact path="/admin" render={()=><Admin apiEndpoint={apiEndpoint_default} eps={this.state.eps}/>}/>
-        <Route exact path="/admin/funk" render={()=><Setup apiEndpoint={apiEndpoint_default}/>}/>
+        <Switch>
+          <Route exact path="/" render={()=>
+            <Landing eps={this.state.eps} badEps={this.state.episodesWithProblems} loadMoreEpisodes={this.loadMoreEpisodes.bind(this)}/>
+          }/>
+          <Route exact path="/setup" render={()=><Setup apiEndpoint={apiEndpoint_default}/>}/>
+          <Route exact path="/admin" render={()=><Admin apiEndpoint={apiEndpoint_default} eps={this.state.eps}/>}/>
+          <Route exact path="/about" render={()=>
+            <div className="content">
+              <div className="about-page">
+                <h1>About Shortcut</h1>
+                <p>You can put your About text here!</p>
+                <h3>Open Source</h3>
+                  <ul><li>
+                    Shortcut is open source! You can view the source code, file bugs, and contribute code and documentation <a href="https://github.com/FeelTrainCoop/shortcut">at our Github repo</a>.
+                  </li></ul>
+                <footer>
+                  <p>Feel free to put a footer here.</p>
+                </footer>
+              </div>
+            </div>
+          }/>
 
+          <Route exact path="/clipping/:showNumber" render={()=>
+            <Loader
+              show={this.state.loading}
+              msg='loading episode'
+            >
+              <ClippingHLSWrapper
+                hls={this.state.hls}
+                peaks={this.state.peaks}
+                regionStart={this.state.regionStart}
+                regionEnd={this.state.regionEnd}
+                selectedWords={this.state.selectedWords}
+                showNumber={this.state.showNumber}
+                totalDuration={this.state.showDuration}
+                clippingDuration={this.state.clippingDuration}
+                clippingOffset={this.state.clippingOffset}
+                wordDictionary={this.state.wordDictionary}
+                paragraphMillis={this.state.paragraphMillis}
+                wordMillis={this.state.wordMillis}
+                paragraphDictionary={this.state.paragraphDictionary}
+                episode={this.state.episode}
+                airDate={this.state.airDate}
+                textSelectionChanged={this.textSelectionChanged.bind(this)}
+                muiTheme={customTheme}
+                createVideo={this.createVideo.bind(this)}
+                clipTooLong={this.state.clipTooLong}
+                onDrewPeaks={this.onDrewPeaks.bind(this)}
+                drewPeaks={this.state.drewPeaks}
+                handleWordTap={this._handleWordTap.bind(this)}
+                tappedWord={this.state.tappedWord}
+                view={this.state.view}
+                onColorChange={this.onColorChange.bind(this)}
+              />
+            </Loader>
+          }/>
+
+          <Route exact path="/preview/:showNumber" render={()=>
+            <Loader
+              show={this.state.loading}
+              msg='loading episode'
+            >
+              <ClippingHLSWrapper
+                hls={this.state.hls}
+                peaks={this.state.peaks}
+                regionStart={this.state.regionStart}
+                regionEnd={this.state.regionEnd}
+                selectedWords={this.state.selectedWords}
+                showNumber={this.state.showNumber}
+                totalDuration={this.state.showDuration}
+                clippingDuration={this.state.clippingDuration}
+                clippingOffset={this.state.clippingOffset}
+                wordDictionary={this.state.wordDictionary}
+                paragraphMillis={this.state.paragraphMillis}
+                wordMillis={this.state.wordMillis}
+                paragraphDictionary={this.state.paragraphDictionary}
+                episode={this.state.episode}
+                airDate={this.state.airDate}
+                textSelectionChanged={this.textSelectionChanged.bind(this)}
+                muiTheme={customTheme}
+                createVideo={this.createVideo.bind(this)}
+                clipTooLong={this.state.clipTooLong}
+                onDrewPeaks={this.onDrewPeaks.bind(this)}
+                drewPeaks={this.state.drewPeaks}
+                handleWordTap={this._handleWordTap.bind(this)}
+                tappedWord={this.state.tappedWord}
+                view={this.state.view}
+                onColorChange={this.onColorChange.bind(this)}
+              />
+            </Loader>
+          }/>
+
+          <Route exact path="/share/:showNumber" render={()=>
+            <ShareContainer
+              muiTheme={customTheme}
+              history={this.props.history}
+              videoData={this.state.videoData}
+              episode={this.state.episode}
+              airDate={this.state.airDate}
+              twAuth={this.state.twAuthToken}
+              twName={this.state.twUserName}
+              fbAuth={this.state.fbAuthToken}
+              fbName={this.state.fbUserName}
+              createSocialMedia={this.createSocialMedia.bind(this)}
+            />
+          }/>
+        </Switch>
         {/* Tell user to rotate from landscape */}
         <div className="no-mobile landscape">
           <h1><ScreenLockPortrait/></h1>
@@ -1053,7 +1017,6 @@ AppComponent.propTypes = {
  * @property {Number} regionStart The starting time of the current selected Waveform region, in seconds.
  * @property {Number} regionEnd The ending time of the current selected Waveform region, in seconds.
  * @property {Number} pos The current play position of Waveform, in seconds.
- * @property {String} view This is an internal state that tells us what view we are rendering. Possible values: `about`, `share`, `clipping`, `creatingVideo`, `creatingSocialMedia`, `goingToClip`.
  * @property {Boolean} loading Whether the app is loading an asset. When this is true, the loading spinner renders.
  * @property {Object} videoData Empty at initialization, this contains an object with information returned by the Lambda function that renders video.
  * @property {String} videoData.Bucket The s3 bucket where the video is stored.
