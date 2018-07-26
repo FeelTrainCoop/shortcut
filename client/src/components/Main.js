@@ -1044,6 +1044,9 @@ AppComponent.propTypes = {
 */
 
 AppComponent.defaultProps = {
+  match: {
+    params: {}
+  },
   wordMillis: [],
   paragraphMillis: [],
   showNumber: undefined,
