@@ -1,8 +1,9 @@
 import 'core-js/fn/object/assign';
 import React from 'react';
-import {Router, Route, hashHistory} from 'react-router';
+import {Route, HashRouter, Switch} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import App from './components/Main';
+import Admin from './components/Admin';
 import Login from './components/LoginSuccess';
 
 import 'babel-polyfill';
@@ -23,13 +24,15 @@ window.ga('send', {
 
 // Render the main component into the dom
 ReactDOM.render(
-  <Router history={hashHistory}>
-    <Route path="/" component={App} mode="regular" />
-    <Route path="/login/facebook/:fbUserName/:fbAuthToken" component={Login}/>
-    <Route path="/login/twitter/:twUserName/:twAuthToken" component={Login}/>
-    <Route path="/:view" component={App}/>
-    <Route path="/:view/:showNumber" component={App}/>
-    <Route path="/:view/:showNumber/:regionStart" component={App}/>
-  </Router>,
+  <HashRouter>
+    <Switch>
+      <Route exact path="/" component={App} mode="regular" />
+      <Route exact path="/login/facebook/:fbUserName/:fbAuthToken" component={Login}/>
+      <Route exact path="/login/twitter/:twUserName/:twAuthToken" component={Login}/>
+      <Route exact path="/:view" component={App}/>
+      <Route exact path="/:view/:showNumber" component={App}/>
+      <Route exact path="/:view/:showNumber/:regionStart" component={App}/>
+    </Switch>
+  </HashRouter>,
   document.getElementById('app')
 );

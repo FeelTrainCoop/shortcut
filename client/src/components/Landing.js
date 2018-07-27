@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import ArrowRight from 'material-ui-icons/KeyboardArrowRight';
 import { Paper } from 'material-ui';
 
@@ -30,7 +30,6 @@ function Landing(props) {
       links.push(
         <Link
           key={ep.number}
-          onClick={props.clickLink}
           to={to}
           className="no-underline episode-link-container"
           activeClassName="active"

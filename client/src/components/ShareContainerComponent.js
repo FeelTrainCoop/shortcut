@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { hashHistory } from 'react-router'
 import { withStyles } from 'material-ui/styles';
 import FlatButton from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
@@ -48,7 +47,7 @@ class ShareContainerComponent extends React.Component {
       Store.set('share-state', videoData);
     } else if (!videoData) {
       // user may have hit the back button, but we have no video to display. Redirect to home page.
-      hashHistory.replace('/');
+      this.props.history.replace('/');
       window.location.reload();
       return;
     }
