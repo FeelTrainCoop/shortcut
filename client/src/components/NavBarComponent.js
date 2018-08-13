@@ -2,8 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { hashHistory } from 'react-router-dom'
-
 import {AppBar, Button, Drawer, Divider, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, Toolbar, Typography} from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 import MenuIcon from 'material-ui-icons/Menu';
@@ -63,11 +61,7 @@ class NavBarComponent extends React.PureComponent {
     this.setState({
       drawerOpen: false
     });
-    if (this.props.view !== 'about') {
-      hashHistory.push('/about/');
-    } else {
-      hashHistory.goBack();
-    }
+    this.props.history.push('/about/');
     e.preventDefault();
     e.stopPropagation();
   }
@@ -76,7 +70,7 @@ class NavBarComponent extends React.PureComponent {
     this.setState({
       drawerOpen: false
     });
-    hashHistory.push('/');
+    this.props.history.replace('/');
     e.preventDefault();
     e.stopPropagation();
   }
