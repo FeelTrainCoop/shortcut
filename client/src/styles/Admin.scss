@@ -1,3 +1,15 @@
-.edit-transcript {
-  margin: 0 0 0 80px;
+.episodes {
+  .edit-transcript {
+    margin: 0 0 0 80px;
+  }
+}
+
+.transcript {
+  p {
+    max-width: 600px;
+  }
+  .edit-transcript {
+    width: 80%;
+    min-height: 300px;
+  }
 }

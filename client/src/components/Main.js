@@ -42,6 +42,7 @@ import Loader from 'components/LoadingAnimationComponent';
 import ShareContainer from 'components/ShareContainerComponent';
 import Landing from 'components/Landing';
 import Admin from 'components/Admin';
+import AdminEditTranscriptComponent from 'components/AdminEditTranscript';
 import Setup from 'components/Setup';
 import Helpers from '../helpers';
 
@@ -852,6 +853,12 @@ class AppComponent extends React.Component {
           }/>
           <Route exact path="/setup" render={()=><Setup apiEndpoint={apiEndpoint_default}/>}/>
           <Route exact path="/admin" render={()=><Admin apiEndpoint={apiEndpoint_default} eps={this.state.eps}/>}/>
+          <Route exact path="/admin/:showNumber/edit-transcript" render={(props)=>
+            <AdminEditTranscriptComponent
+              {...props}
+              apiEndpoint={apiEndpoint_default}
+            />
+          }/>
           <Route exact path="/about" render={()=>
             <div className="content">
               <div className="about-page">

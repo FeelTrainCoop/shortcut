@@ -54,7 +54,7 @@ class AdminComponent extends React.PureComponent {
             <FormControlLabel
               control={
                 <Switch
-                  disabled={!el.hasTranscript}
+                  disabled={!el.checked && !el.hasTranscript}
                   checked={el.checked}
                   value={el.value}
                   onChange={this.handleClick.bind(this,index)}
@@ -64,8 +64,8 @@ class AdminComponent extends React.PureComponent {
               label={el.title}
             />
             {
-              el.hasTranscript ? ( <p className="edit-transcript">Edit Transcript</p> ) :
-                ( <p className="edit-transcript">Add Transcript</p> )
+              el.hasTranscript ? ( <p className="edit-transcript"><a href={`/#/admin/${el.value}/edit-transcript`}>Edit Transcript</a></p> ) :
+                ( <p className="edit-transcript"><a href={`/#/admin/${el.value}/edit-transcript`}>Add Transcript</a></p> )
             }
           </div>
       );
@@ -104,7 +104,7 @@ class AdminComponent extends React.PureComponent {
             </div>
           </div>
           <div className="content episodes">
-            <h3 className="recent-episodes">Enable/Disable Episodes</h3>
+            <h3 className="recent-episodes">Configure Episodes</h3>
               <FormGroup>
               {this.renderSwitches.call(this)}
               </FormGroup>
