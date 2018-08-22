@@ -34,7 +34,9 @@ echo "Done creating local versions of template files."
 
 # Download and install Gentle
 cd ../
-mkdir -p server/external/gentle
-wget https://github.com/lowerquality/gentle/archive/893e09b14eabff3a6ec2ff87db0499bc3fd2a213.tar.gz
-tar -zxf master.tar.gz -C server/external/gentle --strip 1
-rm master.tar.gz
+mkdir -p server/external
+cd server/external
+git clone https://github.com/feeltraincoop/gentle.git
+cd gentle
+git checkout master
+./install.sh
