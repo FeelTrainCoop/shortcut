@@ -1,4 +1,6 @@
-# This script creates local versions of template files, but
+# Setup script for Shortcut
+
+# This creates local versions of template files, but
 # only if those local versions don't already exist. It won't
 # overwrite your custom settings.
 
@@ -29,3 +31,10 @@ if [ ! -f ".env" ]; then
   cp .env-template .env;
 fi
 echo "Done creating local versions of template files."
+
+# Download and install Gentle
+cd ../
+mkdir -p server/external/gentle
+wget https://github.com/lowerquality/gentle/archive/893e09b14eabff3a6ec2ff87db0499bc3fd2a213.tar.gz
+tar -zxf master.tar.gz -C server/external/gentle --strip 1
+rm master.tar.gz
