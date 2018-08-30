@@ -30,7 +30,7 @@
     "basic-auth": "^1.0.4",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
-    "canvas": "^1.6.6",
+    "canvas": "^1.6.11",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.1",
