@@ -2,12 +2,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {AppBar, Button, Drawer, Divider, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, Toolbar, Typography} from 'material-ui';
-import { withStyles } from 'material-ui/styles';
-import MenuIcon from 'material-ui-icons/Menu';
-import HomeIcon from 'material-ui-icons/Home';
-import InfoIcon from 'material-ui-icons/Info';
-import LinkIcon from 'material-ui-icons/Link';
+import {AppBar, Button, Drawer, Divider, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, Toolbar, Typography} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
+import InfoIcon from '@material-ui/icons/Info';
+import LinkIcon from '@material-ui/icons/Link';
 
 import LoginTwitterComponent from './LoginTwitterComponent';
 import LoginFacebookComponent from './LoginFacebookComponent';
@@ -85,7 +85,7 @@ class NavBarComponent extends React.PureComponent {
         <Toolbar>
           <Hidden mdUp>
             <IconButton
-              color="contrast"
+              color="inherit"
               aria-label="open drawer"
               onClick={this.handleToggleDrawer.bind(this)}
               className="menu-toggle"
@@ -101,14 +101,14 @@ class NavBarComponent extends React.PureComponent {
           <Hidden smDown>
             <div className="nav-buttons">
               <Button
-                color="contrast"
+                color="secondary"
                 href="/#/about"
                 onClick={this.toggleAbout.bind(this)}
               >
                 About
               </Button>
               <Button
-                color="contrast"
+                color="secondary"
                 onClick={this.handleTouchTap.bind(this)}
               >
                 Connect
@@ -117,7 +117,7 @@ class NavBarComponent extends React.PureComponent {
                 className="xl-menu"
                 open={this.state.open}
                 anchorEl={this.state.anchorEl}
-                onRequestClose={this.handleRequestClose.bind(this)}
+                onClose={this.handleRequestClose.bind(this)}
               >
                 <LoginTwitterComponent
                   twName={this.props.twName}
@@ -135,7 +135,7 @@ class NavBarComponent extends React.PureComponent {
       <Drawer
         className="nav-drawer"
         open={this.state.drawerOpen}
-        onRequestClose={(drawerOpen) => this.setState({drawerOpen})}
+        onClose={(drawerOpen) => this.setState({drawerOpen})}
       >
         <div className="navbar-component">
           <AppBar
@@ -144,7 +144,7 @@ class NavBarComponent extends React.PureComponent {
           >
             <Toolbar>
               <IconButton
-                color="contrast"
+                color="inherit"
                 aria-label="open drawer"
                 onClick={this.handleToggleDrawer.bind(this)}
                 className="menu-toggle"

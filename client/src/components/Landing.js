@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import ArrowRight from 'material-ui-icons/KeyboardArrowRight';
-import { Paper } from 'material-ui';
+import ArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import { Paper } from '@material-ui/core';
 
 const moment = require('moment');
 const Helpers = require('../helpers');

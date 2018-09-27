@@ -1,7 +1,7 @@
 import React from 'react';
-import { Paper } from 'material-ui';
-import Switch from 'material-ui/Switch';
-import { FormControlLabel, FormGroup } from 'material-ui/Form';
+import { Paper } from '@material-ui/core';
+import Switch from '@material-ui/core/Switch';
+import { FormControlLabel, FormGroup } from '@material-ui/core';
 
 const parentSiteName = require('config').default.parentSiteName;
 const logo = require('../images/logo.png');
@@ -50,7 +50,7 @@ class AdminComponent extends React.PureComponent {
   renderSwitches() {
     return this.state.switches
       .map((el, index) =>
-          <div>
+          <div key={index}>
             <FormControlLabel
               control={
                 <Switch

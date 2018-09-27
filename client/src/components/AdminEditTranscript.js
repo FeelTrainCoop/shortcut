@@ -1,6 +1,6 @@
 import React from 'react';
-import { Paper, Button } from 'material-ui';
-import Loader from 'components/LoadingAnimationComponent';
+import { Paper, Button } from '@material-ui/core';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const parentSiteName = require('config').default.parentSiteName;
 const logo = require('../images/logo.png');
@@ -69,10 +69,6 @@ class AdminEditTranscriptComponent extends React.PureComponent {
       return(
       <div>
         <Paper>
-          <Loader
-            show={true}
-            msg='updating server...'
-          />
           <div className="hero-space">
             <div className="hero-content">
               <img src={logo} className="logo" alt={parentSiteName}/>
@@ -90,7 +86,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
             />
             <p>Click the button below to submit your transcript. When you do this, you'll see a progress bar while we synchronize your audio with your transcript. This can take a long time (up to the length of your episode), so please be patient!</p>
             <Button
-              raised
+              variant="contained"
               className="submit"
               onClick={this.handleClick.bind(this)}
             >

@@ -31,9 +31,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Route, Switch} from 'react-router-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import Snackbar from 'material-ui/Snackbar';
-import ScreenLockPortrait from 'material-ui-icons/ScreenLockPortrait';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import ScreenLockPortrait from '@material-ui/icons/ScreenLockPortrait';
 
 import ClippingHLSWrapper from './ClippingHLSWrapper';
 import NavBar from 'components/NavBarComponent';

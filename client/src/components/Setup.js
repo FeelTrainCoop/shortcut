@@ -1,7 +1,7 @@
 import React from 'react';
-import { Paper } from 'material-ui';
-import RaisedButton from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
+import { Paper } from '@material-ui/core';
+import RaisedButton from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import Loader from 'components/LoadingAnimationComponent';
 
 const parentSiteName = require('config').default.parentSiteName;

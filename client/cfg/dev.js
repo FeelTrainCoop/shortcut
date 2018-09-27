@@ -29,11 +29,15 @@ let config = Object.assign({}, baseConfig, {
 // Add needed loaders to the defaults here
 config.module.loaders.push({
   test: /\.(js|jsx)$/,
-  loader: 'react-hot!babel-loader',
+  loader: require.resolve('babel-loader'),
   include: [].concat(
     config.additionalPaths,
     [ path.join(__dirname, '/../src') ]
-  )
+  ),
+  options: {
+		cacheDirectory: true,
+		plugins: ['react-hot-loader/babel'],
+  }
 });
 
 module.exports = config;

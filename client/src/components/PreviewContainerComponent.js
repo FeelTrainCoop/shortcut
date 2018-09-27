@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import PlayCircleFilled from 'material-ui-icons/PlayCircleFilled';
+import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 
 import paper from 'paper';
 import Animator from '../animation/animator';

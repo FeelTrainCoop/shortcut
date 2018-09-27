@@ -1,14 +1,14 @@
 'use strict';
 
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import FlatButton from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
+import { withStyles } from '@material-ui/core/styles';
+import FlatButton from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
-import RaisedButton from 'material-ui/Button';
-import Toggle from 'material-ui/Switch';
-import TextField from 'material-ui/TextField';
-import DownloadIcon from 'material-ui-icons/GetApp';
+import RaisedButton from '@material-ui/core/Button';
+import Toggle from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
+import DownloadIcon from '@material-ui/icons/GetApp';
 
 import LoginTwitterComponent from './LoginTwitterComponent';
 import LoginFacebookComponent from './LoginFacebookComponent';
