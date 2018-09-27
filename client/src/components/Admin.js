@@ -64,8 +64,8 @@ class AdminComponent extends React.PureComponent {
               label={el.title}
             />
             {
-              el.hasTranscript ? ( <p className="edit-transcript"><a href={`/#/admin/${el.value}/edit-transcript`}>Edit Transcript</a></p> ) :
-                ( <p className="edit-transcript"><a href={`/#/admin/${el.value}/edit-transcript`}>Add Transcript</a></p> )
+              el.hasTranscript ? ( <p className="edit-transcript"><a href={`/#/admin/${el.number}/edit-transcript`}>Edit Transcript</a></p> ) :
+                ( <p className="edit-transcript"><a href={`/#/admin/${el.number}/edit-transcript`}>Add Transcript</a></p> )
             }
           </div>
       );

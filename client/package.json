@@ -92,7 +92,7 @@
     "material-ui-icons": "^1.0.0-alpha.19",
     "moment": "^2.21.0",
     "normalize.css": "~4.2.0",
-    "paper": "~0.10.2",
+    "paper": "~0.11.5",
     "passport": "~0.1.17",
     "passport-facebook": "~0.1.5",
     "passport-twitter": "~1.0.4",

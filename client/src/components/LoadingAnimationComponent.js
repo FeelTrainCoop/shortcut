@@ -7,6 +7,8 @@ import { CircularProgress } from 'material-ui/Progress';
 
 require('styles//LoadingAnimation.scss');
 
+// TODO update material-ui?
+
 class LoadingAnimationComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -39,11 +41,13 @@ LoadingAnimationComponent.displayName = 'LoadingAnimationComponent';
 
 LoadingAnimationComponent.propTypes = {
   msg: PropTypes.string,
-  show: PropTypes.bool
+  show: PropTypes.bool,
+  value: PropTypes.number
 };
 LoadingAnimationComponent.defaultProps = {
   msg: 'Loading',
-  show: false
+  show: false,
+  value: undefined
 };
 
 export default LoadingAnimationComponent;

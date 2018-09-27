@@ -42,7 +42,8 @@ module.exports = {
               description: episode.contentSnippet,
               original_air_date: episode.pubDate,
               guid,
-              number
+              number,
+              mp3: episode.enclosure.url
             };
           });
         let filteredEpisodes = unfilteredEpisodes
