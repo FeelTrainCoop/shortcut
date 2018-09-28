@@ -1,6 +1,7 @@
 import React from 'react';
 import { Paper, Button } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Modal from '@material-ui/core/Modal';
 
 const parentSiteName = require('config').default.parentSiteName;
 const logo = require('../images/logo.png');
@@ -13,9 +14,12 @@ class AdminEditTranscriptComponent extends React.PureComponent {
     super(props);
     this.state = {
       eps: props.eps,
+      isSyncing: false,
+      syncPercent: 0,
+      modalOpen: false,
       authenticated: false,
+      modalMessage: '',
       switches: [],
-
     };
     this.apiEndpoint = props.apiEndpoint;
   }
@@ -42,11 +46,28 @@ class AdminEditTranscriptComponent extends React.PureComponent {
     });
   }
 
+  handleModalOpen(message) {
+    this.setState({ modalOpen: true, modalMessage: message });
+  }
+
+  handleModalClose() {
+    if (!this.state.isSyncing) {
+      this.setState({ modalOpen: false });
+    }
+  }
+
+  handleModalButton(enable, location) {
+    let doneUrl = `${this.apiEndpoint}/admin/syncEpisodeDone?location=${location}&guid=${this.state.episodeData.guid}&enable=${enable}`;
+    fetch(doneUrl, {credentials: 'include'})
+      .then(response => response.json())
+      .then(json => {
+        window.location='/#/admin/';
+      });
+  }
+
   handleClick() {
-    // this should go to an endpoint that's protected by basic auth
-    // maybe POST to https://server/admin/syncEpisode with the guid of the episode and the transcript content in the form body.
-    // curl -u admin:1234 -d "guid=https://explainjojo.com/episodes/s01e02.html&transcript=Hello" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://localhost:3000/admin/syncEpisode
-    console.log(this.state.episodeData.guid, this.state.transcript);
+    this.handleModalOpen(<div><h1>Syncing Transcript...</h1><span>Loading mp3 (this could take a few minutes)...</span></div>);
+    this.setState({ isSyncing: true });
     jQuery.ajax({
       type: 'POST',
       url: `${this.apiEndpoint}/admin/syncEpisode`,
@@ -54,10 +75,77 @@ class AdminEditTranscriptComponent extends React.PureComponent {
       data: {
         guid: this.state.episodeData.guid,
         transcript: this.state.transcript
+      },
+      success: data => {
+        if (data.err) {
+          this.setState({
+            modalMessage: <div><h1>Error:</h1><span>{JSON.stringify(data.err, null, 2)}</span></div>
+          });
+        }
+        else if (data.location) {
+          this.pollTranscriptionStatus.bind(this, data.location)();
+        }
+        else {
+          this.setState({
+            modalMessage: <div><h1>Error:</h1><span>Something went wrong and we're not sure what happened (no data at all was returned from the syncEpisode endpoint).</span></div>
+          });
+        }
       }
     });
-    
-    // the endpoint then: download the mp3, sends gentle the mp3 and the form data, forwards the status info back to the shortcut client, stores the plaintext transcript and the sync data in sqlite, sends a "we are done" when done
+  }
+
+  pollTranscriptionStatus(location) {
+    let transcriptionStatusUrl = `${this.apiEndpoint}/admin/syncEpisodeStatus?location=${location}`;
+    fetch(transcriptionStatusUrl, {credentials: 'include'})
+      .then(response => response.json())
+			.then(json => {
+        let statusMessage = 'Transcription starting up...';
+        switch (json.status) {
+          case 'OK':
+            statusMessage = `Done syncing! Enable the episode immediately? Either choice will send you back to the main admin screen.`;
+            break;
+          case 'TRANSCRIBING':
+            statusMessage = `Transcription${json.percent ? ' (part 1/2) in progress, '+(json.percent*100).toFixed(0)+'% done' : ' starting up...'}`;
+            break;
+          case 'ALIGNING':
+            statusMessage = `Aligning ${json.percent ? ' (part 2/2) in progress, '+(json.percent*100).toFixed(0)+'% done' : ' starting up...'}`;
+            break;
+        }
+
+        // Keep polling unless we are done with sync, in which case we hit the "done" endpoint
+        if (json.status === 'OK' && json.percent === 1) {
+          this.setState({
+            modalMessage: <div>
+              <h1>Syncing Transcript...</h1>
+              <span>{statusMessage}</span>
+              <p>&nbsp;</p>
+              <Button
+                variant="contained"
+                className="submit"
+                onClick={this.handleModalButton.bind(this, true, location)}
+              >
+                Yes
+              </Button>
+              <Button
+                variant="contained"
+                className="submit"
+                onClick={this.handleModalButton.bind(this, false, location)}
+              >
+                No
+              </Button>
+            </div>,
+            syncPercent: json.percent*100
+          });
+        }
+        else {
+          this.setState({
+            modalMessage: <div><h1>Syncing Transcript...</h1><span>{statusMessage}</span></div>,
+            syncPercent: json.percent*100
+          });
+
+          setTimeout(this.pollTranscriptionStatus.bind(this, location), 1*1000);
+        }
+    });
   }
 
   render() {
@@ -93,6 +181,19 @@ class AdminEditTranscriptComponent extends React.PureComponent {
               Submit
             </Button>
           </div>
+          <Modal
+            open={this.state.modalOpen}
+            onClose={this.handleModalClose.bind(this)}
+          >
+            <div className="modal-window">
+              <LinearProgress
+                className={this.state.isSyncing ? "" : "vis-hidden"}
+                variant="determinate"
+                value={this.state.syncPercent}
+              />
+              {this.state.modalMessage}
+            </div>
+          </Modal>
         </Paper>
       </div>
       );

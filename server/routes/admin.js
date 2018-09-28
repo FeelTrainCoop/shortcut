@@ -41,14 +41,12 @@ router.post('/syncEpisode', function (req, res) {
   if (guid === undefined || transcript === undefined) {
     return res.status(400).send('Bad request. Please make sure "guid" and "transcript" are properties in the POST body.');
   }
-  // get epiosode data
+  // get episode data
 
   let episodes = allEpisodeData.getAllEpisodesUnfiltered();
   let episode = episodes.filter(ep => {
-    console.log(ep.guid === guid);
     return ep.guid === guid;
   })[0];
-  console.log('AAAAAAAAAA',episode);
   // download the mp3 for the episode
   helpers.downloadFile(episode.mp3, (err, fileName) => {
     console.log('downloaded mp3', err, fileName);
@@ -64,16 +62,61 @@ router.post('/syncEpisode', function (req, res) {
         console.error('upload failed:', err);
         return res.json({err});
       }
-      // forward the status info back to the shortcut client so the client can check status
-      // of sync
-      // TODO: send back the domain/port of the Gentle server! probably needs to be in our env var?
+      // forward the status info back to the shortcut client so the client can check status of sync
       return res.json({err, location: httpResponse.headers.location});
     });
-
-    // client handles all the updating stuff from there so we can move onto the next thing as soon as transcription is done
-    // when client detects sync is done, display all that stuff in the client and then send it back to the server
-    // store the plaintext transcript and the sync data in sqlite
   }); 
+});
+
+router.get('/syncEpisodeDone', function (req, res) {
+  let location = req.query.location;
+  let guid = req.query.guid;
+  let enable = +(req.query.enable === '1' || req.query.enable === 'true');
+  if (location === undefined) {
+    return res.json({err: 'You must specify a "location" parameter that you get from the `admin/syncEpisode` endpoint and a "guid" for the episode you are setting.'});
+  }
+  else {
+    request('http://localhost:8765'+location+'/align.json', (err, resp, body) => {
+      if (err) {
+        return res.send(err);
+      }
+      else if (resp.statusCode === 200) {
+        let db = req.app.get('db');
+        db.run('insert or replace into episodes(guid, isEnabled, hasTranscript, transcript) values($guid, $isEnabled, $hasTranscript, $transcript)', {
+          $guid: guid,
+          $isEnabled: enable,
+          $hasTranscript: 1,
+          $transcript: body
+        }, (err) => {
+          return res.json(err || {err: null, msg: 'done'});
+        });
+      }
+      else {
+        return res.json(resp);
+      }
+    });
+  }
+
+});
+
+router.get('/syncEpisodeStatus', function (req, res) {
+  let location = req.query.location;
+  if (location === undefined) {
+    return res.json({err: 'You must specify a "location" parameter that you get from the `admin/syncEpisode` endpoint.'});
+  }
+  else {
+    request('http://localhost:8765'+location+'/status.json', (err, resp, body) => {
+      if (err) {
+        return res.send(err);
+      }
+      else if (resp.statusCode === 200) {
+        return res.json(JSON.parse(body));
+      }
+      else {
+        return res.json(resp);
+      }
+    });
+  }
 });
 
 module.exports = router;

@@ -55,7 +55,7 @@ class AdminComponent extends React.PureComponent {
               control={
                 <Switch
                   disabled={!el.checked && !el.hasTranscript}
-                  checked={el.checked}
+                  checked={!!el.checked}
                   value={el.value}
                   onChange={this.handleClick.bind(this,index)}
                 />
