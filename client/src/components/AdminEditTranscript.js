@@ -2,6 +2,7 @@ import React from 'react';
 import { Paper, Button } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Modal from '@material-ui/core/Modal';
+import Loader from 'components/LoadingAnimationComponent';
 
 const parentSiteName = require('config').default.parentSiteName;
 const logo = require('../images/logo.png');
@@ -16,6 +17,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
       eps: props.eps,
       isSyncing: false,
       syncPercent: 0,
+      isLoading: true,
       modalOpen: false,
       authenticated: false,
       modalMessage: '',
@@ -35,6 +37,20 @@ class AdminEditTranscriptComponent extends React.PureComponent {
       this.setState({
         authenticated: true,
         episodeData
+      });
+      jQuery.ajax({
+        xhrFields: { withCredentials: true },
+        url: `${this.apiEndpoint}/admin/getTranscript?guid=${episodeData.guid}`,
+      }).then(result => {
+        this.setState({
+          isLoading: false
+        });
+        if (result && result.transcript) {
+          document.getElementById('edit-transcript').value = result.transcript;
+          this.setState({
+            transcript: result.transcript,
+          });
+        }
       });
     }.bind(this));
   }
@@ -59,8 +75,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
   handleModalButton(enable, location) {
     let doneUrl = `${this.apiEndpoint}/admin/syncEpisodeDone?location=${location}&guid=${this.state.episodeData.guid}&enable=${enable}`;
     fetch(doneUrl, {credentials: 'include'})
-      .then(response => response.json())
-      .then(json => {
+      .then(() => {
         window.location='/#/admin/';
       });
   }
@@ -163,7 +178,12 @@ class AdminEditTranscriptComponent extends React.PureComponent {
               <h2 className="tagline">Admin Panel</h2>
             </div>
           </div>
-          <div className="content transcript">
+          <Loader
+            show={this.state.isLoading}
+            msg='getting episode data...'
+          >
+          </Loader>
+          <div className={this.state.isLoading ? "hidden content transcript" : "content transcript"}>
             <h1>Edit Episode Transcript</h1>
             <h2>{ep.number} - {ep.title}</h2>
             <textarea
@@ -172,7 +192,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
               className="edit-transcript"
               onChange={this.handleChange.bind(this)}
             />
-            <p>Click the button below to submit your transcript. When you do this, you'll see a progress bar while we synchronize your audio with your transcript. This can take a long time (up to the length of your episode), so please be patient!</p>
+            <p>Click the button below to submit your transcript. When you do this, you'll see a progress bar while we synchronize your audio with your transcript. This can take a long time (up to the length of your episode), and can't be canceled, so please be patient!</p>
             <Button
               variant="contained"
               className="submit"

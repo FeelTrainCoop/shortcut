@@ -25,7 +25,9 @@ router.post('/setEpisode', function (req, res) {
     return res.status(400).send('Bad request. Please make sure "guid" and "enabled" are properties in the POST body.');
   }
   let db = req.app.get('db');
-  db.run('insert or replace into episodes(guid, isEnabled) values($guid, $enabled)', {
+  // upsert individual columns without overwriting existing columns
+  // https://stackoverflow.com/a/4330694/4869657
+  db.run('insert or replace into episodes(guid, isEnabled, hasTranscript, transcript) values($guid, $enabled, (select hasTranscript from episodes where guid = $guid), (select transcript from episodes where guid = $guid))', {
     $guid: guid,
     $enabled: enabled
   }, (err, episodes) => {
@@ -34,6 +36,16 @@ router.post('/setEpisode', function (req, res) {
   });
 });
 
+router.get('/getTranscript', function (req, res) {
+  const guid = req.query.guid;
+  let db = req.app.get('db');
+  db.get(`select transcript from episodes where guid = "${guid}"`, (err, result) => {
+    if (!err && result === undefined) {
+      err = { err: `unable to find episode with guid of "${guid}"`};
+    }
+    return res.json(err || JSON.parse(result.transcript));
+  });
+});
 
 router.post('/syncEpisode', function (req, res) {
   const guid = req.body.guid;
