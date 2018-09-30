@@ -36,9 +36,6 @@ class NavBarComponent extends React.PureComponent {
   }
 
   handleTouchTap(event) {
-    // This prevents ghost click.
-    event.preventDefault();
-
     this.setState({
       open: true,
       anchorEl: event.currentTarget
@@ -101,14 +98,14 @@ class NavBarComponent extends React.PureComponent {
           <Hidden smDown>
             <div className="nav-buttons">
               <Button
-                color="secondary"
+                color="inherit"
                 href="/#/about"
                 onClick={this.toggleAbout.bind(this)}
               >
                 About
               </Button>
               <Button
-                color="secondary"
+                color="inherit"
                 onClick={this.handleTouchTap.bind(this)}
               >
                 Connect
