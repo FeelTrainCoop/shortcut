@@ -186,19 +186,29 @@ class AdminEditTranscriptComponent extends React.PureComponent {
           <div className={this.state.isLoading ? "hidden content transcript" : "content transcript"}>
             <h1>Edit Episode Transcript</h1>
             <h2>{ep.number} - {ep.title}</h2>
+            <audio controls src={ep.mp3}></audio>
+            <p><a href={ep.mp3}>{ep.mp3}</a></p>
             <textarea
               id="edit-transcript"
               placeholder="Paste your transcript here"
               className="edit-transcript"
               onChange={this.handleChange.bind(this)}
             />
-            <p>Click the button below to submit your transcript. When you do this, you'll see a progress bar while we synchronize your audio with your transcript. This can take a long time (up to the length of your episode), and can't be canceled, so please be patient!</p>
+            <p>Click the "Submit" button below to submit your transcript. When you do this, you'll see a progress bar while we synchronize your audio with your transcript. This can take a long time (up to the length of your episode), and can't be canceled once started, so please be patient! You can also click "Back" to go back to the admin menu.</p>
             <Button
               variant="contained"
               className="submit"
               onClick={this.handleClick.bind(this)}
             >
               Submit
+            </Button>
+
+            <Button
+              variant="contained"
+              className="submit"
+              href="/#/admin/"
+            >
+              Back
             </Button>
           </div>
           <Modal

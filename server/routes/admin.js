@@ -63,8 +63,8 @@ router.post('/syncEpisode', function (req, res) {
   helpers.downloadFile(episode.mp3, (err, fileName) => {
     console.log('downloaded mp3', err, fileName);
     // send gentle the mp3 and the form data
-     // curl -F "audio=@audio.mp3" -F "transcript=@words.txt" "http://localhost:8765/transcriptions?async=false"
-     // do this via post
+    // curl -F "audio=@audio.mp3" -F "transcript=@words.txt" "http://localhost:8765/transcriptions?async=false"
+    // do this via post
     var formData = {
       audio: fs.createReadStream(fileName),
       transcript: transcript
@@ -88,6 +88,7 @@ router.get('/syncEpisodeDone', function (req, res) {
     return res.json({err: 'You must specify a "location" parameter that you get from the `admin/syncEpisode` endpoint and a "guid" for the episode you are setting.'});
   }
   else {
+    // get the aligned transcript from the DB and put it in the server
     request('http://localhost:8765'+location+'/align.json', (err, resp, body) => {
       if (err) {
         return res.send(err);
