@@ -2,26 +2,45 @@
 
 const request = require('request');
 const striptags = require('striptags');
+const rssFeed = process.env.RSS_FEED;
 const dataBucket = process.env.DATA_BUCKET;
-const getAllEpisodes = require('./all-episode-data').getAllEpisodes;
+const allEpisodeData = require('./all-episode-data');
 
 module.exports = {
 
   go: function(episodeNumber, startTime, endTime, cb) {
-    let episodeDataURL = `${dataBucket}${episodeNumber}/${episodeNumber}.json`;
-    let episodesURL = `${dataBucket}episodes.json`;
-    if (process.env.API_URL) {
-      episodesURL = `${dataBucket}/all.json`;
-      episodeDataURL = `${dataBucket}${episodeNumber}.json`;
-    }
-
-    request.get({
-      url: episodeDataURL,
-      rejectUnauthorized: false
-      },
-      function(err, response, body) {
-        episodeDataCallback(err, body, startTime, endTime, episodeNumber, getAllEpisodes(), cb);
+    // TODO: make this work with rss and our auto stuff
+    // episodenumber.json is the Gentle file, which should be stored in our DB, so get transcript from episodes where guid = guid (how do I know the guid? all I have is episodeNumber)
+    // so basically if it's RSS I just need to pass the JSON stringified gentle file from the DB into episodeDataCallBack
+    if (rssFeed) {
+      let episodes = allEpisodeData.getAllEpisodesUnfiltered();
+      let episode = episodes.filter(ep => {
+        return ep.number === episodeNumber;
+      })[0];
+      const sqlite3 = require('sqlite3').verbose();
+      const db = new sqlite3.Database('shortcut.db');
+      db.get(`select transcript from episodes where guid = "${episode.guid}"`, (err, result) => {
+        if (!err && result === undefined) {
+          console.log(`unable to find episode with guid of "${episode.guid}"`);
+        }
+        episodeDataCallback(err, result.transcript, startTime, endTime, episodeNumber, allEpisodeData.getAllEpisodes(), cb);
       });
+
+    }
+    else {
+      let episodeDataURL = `${dataBucket}${episodeNumber}/${episodeNumber}.json`;
+      if (process.env.API_URL) {
+        episodeDataURL = `${dataBucket}${episodeNumber}.json`;
+      }
+
+      request.get({
+        url: episodeDataURL,
+        rejectUnauthorized: false
+        },
+        function(err, response, body) {
+          episodeDataCallback(err, body, startTime, endTime, episodeNumber, allEpisodeData.getAllEpisodes(), cb);
+        });
+    }
   }
 
 };
@@ -87,7 +106,12 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
       showData.duration = Math.round(showData.words[showData.words.length-1].end);
     }
     showData.number = episodeNumber;
-    showData.hls = `${dataBucket}${episodeNumber}/${episodeNumber}.m3u8`;
+    if (rssFeed) {
+      showData.hls = `https://s3-${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/episodes/${episodeNumber}/${episodeNumber}.m3u8`;
+    }
+    else {
+      showData.hls = `${dataBucket}${episodeNumber}/${episodeNumber}.m3u8`;
+    }
     showData.description = episodeData.description;
     showData.title = episodeData.title;
     showData.original_air_date = episodeData.original_air_date;

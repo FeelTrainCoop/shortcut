@@ -4,7 +4,21 @@ const express = require('express'),
       fs = require('fs'),
       request = require('request'),
       helpers = require('./helpers'),
-      allEpisodeData = require('./all-episode-data');
+      update = require('./update'),
+      allEpisodeData = require('./all-episode-data'),
+      exec = require('child_process').exec,
+      bucketName = process.env.AWS_S3_BUCKET_NAME;
+
+// set up AWS
+const AWS = require('aws-sdk');
+AWS.config.update({
+  region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+const s3 = new AWS.S3({
+  region: process.env.AWS_REGION
+});
 
 // update the episodes db table and then
 // return the state of enabled/disabled episodes
@@ -77,12 +91,29 @@ router.post('/syncEpisode', function (req, res) {
       // forward the status info back to the shortcut client so the client can check status of sync
       return res.json({err, location: httpResponse.headers.location});
     });
+
+    // while transcription is happening, process the mp3 into *.ts files and put them in the temp directory
+    // ffmpeg -i s01e03.mp3 -map 0:a -profile:v baseline -level 3.0 -start_number 0 -hls_time 10 -hls_list_size 0 -hls_segment_filename 's01e03%03d.ts' -f hls s01e03.m3u8
+    const tempDir = process.env.TEMP || '/tmp';
+    const cmd = `ffmpeg -i ${fileName} -map 0:a -profile:v baseline -level 3.0 -start_number 0 -hls_time 10 -hls_list_size 0 -hls_segment_filename '${tempDir}/${episode.number}%03d.ts' -f hls '${tempDir}/${episode.number}.m3u8'`;
+    exec(cmd, function (error) {
+      if (error) {
+        console.log(error);
+      }
+      else {
+        console.log('ffmpeg processed mp3 into *.ts files and placed into', tempDir);
+      }
+    });
   }); 
 });
 
 router.get('/syncEpisodeDone', function (req, res) {
   let location = req.query.location;
   let guid = req.query.guid;
+  let episodes = allEpisodeData.getAllEpisodesUnfiltered();
+  let episode = episodes.filter(ep => {
+    return ep.guid === guid;
+  })[0];
   let enable = +(req.query.enable === '1' || req.query.enable === 'true');
   if (location === undefined) {
     return res.json({err: 'You must specify a "location" parameter that you get from the `admin/syncEpisode` endpoint and a "guid" for the episode you are setting.'});
@@ -101,7 +132,32 @@ router.get('/syncEpisodeDone', function (req, res) {
           $hasTranscript: 1,
           $transcript: body
         }, (err) => {
-          return res.json(err || {err: null, msg: 'done'});
+          // upload all files that were created by ffmpeg
+          const tempDir = process.env.TEMP || '/tmp';
+          fs.readdir(tempDir, (err, files) => {
+            // filter to list of just-created files
+            let regex = new RegExp('^'+episode.number);
+            files = files.filter(file => file.match(regex));
+            const promiseArray = files.map(fileName => {
+              return new Promise((resolve, reject) => {
+                fs.readFile(tempDir + '/' + fileName, (err, data) => {
+                  console.log(err);
+                  uploadS3(episode.number, data, fileName, () => { resolve('done');});
+                });
+              });
+            });
+            // when all uploads are done...
+            Promise.all(promiseArray).then(() => {
+              // later, after syncEpisodeDone, we call the "update" function for the episode, equivalent of
+              // http://YOUR_SERVER:3000/api/API_HASH/update/EPISODE_ID with a GET
+              //
+              update.addEpisode(episode.number, function() {
+                console.log('EPISODE UPDATED');
+              });
+              return res.json(err || {err: null, msg: 'done'});
+            });
+
+          });
         });
       }
       else {
@@ -111,6 +167,29 @@ router.get('/syncEpisodeDone', function (req, res) {
   }
 
 });
+
+function uploadS3(episodeNumber, body, fileName, cb) {
+  const dstKey = `episodes/${episodeNumber}/${fileName}`;
+  console.log('uploading',dstKey);
+
+  var params = {
+    Bucket: bucketName,
+    Key: dstKey,
+    ContentType: 'application/json',
+    Body: body,
+    ACL: 'public-read',
+    CacheControl: 'max-age=31536000' // 1 year (60 * 60 * 24 * 365)
+  };
+
+  s3.upload(params)
+    .on('httpUploadProgress', function(evt) {
+      console.log('Progress:', evt.loaded, '/', evt.total);
+    })
+    .send(function(err, success){
+      console.log(err, success);
+      cb(err, success);
+    });
+}
 
 router.get('/syncEpisodeStatus', function (req, res) {
   let location = req.query.location;

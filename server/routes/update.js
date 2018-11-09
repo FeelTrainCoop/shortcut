@@ -19,6 +19,7 @@ const makeWaveform = require('./makeWaveform');
 const getTranscript = require('./getTranscript');
 const helpers = require('./helpers');
 const tempDir = process.env.TEMP || '/tmp';
+const rssFeed = process.env.RSS_FEED;
 
 // update show data (list of all episodes and their show data version numbers)
 router.get('/', function(req, res) {
@@ -53,7 +54,19 @@ router.get('/:episodeNumber', function(req, res) {
 
 function addEpisode(episodeNum, callback) {
   const targetWidth = 30000;
-  let mp3Path = `${process.env.DATA_BUCKET}${episodeNum}/${episodeNum}.mp3`;
+  let mp3Path;
+  if (rssFeed) {
+    let episodes = allEpisodeData.getAllEpisodesUnfiltered();
+    console.log(episodes);
+    let episode = episodes.filter(ep => {
+      return ep.number === episodeNum;
+    })[0];
+    mp3Path = episode.mp3;
+  }
+  else {
+    mp3Path = `${process.env.DATA_BUCKET}${episodeNum}/${episodeNum}.mp3`;
+  }
+
   if (process.env.API_URL) {
     mp3Path = process.env.STREAM_URL + episodeNum + '/' + episodeNum + '.mp3';
   }
@@ -63,7 +76,7 @@ function addEpisode(episodeNum, callback) {
     waveform: function(callback) {
       async.waterfall([
         function(callback) {
-          console.log('downloading episode...');
+          console.log('downloading episode...', mp3Path);
           downloadEpisode(mp3Path, callback);
         },
         function(tempFilePath, callback) {
@@ -154,4 +167,5 @@ function s3upload(params, cb) {
     });
 }
 
+router.addEpisode = addEpisode;
 module.exports = router;
