@@ -49,13 +49,13 @@ class SetupComponent extends React.PureComponent {
 
   getPodcastData() {
     this.setState({ loading: true });
-    const libsynUrl = document.getElementById('url').value;
+    const rssUrl = document.getElementById('url').value;
     jQuery.ajax({
       type: 'POST',
       url: `${this.apiEndpoint}/setup/setSource`,
       data: {
-        type: 'libsyn',
-        url: libsynUrl
+        type: 'rss',
+        url: rssUrl
       },
       xhrFields: { withCredentials: true },
       success: function(data) {
@@ -135,11 +135,13 @@ class SetupComponent extends React.PureComponent {
           <div>
             {this.state.warnUserOverride && <h2><strong className="red">Warning: it looks like you've already set up Shortcut on this server. You can continue but you will overwrite all of your previous settings.</strong></h2>}
           </div>
-          <p>Welcome to Shortcut's configuration wizard. To get started, enter the URL of your Libsyn site, like "mypodcast.libsyn.com".</p>
+          <p>Welcome to Shortcut's configuration wizard. To get started, enter the full URL of your podcast's RSS feed, like <code>https://example.com/feed.xml</code>.</p>
           <TextField
             id="url"
-            label="Libsyn URL"
+            label="RSS URL"
             margin="normal"
+            placeholder="https://example.com/feed.xml"
+            fullWidth
           />
           <br/>
           <RaisedButton className="get-podcast-data" onClick={this.getPodcastData.bind(this)}>

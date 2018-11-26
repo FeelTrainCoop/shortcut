@@ -8,7 +8,7 @@ const express = require('express'),
 
 router.post('/setSource', function (req, res) {
   const type  = req.body.type;
-  const rss = `https://${req.body.url}/rss`;
+  const rss = `${req.body.url}`;
   if (type === undefined || rss === undefined) {
     return res.status(400).send('Bad request. Please make sure "type" and "url" are properties in the POST body.');
   }
