@@ -11,6 +11,13 @@ function getDefaultModules() {
       }],
     loaders: [
       {
+        test: /\.(html)$/,
+        loader: 'html-loader',
+        options: {
+          attrs: [':data-src']
+        }
+      },
+      {
         test: /\.css$/,
         loader: 'style!css?modules',
         include: /flexboxgrid/

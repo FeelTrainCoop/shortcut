@@ -45,6 +45,9 @@ import Admin from 'components/Admin';
 import AdminEditTranscriptComponent from 'components/AdminEditTranscript';
 import Setup from 'components/Setup';
 import Helpers from '../helpers';
+import Page from 'components/About.html';
+
+const aboutDoc = {__html: Page};
 
 /** The root React component */
 class AppComponent extends React.Component {
@@ -861,17 +864,7 @@ class AppComponent extends React.Component {
           }/>
           <Route exact path="/about" render={()=>
             <div className="content">
-              <div className="about-page">
-                <h1>About Shortcut</h1>
-                <p>You can put your About text here!</p>
-                <h3>Open Source</h3>
-                  <ul><li>
-                    Shortcut is open source! You can view the source code, file bugs, and contribute code and documentation <a href="https://github.com/FeelTrainCoop/shortcut">at our Github repo</a>.
-                  </li></ul>
-                <footer>
-                  <p>Feel free to put a footer here.</p>
-                </footer>
-              </div>
+              <div className="about-page" dangerouslySetInnerHTML={aboutDoc} />
             </div>
           }/>
 
