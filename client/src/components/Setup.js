@@ -67,7 +67,7 @@ class SetupComponent extends React.PureComponent {
 
   validatePassword(e) {
     let val = e.target.value;
-    if (val.length > 16) {
+    if (val.length >= 16) {
       this.setState({isPasswordValid: true, password: val});
     }
     else {
