@@ -92,7 +92,9 @@ class NavBarComponent extends React.PureComponent {
           </Hidden>
           <Hidden smDown>
             <Typography type="title" color="inherit" className="title-bar">
-              <img src={shortcutLogo} className="shortcut-logo" alt="Shortcut"/>
+              <a href="/#/">
+                <img src={shortcutLogo} className="shortcut-logo" alt="Shortcut"/>
+              </a>
             </Typography>
           </Hidden>
           <Hidden smDown>
