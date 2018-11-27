@@ -9,9 +9,6 @@ const allEpisodeData = require('./all-episode-data');
 module.exports = {
 
   go: function(episodeNumber, startTime, endTime, cb) {
-    // TODO: make this work with rss and our auto stuff
-    // episodenumber.json is the Gentle file, which should be stored in our DB, so get transcript from episodes where guid = guid (how do I know the guid? all I have is episodeNumber)
-    // so basically if it's RSS I just need to pass the JSON stringified gentle file from the DB into episodeDataCallBack
     if (rssFeed) {
       let episodes = allEpisodeData.getAllEpisodesUnfiltered();
       let episode = episodes.filter(ep => {
@@ -23,7 +20,8 @@ module.exports = {
       if (result === undefined) {
         console.log(`unable to find episode with guid of "${episode.guid}"`);
       }
-      episodeDataCallback(null, result.transcript, startTime, endTime, episodeNumber, allEpisodeData.getAllEpisodes(), cb);
+      let episodesBody = allEpisodeData.getAllEpisodesUnfiltered();
+      episodeDataCallback(null, result.transcript, startTime, endTime, episodeNumber, episodesBody, cb);
     }
     else {
       let episodeDataURL = `${dataBucket}${episodeNumber}/${episodeNumber}.json`;
@@ -36,7 +34,8 @@ module.exports = {
         rejectUnauthorized: false
         },
         function(err, response, body) {
-          episodeDataCallback(err, body, startTime, endTime, episodeNumber, allEpisodeData.getAllEpisodes(), cb);
+          let episodesBody = allEpisodeData.getAllEpisodesUnfiltered();
+          episodeDataCallback(err, body, startTime, endTime, episodeNumber, episodesBody, cb);
         });
     }
   }
