@@ -73,9 +73,16 @@ class AdminEditTranscriptComponent extends React.PureComponent {
   }
 
   handleModalButton(enable, location) {
+    this.setState({
+      modalMessage: <div>
+        <h1>Syncing Transcript...</h1>
+        <span>Now uploading the transcoded mp3 to the Amazon S3. This can take a few minutes, please be patient.</span>
+      </div>
+    });
     let doneUrl = `${this.apiEndpoint}/admin/syncEpisodeDone?location=${location}&guid=${this.state.episodeData.guid}&enable=${enable}`;
     fetch(doneUrl, {credentials: 'include'})
-      .then(() => {
+      .then(response => response.json())
+      .then((json) => {
         window.location='/#/admin/';
       });
   }
@@ -128,7 +135,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
         }
 
         // Keep polling unless we are done with sync, in which case we hit the "done" endpoint
-        if (json.status === 'OK' && json.percent === 1) {
+        if (json.status === 'OK') {
           this.setState({
             modalMessage: <div>
               <h1>Syncing Transcript...</h1>

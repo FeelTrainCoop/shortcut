@@ -32,6 +32,25 @@ try {
   }
 }
 
+const gentleLogFile = './gentle.log';
+fs.writeFileSync(gentleLogFile, '--begin log--\n');
+
+// spawn child process for gentle
+const { spawn } = require('child_process');
+const child = spawn('python3', ['external/gentle/serve.py']);
+
+child.on('exit', function (code, signal) {
+  console.log(`child process exited with code ${code} and signal ${signal}`);
+});
+
+// log gentle output to file
+child.stdout.on('data', (data) => {
+  fs.appendFile(gentleLogFile, data, (err) => { if (err) throw err; });
+});
+child.stderr.on('data', (data) => {
+  fs.appendFile(gentleLogFile, data, (err) => { if (err) throw err; });
+});
+
 // template with marko https://github.com/marko-js/marko
 require('marko/express');
 require('marko/node-require').install();
@@ -41,30 +60,26 @@ const errorTemplate = require('./views/error.marko');
 const app = express();
 const routes = require('./routes');
 const passportMiddleware = require('./auth/passport-middleware.js');
-// synchronous read, but it only happens on server init
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('shortcut.db');
+const Database = require('better-sqlite3');
+const db = new Database('shortcut.db');
 // helper functions to get and set key/value pairs stored in `kvs`
-db.getKey = function(key, cb) {
-  this.get('select * from kvs where key = $key', {$key: key}, cb);
+db.getKey = function(key) {
+  const result = this.prepare('select * from kvs where key = ?').get(key);
+  return result;
 };
-db.setKey = function(key, value, cb) {
+db.setKey = function(key, value) {
   if (typeof value !== 'string') {
     value = JSON.stringify(value);
   }
-  this.run('insert or replace into kvs values($key, $value)', {
-    $key: key,
-    $value: value
-  }, cb);
+  this.prepare('insert or replace into kvs(key, value) values(?, ?)').run(key, value);
 };
 
 // if there is no `episodes` table in the DB, create an empty table
-db.run('CREATE TABLE IF NOT EXISTS episodes (guid TEXT PRIMARY KEY, isEnabled INTEGER, hasTranscript INTEGER DEFAULT 0, transcript TEXT)');
+db.prepare('CREATE TABLE IF NOT EXISTS episodes (guid TEXT PRIMARY KEY, isEnabled INTEGER, hasTranscript INTEGER DEFAULT 0, transcript TEXT)').run();
 // if there is no `kvs` (key/value store) table, create it
-db.run('CREATE TABLE IF NOT EXISTS kvs (key TEXT PRIMARY KEY, value TEXT)', () => {
-  // update `allEpisodes` in our key/value store
-  routes.allEpisodeData.update(db);
-});
+db.prepare('CREATE TABLE IF NOT EXISTS kvs (key TEXT PRIMARY KEY, value TEXT)').run();
+// update `allEpisodes` in our key/value store
+routes.allEpisodeData.update(db);
 
 // all environments
 app.set('db', db);
@@ -89,11 +104,10 @@ app.use(session({
 }));
 
 // if the admin password is set as an environment variable and there isn't one already in the DB, set the admin user/password in the DB
-db.getKey('admin', function(err, res) {
-  if (res === undefined && process.env.ADMIN_PASSWORD) {
-    db.setKey('admin', {username: bcrypt.hashSync('admin'), password: bcrypt.hashSync(process.env.ADMIN_PASSWORD)});
-  }
-});
+let res = db.getKey('admin');
+if (res === undefined && process.env.ADMIN_PASSWORD) {
+  db.setKey('admin', {username: bcrypt.hashSync('admin'), password: bcrypt.hashSync(process.env.ADMIN_PASSWORD)});
+}
 
 let basicUserAuth = basicAuth({
   authorizer: asyncAuthorizer,
@@ -109,30 +123,28 @@ let skipFirstAuth = basicAuth({
 
 function asyncAuthorizer(username, password, cb) {
   let isAuthorized = false;
-  db.getKey('admin', function(err, res) {
-    res = JSON.parse(res.value);
-    const isPasswordAuthorized = bcrypt.compareSync(password, res.password);
-    const isUsernameAuthorized = bcrypt.compareSync(username, res.username);
-    isAuthorized = isPasswordAuthorized && isUsernameAuthorized;
-    if (isAuthorized) {
-      return cb(null, true);
-    }
-    else {
-      return cb(null, false);
-    }
-  });
+  let res = db.getKey('admin');
+  res = JSON.parse(res.value);
+  const isPasswordAuthorized = bcrypt.compareSync(password, res.password);
+  const isUsernameAuthorized = bcrypt.compareSync(username, res.username);
+  isAuthorized = isPasswordAuthorized && isUsernameAuthorized;
+  if (isAuthorized) {
+    return cb(null, true);
+  }
+  else {
+    return cb(null, false);
+  }
 }
 
 function firstTimeAuthorizer(username, password, cb) {
   // if no admin password is set, we authorize without any credentials because this is first-time setup
-  db.getKey('admin', function(err, res) {
-    if (res === undefined) {
-      return cb(null, true);
-    }
-    else {
-      return asyncAuthorizer(username, password, cb);
-    }
-  });
+  let res = db.getKey('admin');
+  if (res === undefined) {
+    return cb(null, true);
+  }
+  else {
+    return asyncAuthorizer(username, password, cb);
+  }
 }
 
 // admin page

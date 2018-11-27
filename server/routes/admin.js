@@ -26,9 +26,8 @@ const s3 = new AWS.S3({
 router.get('/getEpisodes', function (req, res) {
   let db = req.app.get('db');
   allEpisodeData.update(db, function() {
-    db.all('select * from episodes', (err, episodes) => {
-      return res.json(episodes);
-    });
+    let episodes = db.prepare('select * from episodes').all();
+    return res.json(episodes);
   });
 });
 
@@ -41,11 +40,9 @@ router.post('/setEpisode', function (req, res) {
   let db = req.app.get('db');
   // upsert individual columns without overwriting existing columns
   // https://stackoverflow.com/a/4330694/4869657
-  db.run('insert or replace into episodes(guid, isEnabled, hasTranscript, transcript) values($guid, $enabled, (select hasTranscript from episodes where guid = $guid), (select transcript from episodes where guid = $guid))', {
-    $guid: guid,
-    $enabled: enabled
-  }, (err, episodes) => {
-    allEpisodeData.update(db);
+  db.prepare('insert or replace into episodes(guid, isEnabled, hasTranscript, transcript) values(?, ?, (select hasTranscript from episodes where guid = ?), (select transcript from episodes where guid = ?))').run(guid, enabled, guid, guid);
+  allEpisodeData.update(db, function() {
+    let episodes = db.prepare('select * from episodes').all();
     return res.json(episodes);
   });
 });
@@ -53,12 +50,12 @@ router.post('/setEpisode', function (req, res) {
 router.get('/getTranscript', function (req, res) {
   const guid = req.query.guid;
   let db = req.app.get('db');
-  db.get(`select transcript from episodes where guid = "${guid}"`, (err, result) => {
-    if (!err && result === undefined) {
-      err = { err: `unable to find episode with guid of "${guid}"`};
-    }
-    return res.json(err || JSON.parse(result.transcript));
-  });
+  let result = db.prepare(`select transcript from episodes where guid = ?`).get(guid);
+  let err = null;
+  if (result === undefined) {
+    err = { err: `unable to find episode with guid of "${guid}"`};
+  }
+  return res.json(err || JSON.parse(result.transcript));
 });
 
 router.post('/syncEpisode', function (req, res) {
@@ -83,7 +80,7 @@ router.post('/syncEpisode', function (req, res) {
       audio: fs.createReadStream(fileName),
       transcript: transcript
     };
-    request.post({url:'http://localhost:8765/transcriptions?async=true', formData: formData}, function optionalCallback(err, httpResponse, body) {
+    request.post({url:'http://localhost:8765/transcriptions?async=true&disfluency=true', formData: formData}, function optionalCallback(err, httpResponse, body) {
       if (err) {
         console.error('upload failed:', err);
         return res.json({err});
@@ -126,38 +123,32 @@ router.get('/syncEpisodeDone', function (req, res) {
       }
       else if (resp.statusCode === 200) {
         let db = req.app.get('db');
-        db.run('insert or replace into episodes(guid, isEnabled, hasTranscript, transcript) values($guid, $isEnabled, $hasTranscript, $transcript)', {
-          $guid: guid,
-          $isEnabled: enable,
-          $hasTranscript: 1,
-          $transcript: body
-        }, (err) => {
-          // upload all files that were created by ffmpeg
-          const tempDir = process.env.TEMP || '/tmp';
-          fs.readdir(tempDir, (err, files) => {
-            // filter to list of just-created files
-            let regex = new RegExp('^'+episode.number);
-            files = files.filter(file => file.match(regex));
-            const promiseArray = files.map(fileName => {
-              return new Promise((resolve, reject) => {
-                fs.readFile(tempDir + '/' + fileName, (err, data) => {
-                  console.log(err);
-                  uploadS3(episode.number, data, fileName, () => { resolve('done');});
-                });
+        db.prepare('insert or replace into episodes(guid, isEnabled, hasTranscript, transcript) values(?, ?, ?, ?)').run(guid, enable, 1, body);
+        // upload all files that were created by ffmpeg
+        const tempDir = process.env.TEMP || '/tmp';
+        fs.readdir(tempDir, (err, files) => {
+          // filter to list of just-created files
+          let regex = new RegExp('^'+episode.number);
+          files = files.filter(file => file.match(regex));
+          const promiseArray = files.map(fileName => {
+            return new Promise((resolve, reject) => {
+              fs.readFile(tempDir + '/' + fileName, (err, data) => {
+                console.log(err);
+                uploadS3(episode.number, data, fileName, () => { resolve('done');});
               });
             });
-            // when all uploads are done...
-            Promise.all(promiseArray).then(() => {
-              // later, after syncEpisodeDone, we call the "update" function for the episode, equivalent of
-              // http://YOUR_SERVER:3000/api/API_HASH/update/EPISODE_ID with a GET
-              //
-              update.addEpisode(episode.number, function() {
-                console.log('EPISODE UPDATED');
-              });
-              return res.json(err || {err: null, msg: 'done'});
-            });
-
           });
+          // when all uploads are done...
+          Promise.all(promiseArray).then(() => {
+            // later, after syncEpisodeDone, we call the "update" function for the episode, equivalent of
+            // http://YOUR_SERVER:3000/api/API_HASH/update/EPISODE_ID with a GET
+            //
+            update.addEpisode(episode.number, function() {
+              console.log('EPISODE UPDATED');
+            });
+            return res.json(err || {err: null, msg: 'done'});
+          });
+
         });
       }
       else {

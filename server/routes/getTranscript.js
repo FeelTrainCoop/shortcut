@@ -17,15 +17,13 @@ module.exports = {
       let episode = episodes.filter(ep => {
         return ep.number === episodeNumber;
       })[0];
-      const sqlite3 = require('sqlite3').verbose();
-      const db = new sqlite3.Database('shortcut.db');
-      db.get(`select transcript from episodes where guid = "${episode.guid}"`, (err, result) => {
-        if (!err && result === undefined) {
-          console.log(`unable to find episode with guid of "${episode.guid}"`);
-        }
-        episodeDataCallback(err, result.transcript, startTime, endTime, episodeNumber, allEpisodeData.getAllEpisodes(), cb);
-      });
-
+      const Database = require('better-sqlite3');
+      const db = new Database('shortcut.db');
+      let result = db.prepare(`select transcript from episodes where guid = ?`).get(episode.guid);
+      if (result === undefined) {
+        console.log(`unable to find episode with guid of "${episode.guid}"`);
+      }
+      episodeDataCallback(null, result.transcript, startTime, endTime, episodeNumber, allEpisodeData.getAllEpisodes(), cb);
     }
     else {
       let episodeDataURL = `${dataBucket}${episodeNumber}/${episodeNumber}.json`;
