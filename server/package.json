@@ -29,6 +29,7 @@
     "aws-sdk": "^2.3.16",
     "basic-auth": "^1.0.4",
     "bcrypt-nodejs": "0.0.3",
+    "better-sqlite3": "^5.0.1",
     "body-parser": "^1.17.2",
     "canvas": "^1.6.12",
     "compression": "^1.6.2",
