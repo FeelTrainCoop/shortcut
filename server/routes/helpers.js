@@ -21,6 +21,8 @@ module.exports = {
         let unfilteredEpisodes = feed.items.sort((a,b) => {
             return Date.parse(b.pubDate) - Date.parse(a.pubDate);
           })
+          // remove any feed items that don't have an mp3 enclosure
+          .filter(episode => { return (episode.enclosure && episode.enclosure.url); })
           .map((episode) => {
             let guid = episode.guid || episode.link;
             // set the ID number to the guid
@@ -62,7 +64,8 @@ module.exports = {
   // get the show metadata from RSS
   parseRSSMeta: function(body, cb) {
     parser.parseString(body, function(error, feed) {
-      if (!error) {
+      let feedMissingRequiredField = feed && (!feed.title || !feed.description || !feed.link || !feed.itunes || !feed.itunes.author);
+      if (!error && !feedMissingRequiredField && feed.items.length > 0) {
         let showData = {
           title: feed.title,
           description: feed.description,
@@ -71,6 +74,12 @@ module.exports = {
           episodes: feed.items.length
         }
         cb({err: null, showData});
+      }
+      else if (feed && feed.items && feed.items.length === 0) {
+        cb({err: `RSS feed has no mp3 enclosure items!`, showData: null});
+      }
+      else if (feedMissingRequiredField) {
+        cb({err: `RSS feed is missing <title>, <description>, <link>, or <itunes:author>`, showData: null});
       }
       else {
         cb({err: `This error occurred: ${error}`, showData: null});

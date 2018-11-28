@@ -24,7 +24,7 @@ router.post('/setSource', function (req, res) {
         // get the show metadata
         helpers.parseRSSMeta(body, function(result) {
           if (result.err) {
-            return res.status(400).send('Could not parse RSS data.');
+            return res.status(400).json({code: `Could not parse RSS data: ${result.err}`});
           }
           else {
             return res.json(result);
@@ -32,7 +32,7 @@ router.post('/setSource', function (req, res) {
         });
       }
       else {
-        return res.status(500).send(err);
+        return res.status(500).send({code: err});
       }
     });
   });

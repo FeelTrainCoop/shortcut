@@ -3,8 +3,7 @@
 require('dotenv').config();
 const request = require('request');
 const async = require('async');
-const allEpisodeData = require('./all-episode-data'),
-      path = require('path');
+const allEpisodeData = require('./all-episode-data');
 
 const Database = require('better-sqlite3');
 const db = new Database('shortcut.db');

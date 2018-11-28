@@ -61,6 +61,15 @@ class SetupComponent extends React.PureComponent {
       success: function(data) {
         console.log('DONE', data);
         this.setState({ loading: false, step: 1, showData: data.showData });
+      }.bind(this),
+      error: function(data) {
+        console.log('ERROR', data, data.statusText);
+        let errorMessage = (data.responseJSON && data.responseJSON.code) || data.statusText;
+        if (data.status === 0) {
+          errorMessage = `Empty response from the Shortcut server. It's possible the server isn't running.`;
+        }
+        alert(errorMessage);
+
       }.bind(this)
     });
   }

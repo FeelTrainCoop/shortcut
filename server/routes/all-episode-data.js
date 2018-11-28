@@ -20,7 +20,7 @@ let cache = {
 const update = function(globalDb, cb) {
   cb = cb || function(err) {
     if (err) {
-      throw new Error('Unable to update episode data: ' + err);
+      console.error('Unable to update episode data: ' + err);
     }
   };
 

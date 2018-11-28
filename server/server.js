@@ -47,10 +47,10 @@ child.on('exit', function (code, signal) {
 
 // log gentle output to file
 child.stdout.on('data', (data) => {
-  fs.appendFile(gentleLogFile, data, (err) => { if (err) throw err; });
+  fs.appendFile(gentleLogFile, data, (err) => { if (err) { throw err; } });
 });
 child.stderr.on('data', (data) => {
-  fs.appendFile(gentleLogFile, data, (err) => { if (err) throw err; });
+  fs.appendFile(gentleLogFile, data, (err) => { if (err) { throw err; } });
 });
 
 // quit gentle if the shortcut server exits for any reason
