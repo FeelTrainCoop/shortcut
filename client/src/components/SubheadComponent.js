@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
-import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
+import IconButton from '@material-ui/core/IconButton';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 
 require('styles/Subhead.scss');
 

@@ -30,11 +30,10 @@ let colorOption = undefined;
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Route, Switch} from 'react-router-dom'
-
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import Snackbar from 'material-ui/Snackbar';
-import ScreenLockPortrait from 'material-ui-icons/ScreenLockPortrait';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import ScreenLockPortrait from '@material-ui/icons/ScreenLockPortrait';
 
 import ClippingHLSWrapper from './ClippingHLSWrapper';
 import NavBar from 'components/NavBarComponent';
@@ -43,8 +42,12 @@ import Loader from 'components/LoadingAnimationComponent';
 import ShareContainer from 'components/ShareContainerComponent';
 import Landing from 'components/Landing';
 import Admin from 'components/Admin';
+import AdminEditTranscriptComponent from 'components/AdminEditTranscript';
 import Setup from 'components/Setup';
 import Helpers from '../helpers';
+import Page from 'components/About.html';
+
+const aboutDoc = {__html: Page};
 
 /** The root React component */
 class AppComponent extends React.Component {
@@ -847,26 +850,21 @@ class AppComponent extends React.Component {
           episode={this.state.episode}
           view={this.state.view}
         />
-
         <Switch>
           <Route exact path="/" render={()=>
             <Landing eps={this.state.eps} badEps={this.state.episodesWithProblems} loadMoreEpisodes={this.loadMoreEpisodes.bind(this)}/>
           }/>
           <Route exact path="/setup" render={()=><Setup apiEndpoint={apiEndpoint_default}/>}/>
           <Route exact path="/admin" render={()=><Admin apiEndpoint={apiEndpoint_default} eps={this.state.eps}/>}/>
+          <Route exact path="/admin/:showNumber/edit-transcript" render={(props)=>
+            <AdminEditTranscriptComponent
+              {...props}
+              apiEndpoint={apiEndpoint_default}
+            />
+          }/>
           <Route exact path="/about" render={()=>
             <div className="content">
-              <div className="about-page">
-                <h1>About Shortcut</h1>
-                <p>You can put your About text here!</p>
-                <h3>Open Source</h3>
-                  <ul><li>
-                    Shortcut is open source! You can view the source code, file bugs, and contribute code and documentation <a href="https://github.com/FeelTrainCoop/shortcut">at our Github repo</a>.
-                  </li></ul>
-                <footer>
-                  <p>Feel free to put a footer here.</p>
-                </footer>
-              </div>
+              <div className="about-page" dangerouslySetInnerHTML={aboutDoc} />
             </div>
           }/>
 

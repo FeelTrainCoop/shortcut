@@ -1,7 +1,7 @@
 import React from 'react';
-import { Paper } from 'material-ui';
-import RaisedButton from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
+import { Paper } from '@material-ui/core';
+import RaisedButton from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import Loader from 'components/LoadingAnimationComponent';
 
 const parentSiteName = require('config').default.parentSiteName;
@@ -49,13 +49,13 @@ class SetupComponent extends React.PureComponent {
 
   getPodcastData() {
     this.setState({ loading: true });
-    const libsynUrl = document.getElementById('url').value;
+    const rssUrl = document.getElementById('url').value;
     jQuery.ajax({
       type: 'POST',
       url: `${this.apiEndpoint}/setup/setSource`,
       data: {
-        type: 'libsyn',
-        url: libsynUrl
+        type: 'rss',
+        url: rssUrl
       },
       xhrFields: { withCredentials: true },
       success: function(data) {
@@ -67,7 +67,7 @@ class SetupComponent extends React.PureComponent {
 
   validatePassword(e) {
     let val = e.target.value;
-    if (val.length > 16) {
+    if (val.length >= 16) {
       this.setState({isPasswordValid: true, password: val});
     }
     else {
@@ -135,11 +135,13 @@ class SetupComponent extends React.PureComponent {
           <div>
             {this.state.warnUserOverride && <h2><strong className="red">Warning: it looks like you've already set up Shortcut on this server. You can continue but you will overwrite all of your previous settings.</strong></h2>}
           </div>
-          <p>Welcome to Shortcut's configuration wizard. To get started, enter the URL of your Libsyn site, like "mypodcast.libsyn.com".</p>
+          <p>Welcome to Shortcut's configuration wizard. To get started, enter the full URL of your podcast's RSS feed, like <code>https://example.com/feed.xml</code>. After you submit the RSS feed your browser will show you a popup asking for login info. <em>If this is your first time setting up Shortcut, enter <a href="https://github.com/FeelTrainCoop/shortcut/wiki/Setting-Up-Shortcut-the-Easy-Way">the default admin username and password</a>. In the next step it will ask you to set a new admin username and password.</em></p>
           <TextField
             id="url"
-            label="Libsyn URL"
+            label="RSS URL"
             margin="normal"
+            placeholder="https://example.com/feed.xml"
+            fullWidth
           />
           <br/>
           <RaisedButton className="get-podcast-data" onClick={this.getPodcastData.bind(this)}>
@@ -183,7 +185,7 @@ class SetupComponent extends React.PureComponent {
               label="Confirm Admin Password"
               margin="normal"
             />
-            <br/>
+            <p>When you submit your new admin username and password, your browser will ask you to re-enter them too.</p>
             <RaisedButton
               className="get-podcast-data"
               onClick={this.makeSite.bind(this)}

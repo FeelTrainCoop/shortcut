@@ -12,10 +12,10 @@ import PreviewContainer from './PreviewContainerComponent';
 import TranscriptComponent from './TranscriptComponent';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import PlayArrow from 'material-ui-icons/PlayArrow';
-import PauseCircle from 'material-ui-icons/Stop';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import PauseCircle from '@material-ui/icons/Stop';
 import {_debounce, _throttle, getPeaksInRange} from '../helpers';
 
 require('styles/ClippingContainer.scss');

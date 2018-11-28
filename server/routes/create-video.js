@@ -15,6 +15,7 @@ AWS.config.update({
 });
 const bucketName = process.env.AWS_S3_BUCKET_NAME;
 const extension = '.mp4';
+const rssFeed = process.env.RSS_FEED;
 const dataBucket = process.env.DATA_BUCKET;
 const segmentLength = 10; // length of .ts source files in seconds
 const tempDir = process.env.TEMP || '/tmp';
@@ -159,7 +160,12 @@ function parseFilesToDownload(showID, startTime, duration) {
     streamBase = process.env.STREAM_URL + showID + '/stream/' + showID + '_64k_';
   }
   else {
-    streamBase = dataBucket + showID + '/' + showID;
+    if (rssFeed)  {
+      streamBase = `https://s3-${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/episodes/${showID}/${showID}`;
+    }
+    else {
+      streamBase = dataBucket + showID + '/' + showID;
+    }
   }
 
   var startStreamID = timeToSegmentID(startTime);

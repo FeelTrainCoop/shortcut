@@ -1,7 +1,7 @@
 import React from 'react';
-import { Paper } from 'material-ui';
-import Switch from 'material-ui/Switch';
-import { FormControlLabel, FormGroup } from 'material-ui/Form';
+import { Paper } from '@material-ui/core';
+import Switch from '@material-ui/core/Switch';
+import { FormControlLabel, FormGroup } from '@material-ui/core';
 
 const parentSiteName = require('config').default.parentSiteName;
 const logo = require('../images/logo.png');
@@ -15,7 +15,8 @@ class AdminComponent extends React.PureComponent {
     this.state = {
       eps: props.eps,
       authenticated: false,
-      switches: []
+      switches: [],
+
     };
     this.apiEndpoint = props.apiEndpoint;
   }
@@ -35,6 +36,7 @@ class AdminComponent extends React.PureComponent {
       let tempSwitches = allEpisodeData[0].map(episode => {
         let foundElement = episodeStateData[0].find(el => el.guid === episode.guid);
         episode.checked = foundElement ? foundElement.isEnabled : false;
+        episode.hasTranscript = foundElement ? foundElement.hasTranscript : false;
         episode.value = episode.guid;
         return episode;
       });
@@ -48,17 +50,24 @@ class AdminComponent extends React.PureComponent {
   renderSwitches() {
     return this.state.switches
       .map((el, index) =>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={el.checked}
-                value={el.value}
-                onChange={this.handleClick.bind(this,index)}
-              />
+          <div key={index}>
+            <FormControlLabel
+              control={
+                <Switch
+                  disabled={!el.checked && !el.hasTranscript}
+                  checked={!!el.checked}
+                  value={el.value}
+                  onChange={this.handleClick.bind(this,index)}
+                />
+              }
+              key={el.value}
+              label={el.title}
+            />
+            {
+              el.hasTranscript ? ( <p className="edit-transcript"><a href={`/#/admin/${el.number}/edit-transcript`}>Edit Transcript</a></p> ) :
+                ( <p className="edit-transcript"><a href={`/#/admin/${el.number}/edit-transcript`}>Add Transcript</a></p> )
             }
-            key={el.value}
-            label={el.title}
-          />
+          </div>
       );
   }
 
@@ -95,7 +104,7 @@ class AdminComponent extends React.PureComponent {
             </div>
           </div>
           <div className="content episodes">
-            <h3 className="recent-episodes">Enable/Disable Episodes</h3>
+            <h3 className="recent-episodes">Configure Episodes</h3>
               <FormGroup>
               {this.renderSwitches.call(this)}
               </FormGroup>

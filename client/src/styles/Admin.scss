@@ -1,0 +1,33 @@
+@import '_variables';
+
+.episodes {
+  .edit-transcript {
+    margin: 0 0 0 80px;
+  }
+}
+
+.transcript {
+  p {
+    max-width: 600px;
+  }
+  .edit-transcript {
+    width: 80%;
+    min-height: 300px;
+  }
+}
+
+.modal-window {
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2em;
+  background: $bg-color;
+  color: $transcript-text-color;
+}
+
+.submit {
+  margin-right: 10px !important;
+  margin-bottom: 20px !important;
+}

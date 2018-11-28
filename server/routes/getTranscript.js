@@ -2,26 +2,42 @@
 
 const request = require('request');
 const striptags = require('striptags');
+const rssFeed = process.env.RSS_FEED;
 const dataBucket = process.env.DATA_BUCKET;
-const getAllEpisodes = require('./all-episode-data').getAllEpisodes;
+const allEpisodeData = require('./all-episode-data');
 
 module.exports = {
 
   go: function(episodeNumber, startTime, endTime, cb) {
-    let episodeDataURL = `${dataBucket}${episodeNumber}/${episodeNumber}.json`;
-    let episodesURL = `${dataBucket}episodes.json`;
-    if (process.env.API_URL) {
-      episodesURL = `${dataBucket}/all.json`;
-      episodeDataURL = `${dataBucket}${episodeNumber}.json`;
+    if (rssFeed) {
+      let episodes = allEpisodeData.getAllEpisodesUnfiltered();
+      let episode = episodes.filter(ep => {
+        return ep.number === episodeNumber;
+      })[0];
+      const Database = require('better-sqlite3');
+      const db = new Database('shortcut.db');
+      let result = db.prepare(`select transcript from episodes where guid = ?`).get(episode.guid);
+      if (result === undefined) {
+        console.log(`unable to find episode with guid of "${episode.guid}"`);
+      }
+      let episodesBody = allEpisodeData.getAllEpisodesUnfiltered();
+      episodeDataCallback(null, result.transcript, startTime, endTime, episodeNumber, episodesBody, cb);
     }
+    else {
+      let episodeDataURL = `${dataBucket}${episodeNumber}/${episodeNumber}.json`;
+      if (process.env.API_URL) {
+        episodeDataURL = `${dataBucket}${episodeNumber}.json`;
+      }
 
-    request.get({
-      url: episodeDataURL,
-      rejectUnauthorized: false
-      },
-      function(err, response, body) {
-        episodeDataCallback(err, body, startTime, endTime, episodeNumber, getAllEpisodes(), cb);
-      });
+      request.get({
+        url: episodeDataURL,
+        rejectUnauthorized: false
+        },
+        function(err, response, body) {
+          let episodesBody = allEpisodeData.getAllEpisodesUnfiltered();
+          episodeDataCallback(err, body, startTime, endTime, episodeNumber, episodesBody, cb);
+        });
+    }
   }
 
 };
@@ -87,7 +103,12 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
       showData.duration = Math.round(showData.words[showData.words.length-1].end);
     }
     showData.number = episodeNumber;
-    showData.hls = `${dataBucket}${episodeNumber}/${episodeNumber}.m3u8`;
+    if (rssFeed) {
+      showData.hls = `https://s3-${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/episodes/${episodeNumber}/${episodeNumber}.m3u8`;
+    }
+    else {
+      showData.hls = `${dataBucket}${episodeNumber}/${episodeNumber}.m3u8`;
+    }
     showData.description = episodeData.description;
     showData.title = episodeData.title;
     showData.original_air_date = episodeData.original_air_date;
