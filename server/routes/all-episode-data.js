@@ -8,7 +8,7 @@ const request = require('request'),
       dataUrl = process.env.DATA_BUCKET + 'episodes.json',
       inactiveEpisodes = process.env.BAD_EPISODES.split(',');
 
-let rssFeed = process.env.RSS_FEED;
+let rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
 
 let db;
 let cache = {

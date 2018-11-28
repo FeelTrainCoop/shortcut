@@ -134,5 +134,17 @@ module.exports = {
         }
       }
     }
+  },
+
+  isSourceSet: function() {
+    const Database = require('better-sqlite3');
+    const db = new Database('shortcut.db');
+    const result = db.prepare('select * from kvs where key = ?').get('episodeSource');
+    if (result !== undefined) {
+      return JSON.parse(result.value).rss;
+    }
+    else {
+      return false;
+    }
   }
 };

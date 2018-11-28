@@ -19,7 +19,7 @@ const makeWaveform = require('./makeWaveform');
 const getTranscript = require('./getTranscript');
 const helpers = require('./helpers');
 const tempDir = process.env.TEMP || '/tmp';
-const rssFeed = process.env.RSS_FEED;
+const rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
 
 // update show data (list of all episodes and their show data version numbers)
 router.get('/', function(req, res) {

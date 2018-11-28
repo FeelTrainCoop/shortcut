@@ -82,7 +82,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
     let doneUrl = `${this.apiEndpoint}/admin/syncEpisodeDone?location=${location}&guid=${this.state.episodeData.guid}&enable=${enable}`;
     fetch(doneUrl, {credentials: 'include'})
       .then(response => response.json())
-      .then((json) => {
+      .then(() => {
         window.location='/#/admin/';
       });
   }
@@ -191,7 +191,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
           >
           </Loader>
           <div className={this.state.isLoading ? "hidden content transcript" : "content transcript"}>
-            <p><h2 className="tagline"><a href="/#/admin/">&larr; Admin Panel</a></h2></p>
+            <h2 className="tagline"><a href="/#/admin/">&larr; Admin Panel</a></h2>
             <h1>Edit Episode Transcript</h1>
             <h2>{ep.number} - {ep.title}</h2>
             <audio controls src={ep.mp3}></audio>

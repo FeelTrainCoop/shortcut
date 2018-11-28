@@ -3,7 +3,6 @@ import React from 'react';
 import {Route, HashRouter, Switch} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import App from './components/Main';
-import Admin from './components/Admin';
 import Login from './components/LoginSuccess';
 
 import 'babel-polyfill';

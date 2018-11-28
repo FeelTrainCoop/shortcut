@@ -2,7 +2,8 @@
 
 const request = require('request');
 const striptags = require('striptags');
-const rssFeed = process.env.RSS_FEED;
+const helpers = require('./helpers');
+const rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
 const dataBucket = process.env.DATA_BUCKET;
 const allEpisodeData = require('./all-episode-data');
 

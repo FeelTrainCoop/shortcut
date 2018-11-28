@@ -15,7 +15,8 @@ AWS.config.update({
 });
 const bucketName = process.env.AWS_S3_BUCKET_NAME;
 const extension = '.mp4';
-const rssFeed = process.env.RSS_FEED;
+const helpers = require('./helpers');
+const rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
 const dataBucket = process.env.DATA_BUCKET;
 const segmentLength = 10; // length of .ts source files in seconds
 const tempDir = process.env.TEMP || '/tmp';
