@@ -105,7 +105,8 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
     }
     showData.number = episodeNumber;
     if (rssFeed) {
-      showData.hls = `https://s3-${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/episodes/${episodeNumber}/${episodeNumber}.m3u8`;
+      const keys = helpers.getApplicationKeys();
+      showData.hls = `https://s3-${keys.aws_region}.amazonaws.com/${keys.aws_bucketName}/episodes/${episodeNumber}/${episodeNumber}.m3u8`;
     }
     else {
       showData.hls = `${dataBucket}${episodeNumber}/${episodeNumber}.m3u8`;

@@ -72,7 +72,7 @@ module.exports = {
           link: feed.link,
           author: feed.itunes.author,
           episodes: feed.items.length
-        }
+        };
         cb({err: null, showData});
       }
       else if (feed && feed.items && feed.items.length === 0) {
@@ -146,5 +146,41 @@ module.exports = {
     else {
       return false;
     }
+  },
+
+  getApplicationKeys: function() {
+    // this is synchronous because better-sqlite3 is synchronous
+    // first check the env vars
+    if (process.env.AWS_REGION && process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY && process.env.AWS_S3_BUCKET_NAME) {
+      return {
+        aws_region:           process.env.AWS_REGION,
+        aws_accessKeyId:      process.env.AWS_ACCESS_KEY_ID,
+        aws_secretAccessKey:  process.env.AWS_SECRET_ACCESS_KEY,
+        aws_bucketName:       process.env.AWS_S3_BUCKET_NAME,
+        twitter_key:          process.env.TWITTER_KEY,
+        twitter_secret:       process.env.TWITTER_SECRET,
+        twitter_callback:     process.env.TWITTER_CALLBACK,
+        facebook_id:          process.env.FACEBOOK_ID,
+        facebook_secret:      process.env.FACEBOOK_SECRET,
+        facebook_callback:    process.env.FACEBOOK_CALLBACK
+      };
+    }
+    // second, check the db, return empty values if neither are set
+    const Database = require('better-sqlite3');
+    const db = new Database('shortcut.db');
+    let result = db.prepare('select * from kvs where key = ?').get('applicationKeys');
+    result = result ? JSON.parse(result.value) : {
+      aws_region:          '',
+      aws_accessKeyId:     '',
+      aws_secretAccessKey: '',
+      aws_bucketName:      '',
+      twitter_key:         '',
+      twitter_secret:      '',
+      twitter_callback:    '',
+      facebook_id:         '',
+      facebook_secret:     '',
+      facebook_callback:   '',
+    };
+    return result;
   }
 };

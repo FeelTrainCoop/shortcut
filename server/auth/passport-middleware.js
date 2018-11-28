@@ -3,14 +3,7 @@
 
 const passport = require('passport'),
   FacebookStrategy = require('passport-facebook').Strategy,
-  TwitterStrategy = require('passport-twitter').Strategy,
-  AWS = require('aws-sdk');
-
-AWS.config.update({
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-});
+  TwitterStrategy = require('passport-twitter').Strategy;
 
 function init(app) {
   app.use(passport.initialize());

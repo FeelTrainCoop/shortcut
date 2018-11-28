@@ -19,7 +19,7 @@ module.exports = function(req, res) {
     downloadVideo: function(callback) {
       downloadVideo(data, function(err, res) {
         if (err) {
-          failWithError('Error downloading video', err, cb);
+          failWithError('Error downloading video', err, callback);
         } else {
           callback(null, res);
         }
@@ -70,7 +70,7 @@ module.exports = function(req, res) {
 
     // if there was an error and there was no tweet
     if (err && !results.tweet) {
-      failWithError('Tweet failed: ' + err.msg, err, cb);
+      failWithError('Tweet failed: ' + err.msg, err, console.log);
       return;
     }
 
@@ -104,4 +104,23 @@ function downloadVideo(event, callback) {
 
   s3.getObject(params).createReadStream().pipe(dlStream);
 
+}
+
+/**
+ *  context.fail with an error and status 'failure'
+ *  
+ *  @param  {String}   msg Error message
+ *  @param  {Object}   err i.e. {status: 'failure', msg: 'message'}
+ *  @param  {Function} cb  callback of the Lambda context, where first
+ *                         param is equal to context.fail()
+ */
+function failWithError(msg, err, cb) {
+  let errorData = {
+    'status': 'failure',
+    'msg' : msg
+  };
+  console.error('there was an error: ', msg);
+  console.error(err);
+  let error = new Error(JSON.stringify(errorData));
+  return cb(error);
 }

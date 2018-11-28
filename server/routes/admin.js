@@ -7,18 +7,7 @@ const express = require('express'),
       update = require('./update'),
       allEpisodeData = require('./all-episode-data'),
       exec = require('child_process').exec,
-      bucketName = process.env.AWS_S3_BUCKET_NAME;
-
-// set up AWS
-const AWS = require('aws-sdk');
-AWS.config.update({
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-});
-const s3 = new AWS.S3({
-  region: process.env.AWS_REGION
-});
+      AWS = require('aws-sdk');
 
 // update the episodes db table and then
 // return the state of enabled/disabled episodes
@@ -163,6 +152,17 @@ function uploadS3(episodeNumber, body, fileName, cb) {
   const dstKey = `episodes/${episodeNumber}/${fileName}`;
   console.log('uploading',dstKey);
 
+  const keys = helpers.getApplicationKeys();
+  AWS.config.update({
+    region:            keys.aws_region,
+    accessKeyId:       keys.aws_accessKeyId,
+    secretAccessKey:   keys.aws_secretAccessKey
+  });
+  const s3 = new AWS.S3({
+    region: keys.aws_region
+  });
+  const bucketName = keys.aws_bucketName;
+
   var params = {
     Bucket: bucketName,
     Key: dstKey,
@@ -200,6 +200,21 @@ router.get('/syncEpisodeStatus', function (req, res) {
       }
     });
   }
+});
+
+router.get('/getApplicationKeys', function (req, res) {
+  const keys = helpers.getApplicationKeys();
+  res.json(keys);
+});
+
+router.post('/setApplicationKeys', function (req, res) {
+  const applicationKeys = req.body.applicationKeys;
+  if (applicationKeys === undefined) {
+    return res.status(400).send('Bad request. Please make sure "applicationKeys" is a property in the POST body.');
+  }
+  let db = req.app.get('db');
+  db.setKey('applicationKeys', applicationKeys);
+  res.json({err: null, data: applicationKeys});
 });
 
 module.exports = router;

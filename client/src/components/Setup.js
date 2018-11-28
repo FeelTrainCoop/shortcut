@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paper } from '@material-ui/core';
-import RaisedButton from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Loader from 'components/LoadingAnimationComponent';
 
@@ -153,9 +153,9 @@ class SetupComponent extends React.PureComponent {
             fullWidth
           />
           <br/>
-          <RaisedButton className="get-podcast-data" onClick={this.getPodcastData.bind(this)}>
+          <Button variant="outlined" color="primary" className="get-podcast-data" onClick={this.getPodcastData.bind(this)}>
             Get Podcast Data
-          </RaisedButton>
+          </Button>
           <Loader
             show={this.state.loading}
             msg='updating server...'
@@ -195,13 +195,15 @@ class SetupComponent extends React.PureComponent {
               margin="normal"
             />
             <p>When you submit your new admin username and password, your browser will ask you to re-enter them too.</p>
-            <RaisedButton
+            <Button
+              variant="outlined"
+              color="primary"
               className="get-podcast-data"
               onClick={this.makeSite.bind(this)}
               disabled={!this.state.isUsernameValid || !this.state.isPasswordValid || !this.state.doPasswordsMatch}
             >
               Make the Shortcut Site
-            </RaisedButton>
+            </Button>
           </div>
         </div>
       </Paper>

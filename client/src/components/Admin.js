@@ -1,6 +1,10 @@
 import React from 'react';
 import { Paper } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Modal from '@material-ui/core/Modal';
 import { FormControlLabel, FormGroup } from '@material-ui/core';
 
 const parentSiteName = require('config').default.parentSiteName;
@@ -31,8 +35,13 @@ class AdminComponent extends React.PureComponent {
       // get our list of all episodes, unfiltered since this is the admin pane
       jQuery.ajax({
         url: `${this.apiEndpoint}/recent?filter=0`,
-      })
-    ).done(function (episodeStateData, allEpisodeData) {
+      }),
+      // get our list of application key credentials
+      jQuery.ajax({
+        url: `${this.apiEndpoint}/admin/getApplicationKeys`,
+        xhrFields: { withCredentials: true },
+      }),
+    ).done(function (episodeStateData, allEpisodeData, applicationKeys) {
       let tempSwitches = allEpisodeData[0].map(episode => {
         let foundElement = episodeStateData[0].find(el => el.guid === episode.guid);
         episode.checked = foundElement ? foundElement.isEnabled : false;
@@ -42,7 +51,8 @@ class AdminComponent extends React.PureComponent {
       });
       this.setState({
         switches: tempSwitches,
-        authenticated: true
+        authenticated: true,
+        applicationKeys: applicationKeys[0]
       });
     }.bind(this));
   }
@@ -90,6 +100,66 @@ class AdminComponent extends React.PureComponent {
     });
   }
 
+  handleSettingsChange(key, e) {
+    let applicationKeys = this.state.applicationKeys;
+    applicationKeys[key] = e.target.value;
+    this.setState({
+      applicationKeys,
+    }, () => {
+      this.forceUpdate()
+    });
+  }
+
+  renderSettings() {
+    return Object.keys(this.state.applicationKeys)
+      .map((key) =>
+        <div key={key}>
+          <TextField
+            id={key}
+            label={key}
+            placeholder="xx-xxxx-n"
+            margin="dense"
+            value={this.state.applicationKeys[key]}
+            onChange={this.handleSettingsChange.bind(this,key)}
+          />
+        </div>
+      );
+  }
+
+  submitSettings() {
+    // serialize settings into object
+    let result = Object.keys(this.state.applicationKeys)
+      .reduce((allKeys, key) => {
+        allKeys[key] = document.getElementById(key).value;
+        return allKeys;
+      }, {});
+    // POST object to server
+    this.handleModalOpen(<div><h1>Updating Settings</h1><span></span></div>);
+    this.setState({ isSyncing: true });
+    jQuery.ajax({
+      type: 'POST',
+      url: `${this.apiEndpoint}/admin/setApplicationKeys`,
+      xhrFields: { withCredentials: true },
+      data: {
+        applicationKeys: this.state.applicationKeys
+      },
+      success: data => {
+        if (data.err) {
+          this.setState({
+            modalMessage: <div><h1>Error:</h1><span>{JSON.stringify(data.err, null, 2)}</span></div>
+          });
+        }
+        else {
+          this.setState({ modalOpen: false});
+        }
+      }
+    });
+  }
+
+  handleModalOpen(message) {
+    this.setState({ modalOpen: true, modalMessage: message });
+  }
+
   render() {
     const isAuthenticated = this.state.authenticated;
     
@@ -108,7 +178,33 @@ class AdminComponent extends React.PureComponent {
               <FormGroup>
               {this.renderSwitches.call(this)}
               </FormGroup>
+            <h3 className="recent-episodes">Set Preferences</h3>
+              <FormGroup className="set-variables">
+                {this.renderSettings.call(this)}
+                <Button
+                  variant="outlined"
+                  size="large"
+                  color="primary"
+                  className="button aws-save"
+                  onClick={this.submitSettings.bind(this)}
+                  //disabled={!this.state.isUsernameValid || !this.state.isPasswordValid || !this.state.doPasswordsMatch}
+                >
+                  Submit
+                </Button>
+              </FormGroup>
           </div>
+          <Modal
+            open={this.state.modalOpen}
+          >
+            <div className="modal-window">
+              <LinearProgress
+                className={this.state.isSyncing ? "" : "vis-hidden"}
+                variant="indeterminate"
+                value={this.state.syncPercent}
+              />
+              {this.state.modalMessage}
+            </div>
+          </Modal>
         </Paper>
       </div>
       );

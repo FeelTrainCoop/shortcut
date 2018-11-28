@@ -2,17 +2,8 @@
 
 const express = require('express');
 const router = express.Router();
-const allEpisodeData = require('./all-episode-data');
 const AWS = require('aws-sdk');
-AWS.config.update({
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-});
-const s3 = new AWS.S3({
-  region: process.env.AWS_REGION
-});
-const bucketName = process.env.AWS_S3_BUCKET_NAME;
+const allEpisodeData = require('./all-episode-data');
 const waveformWidth = 30000;
 const async = require('async');
 const makeWaveform = require('./makeWaveform');
@@ -144,6 +135,17 @@ function uploadWaveformAndTranscriptData(episodeNumber, showData, cb) {
 
   var body = JSON.stringify(showData);
 
+  const keys = helpers.getApplicationKeys();
+  AWS.config.update({
+    region:            keys.aws_region,
+    accessKeyId:       keys.aws_accessKeyId,
+    secretAccessKey:   keys.aws_secretAccessKey
+  });
+  const s3 = new AWS.S3({
+    region: keys.aws_region
+  });
+  const bucketName = keys.aws_bucketName;
+
   var params = {
     Bucket: bucketName,
     Key: dstKey,
@@ -153,10 +155,10 @@ function uploadWaveformAndTranscriptData(episodeNumber, showData, cb) {
     CacheControl: 'max-age=31536000' // 1 year (60 * 60 * 24 * 365)
   };
 
-  s3upload(params, cb);
+  s3upload(s3, params, cb);
 }
 
-function s3upload(params, cb) {
+function s3upload(s3, params, cb) {
   s3.upload(params)
     .on('httpUploadProgress', function(evt) {
       console.log('Progress:', evt.loaded, '/', evt.total);
@@ -165,6 +167,9 @@ function s3upload(params, cb) {
       console.log(success);
       cb(err, success);
     });
+}
+
+function getApplicationKeys() {
 }
 
 router.addEpisode = addEpisode;

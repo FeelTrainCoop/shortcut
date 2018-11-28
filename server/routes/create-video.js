@@ -7,13 +7,6 @@
 const request = require('request');
 const async = require('async');
 const fs = require('fs');
-const AWS = require('aws-sdk');
-AWS.config.update({
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-});
-const bucketName = process.env.AWS_S3_BUCKET_NAME;
 const extension = '.mp4';
 const helpers = require('./helpers');
 const rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
@@ -25,6 +18,7 @@ const mimeType = 'video/mpeg';
 const fps = 20;
 const merge = require('./merge');
 const animate = require('./anim/animcontrol');
+const AWS = require('aws-sdk');
 
 module.exports = function(req, res) {
   // event variables
@@ -162,7 +156,8 @@ function parseFilesToDownload(showID, startTime, duration) {
   }
   else {
     if (rssFeed)  {
-      streamBase = `https://s3-${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/episodes/${showID}/${showID}`;
+      const keys = helpers.getApplicationKeys();
+      streamBase = `https://s3-${keys.aws_region}.amazonaws.com/${keys.aws_bucketName}/episodes/${showID}/${showID}`;
     }
     else {
       streamBase = dataBucket + showID + '/' + showID;
@@ -243,6 +238,18 @@ function cleanupFiles(filePaths, callback) {
 
 function uploadFile(tempFile, dstKey, tweetData, callback) {
   var readStream = fs.createReadStream(tempFile);
+  const keys = helpers.getApplicationKeys();
+  AWS.config.update({
+    region:            keys.aws_region,
+    accessKeyId:       keys.aws_accessKeyId,
+    secretAccessKey:   keys.aws_secretAccessKey
+  });
+  const s3 = new AWS.S3({
+    apiVersion: '2006-03-01',
+    // credentials: AWS.config.credentials,
+    region: keys.aws_region
+  });
+  const bucketName = keys.aws_bucketName;
 
   var params = {
     ACL: 'public-read',
@@ -258,7 +265,7 @@ function uploadFile(tempFile, dstKey, tweetData, callback) {
   // upload to s3, and to twitter (not any more!), in parallel
   async.parallel({
     s3: function(cb) {
-      s3upload(params, tempFile, cb);
+      s3upload(s3, params, tempFile, cb);
     },
     tweet: function(cb) {
       if (!tweetData){
@@ -276,13 +283,7 @@ function uploadFile(tempFile, dstKey, tweetData, callback) {
 
 }
 
-function s3upload(params, filename, cb) {
-  const s3 = new AWS.S3({
-    apiVersion: '2006-03-01',
-    // credentials: AWS.config.credentials,
-    region: process.env.s3Region
-  });
-
+function s3upload(s3, params, filename, cb) {
   s3.upload(params)
     .on('httpUploadProgress', function(evt) {
       // console.log(filename, 'Progress:', evt.loaded, '/', evt.total);
