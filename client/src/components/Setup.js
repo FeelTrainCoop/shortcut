@@ -135,7 +135,7 @@ class SetupComponent extends React.PureComponent {
           <div>
             {this.state.warnUserOverride && <h2><strong className="red">Warning: it looks like you've already set up Shortcut on this server. You can continue but you will overwrite all of your previous settings.</strong></h2>}
           </div>
-          <p>Welcome to Shortcut's configuration wizard. To get started, enter the full URL of your podcast's RSS feed, like <code>https://example.com/feed.xml</code>.</p>
+          <p>Welcome to Shortcut's configuration wizard. To get started, enter the full URL of your podcast's RSS feed, like <code>https://example.com/feed.xml</code>. After you submit the RSS feed your browser will show you a popup asking for login info. <em>If this is your first time setting up Shortcut, enter <a href="https://github.com/FeelTrainCoop/shortcut/wiki/Setting-Up-Shortcut-the-Easy-Way">the default admin username and password</a>. In the next step it will ask you to set a new admin username and password.</em></p>
           <TextField
             id="url"
             label="RSS URL"
@@ -185,7 +185,7 @@ class SetupComponent extends React.PureComponent {
               label="Confirm Admin Password"
               margin="normal"
             />
-            <br/>
+            <p>When you submit your new admin username and password, your browser will ask you to re-enter them too.</p>
             <RaisedButton
               className="get-podcast-data"
               onClick={this.makeSite.bind(this)}

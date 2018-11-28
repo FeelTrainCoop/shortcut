@@ -202,7 +202,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
               className="edit-transcript"
               onChange={this.handleChange.bind(this)}
             />
-            <p>Click the "Submit" button below to submit your transcript. When you do this, you'll see a progress bar while we synchronize your audio with your transcript. This can take a long time (up to the length of your episode), and can't be canceled once started, so please be patient! You can also click "Back" to go back to the admin menu.</p>
+            <p>Click the "Submit" button below to submit your transcript. When you do this, you'll see a progress bar while we synchronize your audio with your transcript. <strong>This can take a long time (up to the length of your episode), and can't be canceled once started, so please be patient!</strong> You can also click "Back" right now to go back to the admin menu.</p>
             <Button
               variant="contained"
               className="submit"
