@@ -38,9 +38,11 @@ fs.writeFileSync(gentleLogFile, '--begin log--\n');
 // spawn child process for gentle
 const { spawn } = require('child_process');
 const child = spawn('python3', ['external/gentle/serve.py']);
+const nodeCleanup = require('node-cleanup');
 
+// error message if gentle fails
 child.on('exit', function (code, signal) {
-  console.log(`child process exited with code ${code} and signal ${signal}`);
+  console.log(`gentle exited with code ${code} and signal ${signal}`);
 });
 
 // log gentle output to file
@@ -49,6 +51,11 @@ child.stdout.on('data', (data) => {
 });
 child.stderr.on('data', (data) => {
   fs.appendFile(gentleLogFile, data, (err) => { if (err) throw err; });
+});
+
+// quit gentle if the shortcut server exits for any reason
+nodeCleanup(() => {
+  child.kill('SIGHUP');
 });
 
 // template with marko https://github.com/marko-js/marko
