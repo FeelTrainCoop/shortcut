@@ -122,11 +122,17 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
 
     let lastValidTimestamp;
     const wordsInRange = showData.words.map(function(word, i) {
-      // keep track of the last known valid timestamp so we can fake times we don't have alignment for
       let nextWord = showData.words[i+1];
+      // if there's no next word, it must be the last word so create a fake empty word
       if (nextWord === undefined) {
         nextWord = {startOffset: word.endOffset};
       }
+      // ...or if the next word doesn't have a startOffset, estimate one
+      else if (nextWord.startOffset === undefined) {
+        nextWord = {startOffset: word.endOffset+1};
+      }
+
+      // keep track of the last known valid timestamp so we can fake times we don't have alignment for
       let timestamp;
       if (word.start) {
         timestamp = word.start*1000;
@@ -136,7 +142,8 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
       }
       lastValidTimestamp = timestamp;
       return [Math.round(timestamp)+'', striptags(decodeHTMLEntities(showData.transcript.substr(word.startOffset, nextWord.startOffset-word.startOffset)).trim(), ['&'])];
-    });
+    })
+      .filter(word => { return (word[1] !== '');});
     // add a placeholder empty string at time 0 (necessary for the reduce function that the client does)
     wordsInRange.unshift(['0','']);
 
@@ -145,6 +152,8 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
                             .map(word => +word[0]);
     // Add the first paragraph
     paragraphsInRange.unshift(0);
+
+    console.log('EYYY',wordsInRange);
 
     cb(err, {
       showData: {
