@@ -6,9 +6,8 @@ const async = require('async');
 const allEpisodeData = require('./all-episode-data'),
       path = require('path');
 
-// synchronous read, but it only happens on server init
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('shortcut.db');
+const Database = require('better-sqlite3');
+const db = new Database('shortcut.db');
 
 allEpisodeData.update(db, function(err) {
   if (!err) {
