@@ -127,13 +127,7 @@ class AdminComponent extends React.PureComponent {
   }
 
   submitSettings() {
-    // serialize settings into object
-    let result = Object.keys(this.state.applicationKeys)
-      .reduce((allKeys, key) => {
-        allKeys[key] = document.getElementById(key).value;
-        return allKeys;
-      }, {});
-    // POST object to server
+    // POST applicationKeys to server
     this.handleModalOpen(<div><h1>Updating Settings</h1><span></span></div>);
     this.setState({ isSyncing: true });
     jQuery.ajax({

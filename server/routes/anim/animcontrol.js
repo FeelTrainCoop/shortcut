@@ -71,7 +71,6 @@ AnimControl.prototype = {
         }
 
         const footerImgBase64 = 'data:image/png;base64,'+string;
-        fs.writeFileSync('/Users/dariusk/foo.png', footerImgBase64);
 
         // create Animator
         let animator = new Animator({

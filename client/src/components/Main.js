@@ -342,8 +342,6 @@ class AppComponent extends React.Component {
     this.saveStateToLocalStorage();
   }
   _handleLoginMessage(data) {
-    const whichNetwork = 'Twitter';
-
     this.setState({
       twUserName: data.twUserName || this.state.twUserName,
       twAuthToken: data.twAuthToken || this.state.twAuthToken,

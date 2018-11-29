@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import FlatButton from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
-import RaisedButton from '@material-ui/core/Button';
 import Toggle from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import DownloadIcon from '@material-ui/icons/GetApp';
@@ -13,7 +12,6 @@ import DownloadIcon from '@material-ui/icons/GetApp';
 import LoginTwitterComponent from './LoginTwitterComponent';
 import Subhead from './SubheadComponent';
 
-import Helpers from '../helpers';
 import Config from '../../cfg/master';
 
 const moment = require('moment');
@@ -120,26 +118,6 @@ class ShareContainerComponent extends React.Component {
                   this.handleSocialMessageChange(e.target.value)
                 }}
               />
-              <div className="suggested-text">
-                <div className="social-pad">
-                  <RaisedButton
-                   className="share-button"
-                    onClick={
-                      () => {
-                        window.ga('send', {
-                          'hitType': 'event',
-                          'eventCategory': 'Share',
-                          'eventAction': 'AddLinkToShow',
-                          'eventLabel': this.props.showNumber
-                        });
-                        this.insertSocialMsg(this.state.defaultSocialMessage);
-                    }}
-                    style={{width:'100%', overflow: 'hidden'}}
-                  >
-                    {Helpers.isMobile() ? `Add a link to your episode` : `Add a link to your episode: ${this.state.defaultSocialMessage}`}
-                  </RaisedButton>
-                </div>
-              </div>
 
               <hr className="hide-s"/>
 
