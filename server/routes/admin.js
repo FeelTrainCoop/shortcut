@@ -2,6 +2,7 @@
 const express = require('express'),
       router = express.Router(),
       fs = require('fs'),
+      passportMiddleware = require('../auth/passport-middleware.js'),
       request = require('request'),
       helpers = require('./helpers'),
       update = require('./update'),
@@ -214,6 +215,8 @@ router.post('/setApplicationKeys', function (req, res) {
   }
   let db = req.app.get('db');
   db.setKey('applicationKeys', applicationKeys);
+  // re-authorize passport
+  passportMiddleware.init(req.app);
   res.json({err: null, data: applicationKeys});
 });
 

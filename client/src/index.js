@@ -26,7 +26,6 @@ ReactDOM.render(
   <HashRouter>
     <Switch>
       <Route exact path="/" component={App} mode="regular" />
-      <Route exact path="/login/facebook/:fbUserName/:fbAuthToken" component={Login}/>
       <Route exact path="/login/twitter/:twUserName/:twAuthToken" component={Login}/>
       <Route exact path="/:view" component={App}/>
       <Route exact path="/:view/:showNumber" component={App}/>

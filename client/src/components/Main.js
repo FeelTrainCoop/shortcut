@@ -77,9 +77,9 @@ class AppComponent extends React.Component {
       wordMillis: props.wordMillis,
       paragraphMillis: props.paragraphMillis,
       selectedWords: props.selectedWords,
-      regionStart: Number(props.params.regionStart) || props.regionStart,
-      regionEnd: props.params.regionStart ? Number(props.params.regionStart) : props.regionEnd,
-      pos: props.params.regionStart || props.regionStart,
+      regionStart: Number(props.match.params.regionStart) || props.regionStart,
+      regionEnd: props.match.params.regionStart ? Number(props.match.params.regionStart) : props.regionEnd,
+      pos: props.match.params.regionStart || props.regionStart,
       clippingDuration: props.clippingDuration,
       clippingOffset: props.clippingOffset,
       tappedWord: props.tappedWord || undefined
@@ -96,10 +96,10 @@ class AppComponent extends React.Component {
       this.state.airDate = localState.airDate;
     }
 
-    if (props.params.regionStart) {
-      this.state.regionStart = Number(props.params.regionStart);
-      this.state.regionEnd = Number(props.params.regionStart);
-      this.state.pos = Number(props.params.regionStart);
+    if (props.match.params.regionStart) {
+      this.state.regionStart = Number(props.match.params.regionStart);
+      this.state.regionEnd = Number(props.match.params.regionStart);
+      this.state.pos = Number(props.match.params.regionStart);
     }
 
 
@@ -183,11 +183,11 @@ class AppComponent extends React.Component {
     });
 
     this.setState({
-      fbUserName:  this.props.params.fbUserName || this.state.fbUserName,
-      fbAuthToken: this.props.params.fbAuthToken || this.state.fbAuthToken,
-      twUserName: this.props.params.twUserName || this.state.twUserName,
-      twAuthToken: this.props.params.twAuthToken || this.state.twAuthToken,
-      sessionId: this.props.params.sessionId || this.state.sessionId
+      fbUserName:  this.props.match.params.fbUserName || this.state.fbUserName,
+      fbAuthToken: this.props.match.params.fbAuthToken || this.state.fbAuthToken,
+      twUserName: this.props.match.params.twUserName || this.state.twUserName,
+      twAuthToken: this.props.match.params.twAuthToken || this.state.twAuthToken,
+      sessionId: this.props.match.params.sessionId || this.state.sessionId
     }, function() {
       this.saveUserToLocalStorage();
     });

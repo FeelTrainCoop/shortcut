@@ -3,15 +3,18 @@
 
 const passport = require('passport'),
   FacebookStrategy = require('passport-facebook').Strategy,
-  TwitterStrategy = require('passport-twitter').Strategy;
+  TwitterStrategy = require('passport-twitter').Strategy,
+  helpers = require('../routes/helpers');
 
 function init(app) {
   app.use(passport.initialize());
 
+  const keys = helpers.getApplicationKeys();
+
   passport.use(
     new FacebookStrategy({
-      clientID: process.env.FACEBOOK_ID,
-      clientSecret: process.env.FACEBOOK_SECRET,
+      clientID: keys.facebook_id,
+      clientSecret: keys.facebook_secret,
       passReqToCallback: true,
       enableProof: false
     },
@@ -35,8 +38,8 @@ function init(app) {
   ));
 
   passport.use(new TwitterStrategy({
-      consumerKey: process.env.TWITTER_KEY,
-      consumerSecret: process.env.TWITTER_SECRET,
+      consumerKey: keys.twitter_key,
+      consumerSecret: keys.twitter_secret,
       passReqToCallback: true
     },
     function(req, token, tokenSecret, profile, done) {

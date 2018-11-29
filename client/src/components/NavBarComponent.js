@@ -10,7 +10,6 @@ import InfoIcon from '@material-ui/icons/Info';
 import LinkIcon from '@material-ui/icons/Link';
 
 import LoginTwitterComponent from './LoginTwitterComponent';
-import LoginFacebookComponent from './LoginFacebookComponent';
 const parentSiteName = require('config').default.parentSiteName;
 const parentSiteUrl = require('config').default.parentSiteUrl;
 
@@ -122,10 +121,6 @@ class NavBarComponent extends React.PureComponent {
                   twName={this.props.twName}
                   twLogout={this.props.twLogout}
                 />
-                <LoginFacebookComponent
-                  fbName={this.props.fbName}
-                  fbLogout={this.props.fbLogout}
-                />
               </Menu>
             </div>
           </Hidden>
@@ -157,11 +152,6 @@ class NavBarComponent extends React.PureComponent {
           <LoginTwitterComponent
             twName={this.props.twName}
             twLogout={this.props.twLogout}
-            />
-          <Divider/>
-          <LoginFacebookComponent
-            fbName={this.props.fbName}
-            fbLogout={this.props.fbLogout}
             />
           <Divider/>
           <ListItem className="loginrow-component"

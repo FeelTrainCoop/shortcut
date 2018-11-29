@@ -5,6 +5,7 @@
 'use strict';
 
 const Twit = require('twit');
+const helpers = require('./helpers');
 
 module.exports = {
 
@@ -12,15 +13,19 @@ module.exports = {
 
     var statusMsg = tweetData.msg;
 
+    
+    const keys = helpers.getApplicationKeys();
+
     var authData = {
-      consumer_key : process.env.TWITTER_KEY,
-      consumer_secret :  process.env.TWITTER_SECRET,
+      consumer_key : keys.twitter_key,
+      consumer_secret : keys.twitter_secret,
       access_token : tweetData.accessToken,
       access_token_secret : tweetData.accessTokenSecret
     };
 
     var T = new Twit(authData);
 
+    console.log(filePath);
     T.postMediaChunked({ file_path: filePath }, function (err, data) {
       if (err) {
         console.log('Twitter Error Posting Media: ', err);
@@ -38,20 +43,22 @@ module.exports = {
       // now we can reference the media and post a tweet (media will attach to the tweet)
       var params = { status: statusMsg, media_ids: [mediaIdStr] };
 
-      T.post('statuses/update', params, function (err, data, response) {
-        if (err) {
-          console.log('Twitter Error Creating Post: ', err);
-          callback(err);
-          return;
-        }
-        else {
-          callback(null, {
-            'data': data,
-            'TWITTER_POST_ID': data.id_str,
-            'TWITTER_NAME': data.user.screen_name
-          });
-        }
-      });
+      setTimeout(function() {
+        T.post('statuses/update', params, function (err, data, response) {
+          if (err) {
+            console.log('Twitter Error Creating Post: ', err);
+            callback(err);
+            return;
+          }
+          else {
+            callback(null, {
+              'data': data,
+              'TWITTER_POST_ID': data.id_str,
+              'TWITTER_NAME': data.user.screen_name
+            });
+          }
+        });
+      }, 5000, this);
 
     });
   }

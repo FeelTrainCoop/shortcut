@@ -7,10 +7,13 @@
 const passport = require('passport');
 const express = require('express');
 const router = express.Router();
+const helpers = require('./helpers');
 
 router.get('/facebook', function(req, res, next){
   // set callback url
-  req.app.locals.fbCallback = (req.headers['x-forwarded-proto'] || req.protocol)  + '://' + req.get('host') + process.env.FACEBOOK_CALLBACK + '?redirect_uri=shortcut.thisamericanlife.org';
+  const keys = helpers.getApplicationKeys();
+  const redirect_uri = req.query.redirect_uri;
+  req.app.locals.fbCallback = (req.headers['x-forwarded-proto'] || req.protocol)  + '://' + req.get('host') + keys.facebook_callback + `?redirect_uri=${redirect_uri}`;
   passport.authenticate('facebook', {
     scope: ['publish_actions'],
     callbackURL: req.app.locals.fbCallback,
@@ -33,7 +36,8 @@ router.get('/facebook/callback',
 
 // Twitter login routes
 router.get('/twitter', function(req, res, next){
-  passport.authenticate('twitter', {callbackURL: (req.headers['x-forwarded-proto'] || req.protocol) + '://' + req.get('host') + process.env.TWITTER_CALLBACK})(req, res, next);
+  const keys = helpers.getApplicationKeys();
+  passport.authenticate('twitter', {callbackURL: (req.headers['x-forwarded-proto'] || req.protocol) + '://' + req.get('host') + keys.twitter_callback})(req, res, next);
 });
 
 router.get('/twitter/callback',

@@ -53,7 +53,7 @@ child.stderr.on('data', (data) => {
   fs.appendFile(gentleLogFile, data, (err) => { if (err) { throw err; } });
 });
 
-// quit gentle if the shortcut server exits for any reason
+// quit Gentle if the shortcut server exits for any reason
 nodeCleanup(() => {
   child.kill('SIGHUP');
 });

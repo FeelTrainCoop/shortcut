@@ -15,7 +15,7 @@ const leftIconStyles = {
 require('styles//LoginRow.scss');
 
 const isSecure =  window.location.protocol == 'https:';
-const authRoute = isSecure ? require('config').default.authServerSsl + '/auth/facebook' : require('config').default.authServer + '/auth/facebook';
+const authRoute = isSecure ? require('config').default.authServerSsl + '/auth/facebook' : require('config').default.authServer + '/auth/facebook?redirect_uri=' + window.location.origin;
 
 class LoginFacebookComponent extends React.PureComponent {
   constructor(props) {
