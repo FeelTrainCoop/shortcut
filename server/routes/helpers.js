@@ -159,10 +159,7 @@ module.exports = {
         aws_bucketName:       process.env.AWS_S3_BUCKET_NAME,
         twitter_key:          process.env.TWITTER_KEY,
         twitter_secret:       process.env.TWITTER_SECRET,
-        twitter_callback:     process.env.TWITTER_CALLBACK,
-        facebook_id:          process.env.FACEBOOK_ID,
-        facebook_secret:      process.env.FACEBOOK_SECRET,
-        facebook_callback:    process.env.FACEBOOK_CALLBACK
+        twitter_callback:     process.env.TWITTER_CALLBACK
       };
     }
     // second, check the db, return empty values if neither are set
@@ -176,10 +173,7 @@ module.exports = {
       aws_bucketName:      '',
       twitter_key:         '',
       twitter_secret:      '',
-      twitter_callback:    '',
-      facebook_id:         '',
-      facebook_secret:     '',
-      facebook_callback:   '',
+      twitter_callback:    ''
     };
     return result;
   }

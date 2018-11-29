@@ -126,9 +126,6 @@ class AppComponent extends React.Component {
           });
         },
         error: function(xhr, status, err) {
-          window.ga('send', 'exception', {
-            'exDescription': 'loadMoreEpisodesAJAX'
-          });
           window.console.error(this.props.url, status, err.toString());
         }.bind(this)
       });
@@ -142,8 +139,6 @@ class AppComponent extends React.Component {
     if (userState) {
       this.state.twUserName = userState.twUserName;
       this.state.twAuthToken = userState.twAuthToken;
-      this.state.fbUserName = userState.fbUserName;
-      this.state.fbAuthToken = userState.fbAuthToken;
       this.state.sessionId = userState.sessionId;
     }
 
@@ -183,8 +178,6 @@ class AppComponent extends React.Component {
     });
 
     this.setState({
-      fbUserName:  this.props.match.params.fbUserName || this.state.fbUserName,
-      fbAuthToken: this.props.match.params.fbAuthToken || this.state.fbAuthToken,
       twUserName: this.props.match.params.twUserName || this.state.twUserName,
       twAuthToken: this.props.match.params.twAuthToken || this.state.twAuthToken,
       sessionId: this.props.match.params.sessionId || this.state.sessionId
@@ -202,11 +195,6 @@ class AppComponent extends React.Component {
 
     // analytics: log page view
     if (view !== prevProps.view) {
-      window.ga('set', 'page', window.location.hash.split('?')[0].split('#')[1]);
-      window.ga('send', {
-        hitType: 'pageview',
-        title: view
-      });
     }
 
     // load default Landing page
@@ -314,10 +302,6 @@ class AppComponent extends React.Component {
       error: (err) => {
         console.log('error', err);
 
-        window.ga('send', 'exception', {
-          'exDescription': 'LoadEpisode ' + showNumber + ': ' + err.status
-        });
-
         // back to loading screen
         this.setState({
           loading: false,
@@ -358,17 +342,9 @@ class AppComponent extends React.Component {
     this.saveStateToLocalStorage();
   }
   _handleLoginMessage(data) {
-    const whichNetwork = data.fbUserName ? 'Facebook' : 'Twitter';
-
-    window.ga('send', {
-      'hitType': 'social',
-      'socialNetwork': whichNetwork,
-      'socialAction': 'Connect'
-    });
+    const whichNetwork = 'Twitter';
 
     this.setState({
-      fbUserName:  data.fbUserName || this.state.fbUserName,
-      fbAuthToken: data.fbAuthToken || this.state.fbAuthToken,
       twUserName: data.twUserName || this.state.twUserName,
       twAuthToken: data.twAuthToken || this.state.twAuthToken,
     }, function() {
@@ -392,13 +368,6 @@ class AppComponent extends React.Component {
       let regionStart  = Math.min(oldWord.start, wordStart);
       let regionEnd = Math.max(oldWord.end, wordEnd);
       this.textSelectionChanged(regionStart, regionEnd);
-
-      window.ga('send', {
-        'hitType': 'event',
-        'eventCategory': 'RegionChange',
-        'eventAction': 'TapTranscript',
-        'eventLabel': 'Transcript'
-      });
 
       if (tapMsg.show && Helpers.isMobile()) {
         // selection complete. show "done" message
@@ -493,10 +462,6 @@ class AppComponent extends React.Component {
 
     function handleError(err) {
       console.error(err);
-      window.ga('send', 'exception', {
-        'exDescription': err.msg ? 'createVideo: ' + err.msg : 'createVideo: ' + JSON.stringify(err)
-      });
-
       let msg = err.msg ? err.msg : 'Error creating video';
       msg += '. Please submit a bug report.';
 
@@ -530,13 +495,6 @@ class AppComponent extends React.Component {
           return;
         }
 
-        // analytics
-        window.ga('send', 'event', {
-          'eventCategory': this.state.view.charAt(0).toUpperCase() + this.state.view.slice(1),
-          'eventAction': 'CreateVideo',
-          'eventValue': res.database_id
-        });
-
         this.setState({
           view: 'share',
           loading: false,
@@ -562,10 +520,6 @@ class AppComponent extends React.Component {
     });
 
     function handleError(err) {
-      window.ga('send', 'exception', {
-        'exDescription': err.msg ? 'createSocial: ' + err.msg : 'createSocial: ' + JSON.stringify(err)
-      });
-
       console.error(err);
       that.setState({
         view: 'share',
@@ -586,30 +540,6 @@ class AppComponent extends React.Component {
           return;
         }
 
-        window.ga('send', 'event', {
-          'eventCategory': 'Video',
-          'eventAction': 'Share',
-          'eventValue': data.video_data.database_id
-        });
-
-        if (res.tweetId) {
-          window.ga('send', {
-            'hitType': 'social',
-            'socialNetwork': 'Twitter',
-            'socialAction': 'Share',
-            'socialTarget': data.video_data.database_id
-          });
-        }
-
-        if (res.facebookId) {
-          window.ga('send', {
-            'hitType': 'social',
-            'socialNetwork': 'Facebook',
-            'socialAction': 'Share',
-            'socialTarget': data.video_data.database_id
-          });
-        }
-
         that.setState({
           view: undefined,
           loading: false,
@@ -626,27 +556,9 @@ class AppComponent extends React.Component {
   }
   /** "Log out" of Twitter by deleting the auth keys on both the temporary state and in `localStorage`. Twitter doesn't provide a deauth endpoint so this is as close as we get. */
   twLogout() {
-    window.ga('send', {
-      'hitType': 'social',
-      'socialNetwork': 'Twitter',
-      'socialAction': 'Disconnect'
-    });
     this.setState({
       twUserName: undefined,
       twAuthToken: undefined
-    }, function() {
-      this.saveUserToLocalStorage();
-    });
-  }
-  fbLogout() {
-    window.ga('send', {
-      'hitType': 'social',
-      'socialNetwork': 'Facebook',
-      'socialAction': 'Disconnect'
-    });
-    this.setState({
-      fbUserName: undefined,
-      fbAuthToken: undefined
     }, function() {
       this.saveUserToLocalStorage();
     });
@@ -679,8 +591,6 @@ class AppComponent extends React.Component {
     const statesToSave = {
       twUserName: this.state.twUserName,
       twAuthToken: this.state.twAuthToken,
-      fbUserName: this.state.fbUserName,
-      fbAuthToken: this.state.fbAuthToken
     };
 
     // TODO: catch when localStorage is full. probably use an external localStorage library for this?
@@ -821,9 +731,6 @@ class AppComponent extends React.Component {
         });
       },
       error: function(xhr, status, err) {
-        window.ga('send', 'exception', {
-          'exDescription': 'loadMoreEpisodesAJAX'
-        });
         window.console.error(this.props.url, status, err.toString());
       }.bind(this)
     })
@@ -840,9 +747,6 @@ class AppComponent extends React.Component {
       <div className="index" onClick={this._cancelTranscriptTap.bind(this)}>
         <NavBar
           history={this.props.history}
-          fbAuth={this.state.fbAuthToken}
-          fbName={this.state.fbUserName}
-          fbLogout={this.fbLogout.bind(this)}
           twAuth={this.state.twAuthToken}
           twName={this.state.twUserName}
           twLogout={this.twLogout.bind(this)}
@@ -947,8 +851,6 @@ class AppComponent extends React.Component {
               airDate={this.state.airDate}
               twAuth={this.state.twAuthToken}
               twName={this.state.twUserName}
-              fbAuth={this.state.fbAuthToken}
-              fbName={this.state.fbUserName}
               createSocialMedia={this.createSocialMedia.bind(this)}
             />
           }/>

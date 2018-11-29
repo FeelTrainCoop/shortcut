@@ -13,7 +13,7 @@ class LoginSuccessComponent extends React.PureComponent {
 
 	render() {
 		return (<div>
-			<p>Welcome, {this.props.match.params.twUserName || this.props.match.params.fbUserName}</p>
+			<p>Welcome, {this.props.match.params.twUserName}</p>
 			<p onClick={() => {window.close()}}>Click here if not redirected</p>
 		</div>);
 	}

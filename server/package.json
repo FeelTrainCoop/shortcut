@@ -45,7 +45,6 @@
     "node-cleanup": "^2.1.2",
     "paper-jsdom-canvas": "^0.11.8",
     "passport": "^0.3.2",
-    "passport-facebook": "^2.1.1",
     "passport-twitter": "^1.0.4",
     "request": "^2.88.0",
     "rss-parser": "^3.0.1",

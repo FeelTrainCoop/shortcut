@@ -43,6 +43,8 @@ module.exports = {
       // now we can reference the media and post a tweet (media will attach to the tweet)
       var params = { status: statusMsg, media_ids: [mediaIdStr] };
 
+      // TODO: fix this timeout hack, which is here because immediately attempting to post
+      // after the postMediaChunked is done causes an error
       setTimeout(function() {
         T.post('statuses/update', params, function (err, data, response) {
           if (err) {
@@ -58,7 +60,7 @@ module.exports = {
             });
           }
         });
-      }, 5000, this);
+      }, 500, this);
 
     });
   }

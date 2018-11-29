@@ -1,5 +1,5 @@
 /*
-  Routes handling Passport authentication with Twitter and Facebook
+  Routes handling Passport authentication with Twitter
  */
 
 'use strict';
@@ -8,31 +8,6 @@ const passport = require('passport');
 const express = require('express');
 const router = express.Router();
 const helpers = require('./helpers');
-
-router.get('/facebook', function(req, res, next){
-  // set callback url
-  const keys = helpers.getApplicationKeys();
-  const redirect_uri = req.query.redirect_uri;
-  req.app.locals.fbCallback = (req.headers['x-forwarded-proto'] || req.protocol)  + '://' + req.get('host') + keys.facebook_callback + `?redirect_uri=${redirect_uri}`;
-  passport.authenticate('facebook', {
-    scope: ['publish_actions'],
-    callbackURL: req.app.locals.fbCallback,
-    session: false
-  })(req, res, next);
-});
-
-router.get('/facebook/callback',
-  function(req, res, next) {
-    passport.authenticate('facebook', {
-        failureRedirect: '/login',
-        callbackURL: req.app.locals.fbCallback
-      })(req, res, next);
-  },
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect(`${(req.headers['x-forwarded-proto'] || req.protocol) + '://' + req.get('host')}/#/login/facebook/${req.user.facebook.displayName}/${req.user.facebook.info}`);
-  }
-);
 
 // Twitter login routes
 router.get('/twitter', function(req, res, next){

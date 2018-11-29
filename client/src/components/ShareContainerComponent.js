@@ -11,7 +11,6 @@ import TextField from '@material-ui/core/TextField';
 import DownloadIcon from '@material-ui/icons/GetApp';
 
 import LoginTwitterComponent from './LoginTwitterComponent';
-import LoginFacebookComponent from './LoginFacebookComponent';
 import Subhead from './SubheadComponent';
 
 import Helpers from '../helpers';
@@ -59,7 +58,6 @@ class ShareContainerComponent extends React.Component {
     var defaultState = {
       charsUsed: initialCharsUsed,
       twitterToggle: !!this.props.twAuth,
-      facebookToggle: !!this.props.fbAuth,
       defaultSocialMessage: defaultSocialMessage,
       videoData: videoData || {},
       textFieldValue: '',
@@ -73,8 +71,6 @@ class ShareContainerComponent extends React.Component {
     // if no accounts were signed in but now one is...
     this.setState({
       twitterToggle: nextProps.twAuth ? (this.props.twAuth ? this.state.twitterToggle : true) : false,
-      facebookToggle: nextProps.fbAuth ? (this.props.fbAuth ? this.state.facebookToggle : true) : false
-      // facebookToggle: nextProps.fbAuth ? this.state.facebookToggle : (this.props.fbAuth ? this.state.facebookToggle : false)
     });
   }
 
@@ -166,22 +162,6 @@ class ShareContainerComponent extends React.Component {
                     onChange={this.handleTwitterToggle.bind(this)}
                   />
                 </div>
-                <div
-                  className="social-toggle-item"
-                >
-                  <LoginFacebookComponent
-                    fbName={this.props.fbName}
-                    fbLogout={this.props.fbLogout}
-                    href="http://hello.com"
-                  />
-                  <Toggle
-                    classes={{ checked: this.props.classes.checked, bar: this.props.classes.bar }}
-                    className="social-toggle"
-                    checked={this.state ? this.state.facebookToggle : false}
-                    disabled={this.props.fbAuth ? false : true}
-                    onChange={this.handleFacebookToggle.bind(this)}
-                  />
-                </div>
                 <hr className="hide-s"/>
 
                 <IconButton
@@ -219,7 +199,7 @@ class ShareContainerComponent extends React.Component {
         </div>
 
         <FlatButton
-          disabled={ (!this.state || !this.state.twitterToggle && !this.state.facebookToggle) || (this.state.twitterToggle && this.state.charsUsed > tweetMaxChars) ? true : false}
+          disabled={ (!this.state || !this.state.twitterToggle) || (this.state.twitterToggle && this.state.charsUsed > tweetMaxChars) ? true : false}
           className="share-button"
           onClick={this.createSocialMedia.bind(this)}
         >
@@ -266,23 +246,6 @@ class ShareContainerComponent extends React.Component {
       });
     }
   }
-  handleFacebookToggle(e) {
-    const disabled = !this.props.fbAuth ? true : false;
-
-    if (disabled) {
-      isSecure ? window.open(require('config').default.authServerSsl + '/auth/facebook', '_blank') : window.open(require('config').default.authServer + '/auth/facebook', '_blank');
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    } else {
-      const newState = !this.state.facebookToggle;
-      this.setState({
-        facebookToggle: newState
-      });
-    }
-
-
-  }
   handleTwitterClick() {
     console.log('clicked');
   }
@@ -291,7 +254,6 @@ class ShareContainerComponent extends React.Component {
       video_data: this.state.videoData,
       msg: this.socialMessage || this.state.defaultSocialMessage,
       twitter_info: this.state.twitterToggle ? this.props.twAuth : false,
-      facebook_info: this.state.facebookToggle ? this.props.fbAuth : false
     };
 
     // --> Main.js

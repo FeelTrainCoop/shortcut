@@ -44,25 +44,7 @@ module.exports = function(req, res) {
               shareCallback(err, res);
             });
           }
-        },
-
-        function(shareCallback) {
-          if (!data.facebook_info) {
-            shareCallback(null, {});
-          } else {
-            fbData.msg = data.msg;
-            require('./facebook').share(fbData, tempFileName, function(err, res) {
-              if (err) {
-                fbData.errorMessage = 'Facebook failed';
-              }
-              else {
-                fbData.FACEBOOK_POST_ID = res.id;
-              }
-              shareCallback(err, res);
-            });
-          }
         }
-
       ], callback);
     },
   }, function(err, results) {
@@ -76,7 +58,7 @@ module.exports = function(req, res) {
 
     res.json({
       tweetId: tweetData.TWITTER_POST_ID,
-      facebookId: fbData.FACEBOOK_POST_ID
+      facebookId: null
     });
   });
 };
