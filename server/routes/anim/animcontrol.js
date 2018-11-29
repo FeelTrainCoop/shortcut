@@ -13,7 +13,7 @@ const helpers = require('../../routes/helpers');
 const Animator = require('../../../client/src/animation/animator');
 const fs = require('fs');
 const path = require('path');
-let rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
+let rssFeed;
 
 const tempDir = process.env['TEMP'] || '/tmp';
 
@@ -58,6 +58,7 @@ AnimControl.prototype = {
         const totalFrames = fps*duration;
 
         let string = '';
+	rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
         if (rssFeed) {
           const Database = require('better-sqlite3');
           const db = new Database('shortcut.db');

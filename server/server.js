@@ -85,6 +85,7 @@ db.setKey = function(key, value) {
 db.prepare('CREATE TABLE IF NOT EXISTS episodes (guid TEXT PRIMARY KEY, isEnabled INTEGER, hasTranscript INTEGER DEFAULT 0, transcript TEXT)').run();
 // if there is no `kvs` (key/value store) table, create it
 db.prepare('CREATE TABLE IF NOT EXISTS kvs (key TEXT PRIMARY KEY, value TEXT)').run();
+console.log('ran our create');
 // update `allEpisodes` in our key/value store
 routes.allEpisodeData.update(db);
 

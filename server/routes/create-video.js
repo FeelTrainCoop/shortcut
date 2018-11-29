@@ -9,7 +9,7 @@ const async = require('async');
 const fs = require('fs');
 const extension = '.mp4';
 const helpers = require('./helpers');
-const rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
+let rssFeed;
 const dataBucket = process.env.DATA_BUCKET;
 const segmentLength = 10; // length of .ts source files in seconds
 const tempDir = process.env.TEMP || '/tmp';
@@ -155,6 +155,7 @@ function parseFilesToDownload(showID, startTime, duration) {
     streamBase = process.env.STREAM_URL + showID + '/stream/' + showID + '_64k_';
   }
   else {
+    rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
     if (rssFeed)  {
       const keys = helpers.getApplicationKeys();
       streamBase = `https://s3-${keys.aws_region}.amazonaws.com/${keys.aws_bucketName}/episodes/${showID}/${showID}`;

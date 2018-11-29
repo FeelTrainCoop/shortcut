@@ -10,7 +10,7 @@ const makeWaveform = require('./makeWaveform');
 const getTranscript = require('./getTranscript');
 const helpers = require('./helpers');
 const tempDir = process.env.TEMP || '/tmp';
-const rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
+let rssFeed;
 
 // update show data (list of all episodes and their show data version numbers)
 router.get('/', function(req, res) {
@@ -46,6 +46,7 @@ router.get('/:episodeNumber', function(req, res) {
 function addEpisode(episodeNum, callback) {
   const targetWidth = 30000;
   let mp3Path;
+  rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
   if (rssFeed) {
     let episodes = allEpisodeData.getAllEpisodesUnfiltered();
     console.log(episodes);

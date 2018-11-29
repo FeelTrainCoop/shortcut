@@ -3,13 +3,14 @@
 const request = require('request');
 const striptags = require('striptags');
 const helpers = require('./helpers');
-const rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
+let rssFeed;
 const dataBucket = process.env.DATA_BUCKET;
 const allEpisodeData = require('./all-episode-data');
 
 module.exports = {
 
   go: function(episodeNumber, startTime, endTime, cb) {
+    const rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
     if (rssFeed) {
       let episodes = allEpisodeData.getAllEpisodesUnfiltered();
       let episode = episodes.filter(ep => {
@@ -51,6 +52,7 @@ function episodeDataCallback(err, body, _startTime, _endTime, episodeNumber, epi
   const episodesData = episodesBody.length ? episodesBody : JSON.parse(episodesBody);
   const episodeData = episodesData.filter(episode => episode.number === episodeNumber)[0];
   let startTime, endTime, startTimeMillis, endTimeMillis, wordsInRange, paragraphsInRange;
+  rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
 
   // Parse as TAL transcript if correct JSON format present
   if (showData.transcript && showData.transcript.words) {

@@ -8,7 +8,7 @@ const request = require('request'),
       dataUrl = process.env.DATA_BUCKET + 'episodes.json',
       inactiveEpisodes = process.env.BAD_EPISODES.split(',');
 
-let rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
+let rssFeed;
 
 let db;
 let cache = {
@@ -37,6 +37,7 @@ const update = function(globalDb, cb) {
 
 function getShowData(db, cb) {
   // get show data
+  let rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
   if (rssFeed) {
     request.get({url: rssFeed}, function(err, resp, body) {
       if (!err) {
