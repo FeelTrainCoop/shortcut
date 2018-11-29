@@ -102,7 +102,7 @@ Animator.prototype = {
     // footer image must be 8% above bottom
     raster = new this.paper.Raster(this.footerImgBase64);
     raster.position = new this.paper.Point({
-      x: this.width/2,
+      x: this.width * 0.86,
       y: this.height * 0.86
     });
 
@@ -354,7 +354,7 @@ Animator.prototype = {
   },
 
   _resize: function() {
-    raster.width = this.width;
+    raster.width = this.width * 0.215;
     raster.height = this.height * 0.215;
   }
 };

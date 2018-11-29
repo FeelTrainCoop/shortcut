@@ -803,6 +803,7 @@ class AppComponent extends React.Component {
                 tappedWord={this.state.tappedWord}
                 view={this.state.view}
                 onColorChange={this.onColorChange.bind(this)}
+                apiEndpoint={apiEndpoint_default}
               />
             </Loader>
           }/>

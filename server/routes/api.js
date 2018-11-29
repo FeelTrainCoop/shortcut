@@ -15,4 +15,16 @@ router.get('/isSourceSet', function (req, res) {
   }
 });
 
+// return whether shortcut has been set up (a data source has been set)
+router.get('/getPodcastImage', function (req, res) {
+  let db = req.app.get('db');
+  let result = db.getKey('podcastImage');
+  if (result !== undefined) {
+    return res.json({err: null, data: result.value});
+  }
+  else {
+    return res.json({err: 'No image defined', data: ''});
+  }
+});
+
 module.exports = router;

@@ -94,7 +94,7 @@ app.set('port', process.env.PORT || 3000);
 app.set('port-https', process.env.PORT_HTTPS || 8443);
 app.use(compression());
 app.disable('x-powered-by');
-app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.json({limit: '50mb'})); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // add pw protection if the following environment variables are provided (i.e on staging not prod)

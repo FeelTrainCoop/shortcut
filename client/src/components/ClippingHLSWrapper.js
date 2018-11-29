@@ -64,6 +64,7 @@ class ClippingHLSWrapper extends React.PureComponent {
           tappedWord={this.props.tappedWord}
           view={this.props.view}
           onColorChange={this.props.onColorChange}
+          apiEndpoint={this.props.apiEndpoint}
         />
       </div>
     );

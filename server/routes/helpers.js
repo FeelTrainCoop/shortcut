@@ -1,3 +1,4 @@
+const exec = require('child_process').exec;
 const fs = require('fs');
 const request = require('request');
 const inactiveEpisodes = process.env.BAD_EPISODES.split(',');
@@ -64,13 +65,35 @@ module.exports = {
   // get the show metadata from RSS
   parseRSSMeta: function(body, cb) {
     parser.parseString(body, function(error, feed) {
-      let feedMissingRequiredField = feed && (!feed.title || !feed.description || !feed.link || !feed.itunes || !feed.itunes.author);
+      let feedMissingRequiredField = feed && (!feed.title || !feed.description || !feed.link || !feed.itunes || !feed.itunes.author || !feed.itunes.image);
       if (!error && !feedMissingRequiredField && feed.items.length > 0) {
+        // Asynchronously grab the show image itself, resize it to smaller,
+        // and add as a base64 blob and store it in the DB
+        request({url: feed.itunes.image, encoding: null}, function (error, response, data) {
+          // use imagemagick to resize to 100px wide
+          const tempDir = process.env.TEMP || '/tmp';
+          const tempPath = tempDir+'/podcastImage.jpg';
+          fs.writeFileSync(tempPath, data);
+          let cmd = `convert -resize 100 ${tempPath} ${tempDir}/small.jpg`;
+          exec(cmd, function (error, stdout, stderr) {
+            let imageData = fs.readFileSync(tempDir+'/small.jpg');
+            console.log('error:', error); // Print the error if one occurred
+            if (!error) {
+              const buf = new Buffer(imageData, 'binary');
+              const string = buf.toString('base64');
+              const Database = require('better-sqlite3');
+              const db = new Database('shortcut.db');
+              db.prepare('insert or replace into kvs(key, value) values(?, ?)').run('podcastImage', string);
+            }
+          });
+        });
+
         let showData = {
           title: feed.title,
           description: feed.description,
           link: feed.link,
           author: feed.itunes.author,
+          image: feed.itunes.image,
           episodes: feed.items.length
         };
         cb({err: null, showData});
@@ -79,7 +102,7 @@ module.exports = {
         cb({err: `RSS feed has no mp3 enclosure items!`, showData: null});
       }
       else if (feedMissingRequiredField) {
-        cb({err: `RSS feed is missing <title>, <description>, <link>, or <itunes:author>`, showData: null});
+        cb({err: `RSS feed is missing <title>, <description>, <link>, <itunes:image>, or <itunes:author>`, showData: null});
       }
       else {
         cb({err: `This error occurred: ${error}`, showData: null});

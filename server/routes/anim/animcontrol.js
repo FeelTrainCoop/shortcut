@@ -9,14 +9,11 @@
 const paper = require('paper-jsdom-canvas');
 const Canvas = require('canvas');
 
+const helpers = require('../../routes/helpers');
 const Animator = require('../../../client/src/animation/animator');
 const fs = require('fs');
 const path = require('path');
-
-const data = fs.readFileSync(__dirname+'/../../../client/src/images/animation-footer.png', 'binary');
-const buf = new Buffer(data, 'binary');
-const string = buf.toString('base64');
-const footerImgBase64 = 'data:image/png;base64,'+string;
+let rssFeed = process.env.RSS_FEED || helpers.isSourceSet();
 
 const tempDir = process.env['TEMP'] || '/tmp';
 
@@ -59,6 +56,22 @@ AnimControl.prototype = {
       setTimeout(() => {
 
         const totalFrames = fps*duration;
+
+        let string = '';
+        if (rssFeed) {
+          const Database = require('better-sqlite3');
+          const db = new Database('shortcut.db');
+          const result = db.prepare('select * from kvs where key = ?').get('podcastImage');
+          string = result ? result.value : '';
+        }
+        else {
+          const data = fs.readFileSync(__dirname+'/../../../client/src/images/animation-footer.png', 'binary');
+          const buf = new Buffer(data, 'binary');
+          string = buf.toString('base64');
+        }
+
+        const footerImgBase64 = 'data:image/png;base64,'+string;
+        fs.writeFileSync('/Users/dariusk/foo.png', footerImgBase64);
 
         // create Animator
         let animator = new Animator({

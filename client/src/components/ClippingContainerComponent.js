@@ -275,6 +275,7 @@ class ClippingContainer extends React.PureComponent {
             onColorChange={this.props.onColorChange}
             showNumber={this.props.showNumber}
             ref={(p) => this._previewContainer = p}
+            apiEndpoint={this.props.apiEndpoint}
           />
 
           {previewWaveform}

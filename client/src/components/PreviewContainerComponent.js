@@ -10,12 +10,13 @@ import Animator from '../animation/animator';
 import Helpers from '../helpers';
 
 require('styles//PreviewContainer.scss');
+const jQuery = require('jquery');
 const scssVariables = require('sass-extract-loader!../styles/_variables.scss').global;
 // Webpack does static analysis of imports, so require(url)
 // won't work but require('/some/path/'+filename) does
 // see: https://github.com/webpack/webpack/issues/2401#issuecomment-315709090
 var url = scssVariables['$anim-footer-image'].value;
-const animationFooter = require('../images/'+url);
+let animationFooter = require('../images/'+url);
 
 // color options for video
 const colorOptions =  [
@@ -47,6 +48,7 @@ class PreviewContainerComponent extends React.Component {
   constructor(props) {
     super(props);
     this.colorIndex = 0; //  Math.floor(Math.random()*colorOptions.length);    // random color
+    this.apiEndpoint = props.apiEndpoint;
   }
 
   componentDidMount() {
@@ -59,20 +61,42 @@ class PreviewContainerComponent extends React.Component {
               };
     })();
 
-    // Listen for orientation changes
-    this.res = () => {
-      this._resize();
-    }
-    // window.addEventListener('orientationchange', this.res, false);
+    // check for a podcast logo defined on the server, if undefined, use the prebaked image
+    // from the file system
 
-    // this.anims = ['basic', 'bounce'];
-    // this.animType = 'basic';
+    let devUrl = this.apiEndpoint + '/api/getPodcastImage';
+    jQuery.ajax({
+      method: 'GET',
+      url: devUrl,
+      crossDomain : true,
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+      success: (data) => {
+        if (!data.err) {
+          this.animationFooter = 'data:image/png;base64,'+data.data;
+        }
+        else {
+          this.animationFooter = animationFooter;
+        }
 
-    this.cnv = this._canvas;
-    this.ctx = this._canvas.getContext('2d');
-    this.fps = 20;
+        // Listen for orientation changes
+        this.res = () => {
+          this._resize();
+        }
+        // window.addEventListener('orientationchange', this.res, false);
 
-    this._initPaperCanvas(this.colorIndex);
+        // this.anims = ['basic', 'bounce'];
+        // this.animType = 'basic';
+
+        this.cnv = this._canvas;
+        this.ctx = this._canvas.getContext('2d');
+        this.fps = 20;
+
+        this._initPaperCanvas(this.colorIndex);
+      },
+      error: function(xhr, status, err) {
+        window.console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   }
   componentWillUnmount() {
     // window.removeEventListener('orientationchange', this.res);
@@ -111,7 +135,7 @@ class PreviewContainerComponent extends React.Component {
       fps: this.fps,
       showNumber: this.props.showNumber,
       // footerImgBase64: this.refs._footerImg.src,
-      footerImgBase64: animationFooter,
+      footerImgBase64: this.animationFooter,
       style: {
         textColor1 : 'white',
         textColor2 : colorOptions[colorIndex].hColor || '#432958',
