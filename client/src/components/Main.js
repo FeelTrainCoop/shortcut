@@ -110,7 +110,7 @@ class AppComponent extends React.Component {
     this.state.snackbarMessage = 'default message';
     this.state.clipTooLong = Math.abs(this.state.regionEnd - this.state.regionStart) > maxClipSeconds || Math.abs(this.state.regionEnd - this.state.regionStart) < minClipSeconds;
 
-    // grab the JSON/RSS file of all episodes
+    this.state.eps = window.__latestEpisodes || props.eps;
     let devUrl = apiEndpoint + '/recent';
     jQuery.ajax({
       method: 'GET',
@@ -127,7 +127,7 @@ class AppComponent extends React.Component {
       }.bind(this)
     });
 
-      this.state.episodesWithProblems = window.__inactiveEpisodes || require('config').default.episodesWithProblems;
+    this.state.episodesWithProblems = window.__inactiveEpisodes || require('config').default.episodesWithProblems;
 
 
     // get credentials from localStorage if they exist
