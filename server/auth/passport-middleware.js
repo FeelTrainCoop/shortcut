@@ -11,8 +11,8 @@ function init(app) {
   const keys = helpers.getApplicationKeys();
 
   passport.use(new TwitterStrategy({
-      consumerKey: keys.twitter_key,
-      consumerSecret: keys.twitter_secret,
+      consumerKey: keys.twitter_key || 'not set',
+      consumerSecret: keys.twitter_secret || 'not set',
       passReqToCallback: true
     },
     function(req, token, tokenSecret, profile, done) {

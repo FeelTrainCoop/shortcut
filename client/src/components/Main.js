@@ -110,28 +110,24 @@ class AppComponent extends React.Component {
     this.state.snackbarMessage = 'default message';
     this.state.clipTooLong = Math.abs(this.state.regionEnd - this.state.regionStart) > maxClipSeconds || Math.abs(this.state.regionEnd - this.state.regionStart) < minClipSeconds;
 
-    // get episode data rendered by server
-    this.state.eps = window.__latestEpisodes || props.eps;
-    // BUT, if we're in a development environment, just grab the JSON/RSS file of all episodes and overwrite
-    if (env === 'dev') {
-      let devUrl = apiEndpoint + '/recent';
-      jQuery.ajax({
-        method: 'GET',
-        url: devUrl,
-        crossDomain : true,
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
-        success: (data) => {
-          this.setState({
-            eps: data
-          });
-        },
-        error: function(xhr, status, err) {
-          window.console.error(this.props.url, status, err.toString());
-        }.bind(this)
-      });
-    }
+    // grab the JSON/RSS file of all episodes
+    let devUrl = apiEndpoint + '/recent';
+    jQuery.ajax({
+      method: 'GET',
+      url: devUrl,
+      crossDomain : true,
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+      success: (data) => {
+        this.setState({
+          eps: data
+        });
+      },
+      error: function(xhr, status, err) {
+        window.console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
 
-    this.state.episodesWithProblems = window.__inactiveEpisodes || require('config').default.episodesWithProblems;
+      this.state.episodesWithProblems = window.__inactiveEpisodes || require('config').default.episodesWithProblems;
 
 
     // get credentials from localStorage if they exist
