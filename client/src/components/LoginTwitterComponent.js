@@ -9,8 +9,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 require('styles//LoginRow.scss');
 
-const isSecure =  window.location.protocol == 'https:';
-const authRoute = isSecure ? require('config').default.authServerSsl + '/auth/twitter' : require('config').default.authServer + '/auth/twitter';
+const isSecure =  window.location.protocol === 'https:';
+const authRoute = isSecure ? `https://${window.location.hostname}:3000/auth/twitter` : `http://${window.location.hostname}:3000/auth/twitter`;
+console.log(isSecure);
 
 class LoginTwitterComponent extends React.PureComponent {
   constructor(props) {

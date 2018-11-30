@@ -1,6 +1,7 @@
 'use strict';
 const express = require('express'),
       router = express.Router(),
+      helpers = require('./helpers'),
       allEpisodeData = require('./all-episode-data');
 
 // return whether shortcut has been set up (a data source has been set)
@@ -25,6 +26,13 @@ router.get('/getPodcastImage', function (req, res) {
   else {
     return res.json({err: 'No image defined', data: ''});
   }
+});
+
+// return whether shortcut has been set up (a data source has been set)
+router.get('/getAmazonS3Info', function (req, res) {
+  const keys = helpers.getApplicationKeys();
+  let { aws_region, aws_bucketName } = keys;
+  res.json({aws_region, aws_bucketName});
 });
 
 module.exports = router;

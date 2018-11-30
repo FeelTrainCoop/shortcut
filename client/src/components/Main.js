@@ -9,10 +9,11 @@ const apiEndpoint_default = isSecure ? require('config').default.apiEndpointSsl 
 const maxClipSeconds = require('config').default.maxClipSeconds;
 const minClipSeconds = require('config').default.minClipSeconds;
 const env = require('config').default.appEnv;
-const s3Region = require('config').default.s3Region;
-const s3Bucket = require('config').default.s3Bucket;
 const cloudFrontDomain = require('config').default.cloudFrontDomain;
 const speakerNamesInTranscript = require('config').default.speakerNamesInTranscript;
+
+let s3Region = require('config').default.s3Region;
+let s3Bucket = require('config').default.s3Bucket;
 
 let tapMsg = {
   start: 'Tap a word to begin selection',
@@ -129,6 +130,19 @@ class AppComponent extends React.Component {
 
     this.state.episodesWithProblems = window.__inactiveEpisodes || require('config').default.episodesWithProblems;
 
+    jQuery.ajax({
+      method: 'GET',
+      url: apiEndpoint + '/api/getAmazonS3Info',
+      crossDomain : true,
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+      success: (data) => {
+        s3Region = data.aws_region;
+        s3Bucket = data.aws_bucketName;
+      },
+      error: function(xhr, status, err) {
+        window.console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
 
     // get credentials from localStorage if they exist
     userState = Store.get('user-state');
