@@ -121,8 +121,10 @@ class AppComponent extends React.Component {
       crossDomain : true,
       headers: {'X-Requested-With': 'XMLHttpRequest'},
       success: (data) => {
-        s3Region = data.aws_region;
-        s3Bucket = data.aws_bucketName;
+        this.setState({
+          s3Region: data.aws_region,
+          s3Bucket: data.aws_bucketName,
+        });
       },
       error: function(xhr, status, err) {
         window.console.error(this.props.url, status, err.toString());
@@ -257,7 +259,7 @@ class AppComponent extends React.Component {
     });
   }
   _loadEpisodeChunk(showNumber, signedURL, shouldCache) {
-    let path = `https://s3-${s3Region}.amazonaws.com/${s3Bucket}/episodes/${showNumber}-data.json`;
+    let path = `https://s3-${this.state.s3Region}.amazonaws.com/${this.state.s3Bucket}/episodes/${showNumber}-data.json`;
     if (cloudFrontDomain) {
       path = `https://${cloudFrontDomain}/episodes/${showNumber}-data.json`;
     }
