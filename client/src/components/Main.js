@@ -860,8 +860,8 @@ class AppComponent extends React.Component {
           className="error-message"
           open={this.state.snackbarOpen}
           message={this.state.snackbarMessage}
-          autoHideDuration={10000}
-          onRequestClose={this.handleSnackbarClose.bind(this)}
+          autoHideDuration={5000}
+          onClose={this.handleSnackbarClose.bind(this)}
           ref="_snackbar"
         />
       </div>

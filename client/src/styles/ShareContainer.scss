@@ -185,7 +185,7 @@
   .social-textarea {
     font-size: 16px;
     height: 120px;
-    border: none;
+    border: 1px solid $primary-color;
     background-color: $bg-color;
     width: 90%;
     margin: 0 auto;
@@ -318,6 +318,9 @@
 
       @media screen and (max-width:$break-s) {
         margin: 15px 0px 15px 8px !important;
+        span {
+          display: block;
+        }
       }
     }
   }

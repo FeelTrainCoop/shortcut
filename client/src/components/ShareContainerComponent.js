@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import FlatButton from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
-import Toggle from '@material-ui/core/Switch';
+import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import DownloadIcon from '@material-ui/icons/GetApp';
 
@@ -132,7 +132,7 @@ class ShareContainerComponent extends React.Component {
                     twName={this.props.twName}
                     twLogout={this.props.twLogout}
                   />
-                  <Toggle
+                  <Switch
                     classes={{ checked: this.props.classes.checked, bar: this.props.classes.bar }}
                     className="social-toggle"
                     disabled={this.props.twAuth ? false : true}
@@ -230,7 +230,7 @@ class ShareContainerComponent extends React.Component {
   createSocialMedia() {
     const data = {
       video_data: this.state.videoData,
-      msg: this.socialMessage || this.state.defaultSocialMessage,
+      msg: this.socialMessage || '',
       twitter_info: this.state.twitterToggle ? this.props.twAuth : false,
     };
 
