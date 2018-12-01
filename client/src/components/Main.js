@@ -83,7 +83,7 @@ class AppComponent extends React.Component {
       pos: props.match.params.regionStart || props.regionStart,
       clippingDuration: props.clippingDuration,
       clippingOffset: props.clippingOffset,
-      tappedWord: props.tappedWord || undefined
+      tappedWord: props.tappedWord || undefined,
     };
 
     // If there is no state stored in localStorage, use our default state.
@@ -111,22 +111,7 @@ class AppComponent extends React.Component {
     this.state.snackbarMessage = 'default message';
     this.state.clipTooLong = Math.abs(this.state.regionEnd - this.state.regionStart) > maxClipSeconds || Math.abs(this.state.regionEnd - this.state.regionStart) < minClipSeconds;
 
-    this.state.eps = window.__latestEpisodes || props.eps;
-    let devUrl = apiEndpoint + '/recent';
-    jQuery.ajax({
-      method: 'GET',
-      url: devUrl,
-      crossDomain : true,
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      success: (data) => {
-        this.setState({
-          eps: data
-        });
-      },
-      error: function(xhr, status, err) {
-        window.console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
+    this.state.eps = [];
 
     this.state.episodesWithProblems = window.__inactiveEpisodes || require('config').default.episodesWithProblems;
 
@@ -764,7 +749,7 @@ class AppComponent extends React.Component {
         />
         <Switch>
           <Route exact path="/" render={()=>
-            <Landing eps={this.state.eps} badEps={this.state.episodesWithProblems} loadMoreEpisodes={this.loadMoreEpisodes.bind(this)}/>
+            <Landing eps={this.state.eps} badEps={this.state.episodesWithProblems} loadMoreEpisodes={this.loadMoreEpisodes.bind(this)} apiEndpoint={apiEndpoint_default} />
           }/>
           <Route exact path="/setup" render={()=><Setup apiEndpoint={apiEndpoint_default}/>}/>
           <Route exact path="/admin" render={()=><Admin apiEndpoint={apiEndpoint_default} eps={this.state.eps}/>}/>

@@ -35,4 +35,16 @@ router.get('/getAmazonS3Info', function (req, res) {
   res.json({aws_region, aws_bucketName});
 });
 
+// return whether shortcut has been set up (a data source has been set)
+router.get('/getMeta', function (req, res) {
+  let db = req.app.get('db');
+  let result = db.getKey('meta');
+  if (result !== undefined) {
+    return res.json(JSON.parse(result.value));
+  }
+  else {
+    return res.json({err: 'No metadata', data: ''});
+  }
+});
+
 module.exports = router;

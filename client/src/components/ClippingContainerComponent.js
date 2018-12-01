@@ -216,7 +216,7 @@ class ClippingContainer extends React.PureComponent {
               />
     );
 
-    const playPauseButton = this.state.playing ? <PauseCircle color="white"/> : <PlayArrow color="white"/>
+    const playPauseButton = this.state.playing ? <PauseCircle color="primary"/> : <PlayArrow color="primary"/>
     const leftContainerClass = `left-container ${this.props.view}`;
     const rightContainerClass = `right-container flex-top ${this.props.view}`;
 
@@ -321,7 +321,7 @@ class ClippingContainer extends React.PureComponent {
         <Button
           color="primary"
           className="preview-button desktop"
-          raised
+          raised="true"
           onClick={() => {
             if (this.props.clipTooLong) {
               window.alert('Clips must be between 0.5 and 30 seconds. Please select some text or use the waveform. If you dont see the waveform, click the Feedback button to file a bug report.');
@@ -333,7 +333,7 @@ class ClippingContainer extends React.PureComponent {
           Next
         </Button>
         <Button
-          raised
+          raised="true"
           className="preview-button mobile"
           // href={this.props.view === 'clipping' ? `/#/preview/${this.props.showNumber}` : null}
           onClick={() => {

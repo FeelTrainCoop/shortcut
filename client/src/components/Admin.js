@@ -41,7 +41,10 @@ class AdminComponent extends React.PureComponent {
         url: `${this.apiEndpoint}/admin/getApplicationKeys`,
         xhrFields: { withCredentials: true },
       }),
-    ).done(function (episodeStateData, allEpisodeData, applicationKeys) {
+      jQuery.ajax({
+        url: `${this.apiEndpoint}/api/getMeta`,
+      }),
+    ).done(function (episodeStateData, allEpisodeData, applicationKeys, meta) {
       let tempSwitches = allEpisodeData[0].map(episode => {
         let foundElement = episodeStateData[0].find(el => el.guid === episode.guid);
         episode.checked = foundElement ? foundElement.isEnabled : false;
@@ -52,7 +55,8 @@ class AdminComponent extends React.PureComponent {
       this.setState({
         switches: tempSwitches,
         authenticated: true,
-        applicationKeys: applicationKeys[0]
+        applicationKeys: applicationKeys[0],
+        imageUrl: meta[0].showData ? meta[0].showData.image : ''
       });
     }.bind(this));
   }
@@ -163,7 +167,7 @@ class AdminComponent extends React.PureComponent {
         <Paper>
           <div className="hero-space">
             <div className="hero-content">
-              <img src={logo} className="logo" alt={parentSiteName}/>
+              <img src={this.state.imageUrl} className="logo" alt={parentSiteName}/>
               <h2 className="tagline">Admin Panel</h2>
             </div>
           </div>

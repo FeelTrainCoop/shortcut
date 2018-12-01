@@ -27,6 +27,7 @@ router.post('/setSource', function (req, res) {
             return res.status(400).json({code: `Could not parse RSS data: ${result.err}`});
           }
           else {
+            db.setKey('meta', result);
             return res.json(result);
           }
         });
