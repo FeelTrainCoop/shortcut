@@ -31,11 +31,15 @@ class AdminEditTranscriptComponent extends React.PureComponent {
       // get our list of all episodes, unfiltered since this is the admin pane
       jQuery.ajax({
         url: `${this.apiEndpoint}/recent?filter=0`,
+      }),
+      jQuery.ajax({
+        url: `${this.apiEndpoint}/api/getMeta`,
       })
-    ).done(function (allEpisodeData) {
-      let episodeData = allEpisodeData.filter(episode => episode.number === this.props.match.params.showNumber)[0];
+    ).done(function (allEpisodeData, meta) {
+      let episodeData = allEpisodeData[0].filter(episode => episode.number === this.props.match.params.showNumber)[0];
       this.setState({
         authenticated: true,
+        imageUrl: meta[0].showData ? meta[0].showData.image : '',
         episodeData
       });
       jQuery.ajax({
@@ -181,7 +185,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
         <Paper>
           <div className="hero-space">
             <div className="hero-content">
-              <img src={logo} className="logo" alt={parentSiteName}/>
+              <img src={this.state.imageUrl} className="logo" alt={parentSiteName}/>
               <h2 className="tagline">Admin Panel</h2>
             </div>
           </div>
