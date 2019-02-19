@@ -60,38 +60,53 @@ router.post('/syncEpisode', function (req, res) {
   let episode = episodes.filter(ep => {
     return ep.guid === guid;
   })[0];
-  // download the mp3 for the episode
-  helpers.downloadFile(episode.mp3, (err, fileName) => {
-    console.log('downloaded mp3', err, fileName);
-    // send gentle the mp3 and the form data
-    // curl -F "audio=@audio.mp3" -F "transcript=@words.txt" "http://localhost:8765/transcriptions?async=false"
-    // do this via post
-    var formData = {
-      audio: fs.createReadStream(fileName),
-      transcript: transcript
-    };
-    request.post({url:'http://localhost:8765/transcriptions?async=true&disfluency=true', formData: formData}, function optionalCallback(err, httpResponse, body) {
-      if (err) {
-        console.error('upload failed:', err);
-        return res.json({err});
-      }
-      // forward the status info back to the shortcut client so the client can check status of sync
-      return res.json({err, location: httpResponse.headers.location});
-    });
 
-    // while transcription is happening, process the mp3 into *.ts files and put them in the temp directory
-    // ffmpeg -i s01e03.mp3 -map 0:a -profile:v baseline -level 3.0 -start_number 0 -hls_time 10 -hls_list_size 0 -hls_segment_filename 's01e03%03d.ts' -f hls s01e03.m3u8
-    const tempDir = process.env.TEMP || '/tmp';
-    const cmd = `ffmpeg -i ${fileName} -map 0:a -profile:v baseline -level 3.0 -start_number 0 -hls_time 10 -hls_list_size 0 -hls_segment_filename '${tempDir}/${episode.number}%03d.ts' -f hls '${tempDir}/${episode.number}.m3u8'`;
-    exec(cmd, function (error) {
-      if (error) {
-        console.log(error);
-      }
-      else {
-        console.log('ffmpeg processed mp3 into *.ts files and placed into', tempDir);
-      }
+  if (process.env.API_URL) {
+    request.get({url: `${process.env.DATA_BUCKET}${guid}.json`}, function(err, resp, body) {
+      // add episode.mp3 from response
+      episode.mp3 = JSON.parse(body).mp3;
+      downloadAndSync();
     });
-  }); 
+  }
+  else {
+    downloadAndSync();
+  }
+
+  function downloadAndSync() {
+    // download the mp3 for the episode
+    helpers.downloadFile(episode.mp3, (err, fileName) => {
+      console.log('downloaded mp3', err, fileName);
+      // send gentle the mp3 and the form data
+      // curl -F "audio=@audio.mp3" -F "transcript=@words.txt" "http://localhost:8765/transcriptions?async=false"
+      // do this via post
+      var formData = {
+        audio: fs.createReadStream(fileName),
+        transcript: transcript
+      };
+      request.post({url:'http://localhost:8765/transcriptions?async=true&disfluency=true', formData: formData}, function optionalCallback(err, httpResponse, body) {
+        if (err) {
+          console.error('upload failed:', err);
+          return res.json({err});
+        }
+        // forward the status info back to the shortcut client so the client can check status of sync
+        return res.json({err, location: httpResponse.headers.location});
+      });
+
+      // while transcription is happening, process the mp3 into *.ts files and put them in the temp directory
+      // ffmpeg -i s01e03.mp3 -map 0:a -profile:v baseline -level 3.0 -start_number 0 -hls_time 10 -hls_list_size 0 -hls_segment_filename 's01e03%03d.ts' -f hls s01e03.m3u8
+      const tempDir = process.env.TEMP || '/tmp';
+      const cmd = `ffmpeg -i ${fileName} -map 0:a -profile:v baseline -level 3.0 -start_number 0 -hls_time 10 -hls_list_size 0 -hls_segment_filename '${tempDir}/${episode.number}%03d.ts' -f hls '${tempDir}/${episode.number}.m3u8'`;
+      exec(cmd, function (error) {
+        if (error) {
+          console.log(error);
+        }
+        else {
+          console.log('ffmpeg processed mp3 into *.ts files and placed into', tempDir);
+        }
+      });
+    });
+  }
+
 });
 
 router.get('/syncEpisodeDone', function (req, res) {
