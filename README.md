@@ -9,6 +9,8 @@ By participating in our community you agree to abide by the [Shortcut Code of Co
 
 [![Build Status](https://travis-ci.org/FeelTrainCoop/shortcut.svg?branch=master)](https://travis-ci.org/FeelTrainCoop/shortcut)
 
+[Click here to launch an AWS instance with Shortcut](https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#LaunchInstanceWizard:ami=ami-0bb6a4f8872b7b887).
+
 Contribute
 ----------
 
