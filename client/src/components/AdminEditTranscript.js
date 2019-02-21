@@ -85,10 +85,12 @@ class AdminEditTranscriptComponent extends React.PureComponent {
     });
     let doneUrl = `${this.apiEndpoint}/admin/syncEpisodeDone?location=${location}&guid=${this.state.episodeData.guid}&enable=${enable}`;
     fetch(doneUrl, {credentials: 'include'})
+      .then(handleErrors)
       .then(response => response.json())
       .then(() => {
         window.location='/#/admin/';
-      });
+      })
+      .catch(function(error) {console.log(error);});
   }
 
   handleClick() {
@@ -123,6 +125,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
   pollTranscriptionStatus(location) {
     let transcriptionStatusUrl = `${this.apiEndpoint}/admin/syncEpisodeStatus?location=${location}`;
     fetch(transcriptionStatusUrl, {credentials: 'include'})
+      .then(handleErrors)
       .then(response => response.json())
 			.then(json => {
         let statusMessage = 'Transcription starting up...';
@@ -171,7 +174,8 @@ class AdminEditTranscriptComponent extends React.PureComponent {
 
           setTimeout(this.pollTranscriptionStatus.bind(this, location), 1*1000);
         }
-    });
+    })
+    .catch(function(error) {console.log(error);});
   }
 
   render() {
@@ -251,6 +255,13 @@ class AdminEditTranscriptComponent extends React.PureComponent {
       );
     }
   }
+} 
+
+function handleErrors(response) {
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
+    return response;
 }
 
 export default AdminEditTranscriptComponent;
