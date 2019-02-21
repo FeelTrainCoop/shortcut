@@ -54,35 +54,39 @@ function addEpisode(episodeNum, callback) {
       return ep.number === episodeNum;
     })[0];
     mp3Path = episode.mp3;
+    downloadAndUpdate();
+  }
+  else if (process.env.API_URL) {
+    request.get({url: `${process.env.DATA_BUCKET}${episodeNum}.json`}, function(err, resp, body) {
+      mp3Path = JSON.parse(body).mp3;
+      downloadAndUpdate();
+    });
   }
   else {
     mp3Path = `${process.env.DATA_BUCKET}${episodeNum}/${episodeNum}.mp3`;
+    downloadAndUpdate();
   }
 
-  if (process.env.API_URL) {
-    mp3Path = process.env.STREAM_URL + episodeNum + '/' + episodeNum + '.mp3';
+  function downloadAndUpdate() {
+    async.parallel({
+      waveform: function(callback) {
+        async.waterfall([
+          function(callback) {
+            console.log('downloading episode...', mp3Path);
+            downloadEpisode(mp3Path, callback);
+          },
+          function(tempFilePath, callback) {
+            console.log('making waveform...', tempFilePath);
+            makeWaveform.go(tempFilePath, targetWidth, callback);
+          }
+        ], callback);
+      },
+      showData: function(callback) {
+        console.log('fetching show data...');
+        getTranscript.go(episodeNum, undefined, undefined, callback);
+      }
+    }, allDone);
   }
-
-
-  async.parallel({
-    waveform: function(callback) {
-      async.waterfall([
-        function(callback) {
-          console.log('downloading episode...', mp3Path);
-          downloadEpisode(mp3Path, callback);
-        },
-        function(tempFilePath, callback) {
-          console.log('making waveform...', tempFilePath);
-          makeWaveform.go(tempFilePath, targetWidth, callback);
-        }
-      ], callback);
-    },
-    showData: function(callback) {
-      console.log('fetching show data...');
-      getTranscript.go(episodeNum, undefined, undefined, callback);
-    }
-  }, allDone);
-
   function allDone(err, msg) {
     // console.log(msg.waveform, msg.showData);
     if (err && !msg) {
