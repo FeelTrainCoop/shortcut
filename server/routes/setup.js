@@ -4,6 +4,7 @@ const express = require('express'),
       request = require('request'),
       helpers = require('./helpers'),
       bcrypt = require('bcrypt-nodejs'),
+      querystring = require('querystring'),
       allEpisodeData = require('./all-episode-data');
 
 router.post('/setSource', function (req, res) {
@@ -19,7 +20,11 @@ router.post('/setSource', function (req, res) {
   db.prepare('CREATE TABLE IF NOT EXISTS episodes (guid TEXT PRIMARY KEY, isEnabled INTEGER, hasTranscript INTEGER DEFAULT 0, transcript TEXT)').run();
   db.setKey('episodeSource', episodeSource);
   allEpisodeData.update(db, function() {
-    request.get({url: rss}, function(err, resp, body) {
+    let url = new URL(rss);
+    let qs = querystring.parse(url.search.replace('?',''));
+    let baseUrl = url.origin + url.pathname;
+    request.get({url: baseUrl, qs, headers: {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:65.0) Gecko/20100101 Firefox/65.0'}}, function(err, resp, body) {
+      console.log(body);
       if (!err) {
         // get the show metadata
         helpers.parseRSSMeta(body, function(result) {
