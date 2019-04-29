@@ -49,7 +49,7 @@ class SetupComponent extends React.PureComponent {
 
   getPodcastData() {
     this.setState({ loading: true });
-    const rssUrl = document.getElementById('url').value;
+    const rssUrl = encodeURIComponent(document.getElementById('url').value);
     jQuery.ajax({
       type: 'POST',
       url: `${this.apiEndpoint}/setup/setSource`,
