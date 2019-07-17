@@ -26,8 +26,8 @@ module.exports = {
           .filter(episode => { return (episode.enclosure && episode.enclosure.url); })
           .map((episode) => {
             let guid = episode.guid || episode.link;
-            // set the ID number to the guid
-            let number = guid;
+            // set the ID number to the URI-encoded guid
+            let number = encodeURIComponent(guid);
             // overwrite the number if there's an explicit "itunes:episode" tag, in which
             // case we use that. according to the spec this should be a non-zero integer
             // http://podcasts.apple.com/resources/spec/ApplePodcastsSpecUpdatesiOS11.pdf

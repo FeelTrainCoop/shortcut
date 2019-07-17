@@ -15,12 +15,12 @@ router.post('/setSource', function (req, res) {
     return res.status(400).send('Bad request. Please make sure "type" and "url" are properties in the POST body.');
   }
   let db = req.app.get('db');
-  const episodeSource = { type, rss };
+  const episodeSource = { type, rss: decodeURIComponent(rss) };
   db.prepare('drop table if exists episodes').run();
   db.prepare('CREATE TABLE IF NOT EXISTS episodes (guid TEXT PRIMARY KEY, isEnabled INTEGER, hasTranscript INTEGER DEFAULT 0, transcript TEXT)').run();
   db.setKey('episodeSource', episodeSource);
   allEpisodeData.update(db, function() {
-    let url = new URL(rss);
+    let url = new URL(decodeURIComponent(rss));
     let qs = querystring.parse(url.search.replace('?',''));
     let baseUrl = url.origin + url.pathname;
     request.get({url: baseUrl, qs, headers: {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:65.0) Gecko/20100101 Firefox/65.0'}}, function(err, resp, body) {
