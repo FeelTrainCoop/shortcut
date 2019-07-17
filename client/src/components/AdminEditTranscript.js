@@ -201,7 +201,7 @@ class AdminEditTranscriptComponent extends React.PureComponent {
           <div className={this.state.isLoading ? "hidden content transcript" : "content transcript"}>
             <h2 className="tagline"><a href="/#/admin/">&larr; Admin Panel</a></h2>
             <h1>Edit Episode Transcript</h1>
-            <h2>{ep.number} - {ep.title}</h2>
+            <h2>{decodeURIComponent(ep.number)} - {ep.title}</h2>
             <audio controls src={ep.mp3}></audio>
             <p><a href={ep.mp3}>{ep.mp3}</a></p>
             <textarea
