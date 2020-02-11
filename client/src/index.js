@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import App from './components/Main';
 import Login from './components/LoginSuccess';
 
-import 'babel-polyfill';
+import '@babel/polyfill';
 
 import config from 'config';
 

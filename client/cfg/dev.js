@@ -4,9 +4,7 @@ let path = require('path');
 let webpack = require('webpack');
 let baseConfig = require('./base');
 let defaultSettings = require('./defaults');
-
-// Add needed plugins here
-let BowerWebpackPlugin = require('bower-webpack-plugin');
+let autoprefixer = require('autoprefixer');
 
 let config = Object.assign({}, baseConfig, {
   entry: [
@@ -15,25 +13,42 @@ let config = Object.assign({}, baseConfig, {
     './src/index'
   ],
   cache: true,
+  devServer: {
+    contentBase: './src/',
+    historyApiFallback: true,
+    hot: false,
+    port: defaultSettings.port,
+    publicPath: defaultSettings.publicPath,
+    noInfo: false
+  },
   devtool: 'eval-source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new BowerWebpackPlugin({
-      searchResolveModulesDirectories: false
-    })
+    new webpack.NoEmitOnErrorsPlugin(),
+		new webpack.LoaderOptionsPlugin({
+			options: {
+				context: __dirname,
+				postcss: [
+					autoprefixer
+				]
+			}
+		})
   ],
   module: defaultSettings.getDefaultModules()
 });
 
 // Add needed loaders to the defaults here
-config.module.loaders.push({
+config.module.rules.push({
   test: /\.(js|jsx)$/,
   loader: require.resolve('babel-loader'),
-  include: [].concat(
-    config.additionalPaths,
-    [ path.join(__dirname, '/../src') ]
-  ),
+  exclude: [
+    /node_modules[\\\/]react-waypoint/,
+    /node_modules[\\\/]consolidated-events/
+  ],
+  //include: [].concat(
+  //  config.additionalPaths,
+  //  [ path.join(__dirname, '/../src') ]
+  //),
   options: {
 		cacheDirectory: true,
 		plugins: ['react-hot-loader/babel'],
