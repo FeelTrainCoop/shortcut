@@ -4,12 +4,13 @@ const srcPath = path.join(__dirname, '/../src');
 const dfltPort = 8000;
 function getDefaultModules() {
   return {
-    preLoaders: [{
+    rules: [
+      {
         test: /\.(js|jsx)$/,
         include: srcPath,
-        loader: 'eslint-loader'
-      }],
-    loaders: [
+        loader: 'eslint-loader',
+        enforce: 'pre'
+      },
       {
         test: /\.(html)$/,
         loader: 'html-loader',
@@ -70,13 +71,5 @@ module.exports = {
   srcPath: srcPath,
   publicPath: '/assets/',
   port: dfltPort,
-  getDefaultModules: getDefaultModules,
-  postcss: function () {
-    return [
-      // require('autoprefixer')({
-      //   browsers: ['last 5 versions', 'ie >= 8', 'last 5 iOS versions']
-      // })
-    ];
-
-  }
+  getDefaultModules: getDefaultModules
 };
