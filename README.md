@@ -1,3 +1,5 @@
+## _This project is now in archive mode and is no longer actively updated or supported._
+
 Shortcut
 ========
 
